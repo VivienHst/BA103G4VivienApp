@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -33,6 +34,7 @@ public class ProductFragment extends Fragment {
     private ProdVO prodVO;
     private View view;
     private String storeName;
+    private Button addToCar;
 
     public void getProdVO(ProdVO prodVO){
         this.prodVO = prodVO;
@@ -83,6 +85,7 @@ public class ProductFragment extends Fragment {
         prodAromaTv = (TextView) view.findViewById(R.id.prodAroma);
         prodRating = (RatingBar) view.findViewById(R.id.prod_rb);
         prodSupTv = (TextView) view.findViewById(R.id.prodSup);
+        addToCar =  (Button) view.findViewById(R.id.add_to_car_bt);
 
         new GetImageByPkTask(Common.PROD_URL, action, prodVO.getProd_no(), 800, productIv).execute();
         prodNameTv.setText(prodVO.getProd_name());
@@ -144,6 +147,14 @@ public class ProductFragment extends Fragment {
                 prodCountEt.setText(prodCountToCarNum.toString());
             }
         });
+
+        //加入購物車
+//        addToCar.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//            }
+//        });
     }
 
     private boolean networkConnected(){

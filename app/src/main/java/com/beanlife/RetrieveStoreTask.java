@@ -37,7 +37,7 @@ public class RetrieveStoreTask extends AsyncTask<String, Void, StoreVO>{
             String jsonIn;
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("action", action);
-            jsonObject.addProperty("Store_no", store_no);
+            jsonObject.addProperty("store_no", store_no);
 
             try {
                 jsonIn = getRemoteData(url, jsonObject.toString());

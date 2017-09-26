@@ -169,7 +169,7 @@
                             app:srcCompat="@drawable/prod_plus01" />
 
                         <Button
-                            android:id="@+id/addToCar"
+                            android:id="@+id/add_to_car_bt"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="#e4bd71"

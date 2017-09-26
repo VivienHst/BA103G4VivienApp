@@ -24,6 +24,7 @@ import com.beanlife.CommonTask;
 import com.beanlife.GetImageByPkTask;
 import com.beanlife.ProdVO;
 import com.beanlife.R;
+import com.beanlife.StoreVO;
 import com.google.gson.Gson;
 
 import com.google.gson.reflect.TypeToken;
@@ -32,8 +33,10 @@ import java.lang.reflect.Type;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
@@ -71,12 +74,14 @@ public class CartFragment extends Fragment {
         //取得購物車內的所有商品
         final List<Cart_listVO> cartProd = getCartVOList(user_ac);
         List<ProdVO> prodVOList = new ArrayList<ProdVO>();
+        Hashtable<String,Integer> prodCount = new Hashtable<String,Integer>();
 
         Set storeNo = new HashSet();
 
         for(Cart_listVO prodList : cartProd){
             //取得所有商品VO
             prodVOList.add(getProdVO(prodList.getProd_no()));
+            prodCount.put(prodList.getProd_no(),prodList.getProd_amount());
             //取得包含店家
             storeNo.add(getProdVO(prodList.getProd_no()).getStore_no());
         }
@@ -88,7 +93,7 @@ public class CartFragment extends Fragment {
             storeList.add(storeIt.next());
         }
         //加入各筆訂單以店家分類
-        recyclerView.setAdapter(new CartFragment.CartCardAdapter(getActivity(), storeList, prodVOList));
+        recyclerView.setAdapter(new CartFragment.CartCardAdapter(getActivity(), storeList, prodVOList, prodCount));
     }
 
     @Override
@@ -103,11 +108,14 @@ public class CartFragment extends Fragment {
         private Set storeNoSet;
         private List<String> storeList;
         List<ProdVO> prodVOList;
+        Hashtable<String,Integer> prodCount;
 
-        CartCardAdapter(Context context, List<String> storeList, List<ProdVO> prodVOList) {
+        CartCardAdapter(Context context, List<String> storeList, List<ProdVO> prodVOList,Hashtable<String,Integer> prodCount) {
             this.context = context;
             this.storeList = storeList;
             this.prodVOList = prodVOList;
+            this.prodCount = prodCount;
+
         }
 
         class MyViewHolder extends RecyclerView.ViewHolder {
@@ -153,16 +161,16 @@ public class CartFragment extends Fragment {
                     cataProdVOList.add(storeProdVO);
                 }
             }
-            cartAdapter = new CartDetailAdapter(getActivity(), cataProdVOList, storeNo);
+            cartAdapter = new CartDetailAdapter(getActivity(), cataProdVOList, storeNo, prodCount);
 
             //*******取得店家名稱*********
 
-
-            viewHolder.cartStoreNameTv.setText(storeNo);
             viewHolder.cartProdListLv.setAdapter(cartAdapter);
             ViewGroup.LayoutParams listViewParams = viewHolder.cartProdListLv.getLayoutParams();
-
-            listViewParams.height = cartAdapter.getCount()*240;
+            viewHolder.cartStoreNameTv.setText(getStoreVO(storeNo).getStore_name());
+            viewHolder.cartProdCountTv.setText("商品共 " + cartAdapter.getCount() + " 項");
+            viewHolder.cartTotalPayTv.setText("共計 ： " + cartAdapter.getTotalPrice());
+            listViewParams.height = cartAdapter.getCount() * 240;
         }
     }
 
@@ -201,11 +209,15 @@ public class CartFragment extends Fragment {
         private List<ProdVO> prodVOList;
         private String mem_ac;
         private String storeNo;
+        Hashtable<String,Integer> prodCount;
+        private int totalPrice, storeItemCount;
 
-        public CartDetailAdapter(Context context, List<ProdVO> prodVOList, String storeNo) {
+        public CartDetailAdapter(Context context, List<ProdVO> prodVOList,
+                                    String storeNo, Hashtable<String,Integer>  prodCount) {
             //prodVOList = new ArrayList<ProdVO>();
             this.storeNo = storeNo;
             this.prodVOList = prodVOList;
+            this.prodCount = prodCount;
             this.context = context;
         }
 
@@ -245,15 +257,23 @@ public class CartFragment extends Fragment {
             prodCountChangeBt = (Button) prodItem.findViewById(R.id.prod_count_change_bt);
 
             cartNameTv.setText(prodVOinList.getProd_name());
+            cartProdCountTv.setText("$ " +prodVOinList.getProd_price() + " x "
+                    + prodCount.get(prodVOinList.getProd_no()).toString());
             new GetImageByPkTask(Common.PROD_URL, "prod_no", prodVOinList.getProd_no(), 200, cartItemIv).execute();
 
-           // cartProdCountTv.setText(cart_listListItem.getProd_amount().toString());
             return prodItem;
+        }
+
+        public int getTotalPrice(){
+            for(ProdVO prodVOinList : prodVOList) {
+                totalPrice = totalPrice + prodVOinList.getProd_price() * prodCount.get(prodVOinList.getProd_no());
+            }
+            return totalPrice;
         }
     }
 
     public ProdVO getProdVO(String prod_no){
-        ProdVO prodVO = new ProdVO();
+        ProdVO prodVO;
         String prodVOString = "";
 
         if (networkConnected()) {
@@ -273,5 +293,28 @@ public class CartFragment extends Fragment {
 
         prodVO = gson.fromJson(prodVOString, listType);
         return prodVO;
+    }
+
+    private StoreVO getStoreVO(String store_no){
+        StoreVO storeVO;
+        String storeVOString = "";
+
+        if (networkConnected()) {
+            CommonTask retrieveCartList =
+                    (CommonTask) new CommonTask().execute(Common.STORE_URL,
+                            "getOneStore", "store_no", store_no);
+            try {
+                storeVOString = retrieveCartList.get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+        Gson gson = new Gson();
+        Type listType = new TypeToken<StoreVO>() {}.getType();
+
+        storeVO = gson.fromJson(storeVOString, listType);
+        return storeVO;
     }
 }
