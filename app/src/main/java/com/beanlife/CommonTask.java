@@ -46,6 +46,13 @@ public class CommonTask extends AsyncTask<String, Integer, String>{
             String atrNameKey2 = params[4];
             String atrNameValue2 = params[5];
             jsonObject.addProperty(atrNameKey2, atrNameValue2);
+        } else if(params.length == 8){
+            String atrNameKey2 = params[4];
+            String atrNameValue2 = params[5];
+            jsonObject.addProperty(atrNameKey2, atrNameValue2);
+            String atrNameKey3 = params[6];
+            String atrNameValue3 = params[7];
+            jsonObject.addProperty(atrNameKey3, atrNameValue3);
         }
 
         try{

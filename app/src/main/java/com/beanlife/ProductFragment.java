@@ -1,12 +1,15 @@
 package com.beanlife;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -14,8 +17,16 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by Java on 2017/8/27.
@@ -35,6 +46,8 @@ public class ProductFragment extends Fragment {
     private View view;
     private String storeName;
     private Button addToCar;
+    Integer prodCountToCarNum;
+    Menu menu;
 
     public void getProdVO(ProdVO prodVO){
         this.prodVO = prodVO;
@@ -55,10 +68,23 @@ public class ProductFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setHasOptionsMenu(true);
     }
 
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        this.menu = menu;
+        //顯示購物車,放大鏡
+        menu.findItem(R.id.action_search).setVisible(true);
+        menu.findItem(R.id.action_shopping_car).setVisible(isLogIn());
+    }
 
+    private boolean isLogIn(){
+        boolean isLogIn;
+        SharedPreferences loginState = getActivity().getSharedPreferences(Common.LOGIN_STATE, MODE_PRIVATE);
+        isLogIn = loginState.getBoolean("login", false);
+        return isLogIn;
+    }
 
     private void findView(){
 
@@ -131,7 +157,7 @@ public class ProductFragment extends Fragment {
             public void onClick(View view) {
 
                 String prodCountToCar = prodCountEt.getText().toString();
-                Integer prodCountToCarNum;
+
                 if(prodCountToCar.length() == 0){
                     prodCountToCarNum = 1;
                 } else {
@@ -149,12 +175,39 @@ public class ProductFragment extends Fragment {
         });
 
         //加入購物車
-//        addToCar.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
+        addToCar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String addToCarCount = prodCountEt.getText().toString();
+                SharedPreferences loginState = getActivity().getSharedPreferences(Common.LOGIN_STATE, MODE_PRIVATE);
+                String mem_ac = loginState.getString("userAc", "noLogIn");
+                Log.d("mem_ac", mem_ac);
+
+                CommonTask retrieveTask = (CommonTask) new CommonTask().execute(Common.CART_URL,
+                        "addCart_list", "mem_ac", mem_ac, "prod_no", prodVO.getProd_no().toString(),
+                        "prod_amount", addToCarCount);
+
+                String getIsAddToCar = "";
+                try {
+                    getIsAddToCar = retrieveTask.get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+
+                Gson gson = new Gson();
+                Type listType = new TypeToken<Boolean>(){}.getType();
+                boolean isAddToCar =  gson.fromJson(getIsAddToCar, listType);
+
+                if(isAddToCar){
+                    Toast.makeText(view.getContext(), "已新增至購物車", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(view.getContext(), "超過商品剩餘數量", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        });
     }
 
     private boolean networkConnected(){
