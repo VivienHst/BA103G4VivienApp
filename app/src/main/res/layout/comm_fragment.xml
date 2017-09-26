@@ -1,0 +1,31 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/comm_card_fragment01"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="#C8B6A1"
+android:orientation="vertical">
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_comm_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        tools:layout_weight="10px" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:clickable="true"
+        app:backgroundTint="@color/colorPrimary"
+        android:layout_gravity="bottom|right"
+        app:fabSize="mini"
+        app:srcCompat="@drawable/plus01"
+        />
+
+
+</FrameLayout>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#C2DCCE"
+    android:padding="16dp">
+
+
+    <ImageView
+        android:id="@+id/beanLife_lgoo"
+        android:layout_width="160dp"
+        android:layout_height="200dp"
+        android:scaleType="fitCenter"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"
+        app:srcCompat="@drawable/logocircle" />
+
+    <EditText
+        android:id="@+id/userAc"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="16dp"
+        android:ems="10"
+        android:paddingLeft="8dp"
+        android:layout_margin="4dp"
+        android:hint="帳號"
+        android:inputType="text"
+        android:background="#ffffff"/>
+
+    <EditText
+        android:id="@+id/userPsw"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="8dp"
+        android:paddingLeft="8dp"
+        android:layout_margin="4dp"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:hint="密碼"
+        android:background="#ffffff"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:layout_marginTop="8dp">
+
+        <Button
+            android:id="@+id/register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="註冊"
+            android:layout_margin="4dp"
+            android:layout_weight="0.5"
+            android:textSize="16dp"
+            android:background="#9db3a7"/>
+
+
+        <Button
+            android:id="@+id/logIn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:onClick="loginOnClick"
+            android:text="登入"
+            android:layout_weight="0.5"
+            android:textSize="16dp"
+            android:background="#9db3a7"/>
+
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/magicButton"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="4dp"
+        android:onClick="loginOnClick"
+        android:text="amy little magic button"
+        android:textSize="12dp"
+        android:background="#9db3a7"/>
+
+</LinearLayout>

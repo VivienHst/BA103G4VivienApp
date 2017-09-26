@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/comm_card"
+    android:layout_width="match_parent"
+    android:layout_weight="1"
+    android:layout_height="180dp"
+    android:layout_margin="4dp"
+    card_view:cardBackgroundColor="#efdeca"
+    card_view:cardCornerRadius="6dp"
+    card_view:cardElevation="6dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/actImg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/activity03" />
+
+            <View
+                android:id="@+id/actImgGradi"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:adjustViewBounds="true"
+                android:background="@drawable/gradient_black03"
+                android:scaleType="centerCrop" />
+
+            <TextView
+                android:id="@+id/actName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:layout_marginLeft="11dp"
+                android:layout_marginStart="11dp"
+                android:paddingLeft="8dp"
+                android:paddingTop="8dp"
+                android:text="咖啡拉花教學"
+                android:textColor="#ffffff"
+                android:textSize="16dp"
+                android:layout_above="@+id/actDate"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:id="@+id/actDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:text="2017-6-21"
+                android:textColor="#ffffff"
+                android:layout_alignParentBottom="true"
+                android:layout_alignLeft="@+id/actName"
+                android:layout_alignStart="@+id/actName"
+                android:layout_marginBottom="11dp" />
+
+
+        </RelativeLayout>
+
+
+
+        <!--<TextView-->
+            <!--android:id="@+id/actName"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:paddingLeft="8dp"-->
+            <!--android:paddingTop="8dp"-->
+            <!--android:layout_marginBottom="4dp"-->
+            <!--android:text="咖啡拉花教學"-->
+            <!--android:textSize="16dp" />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/actDate"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:paddingLeft="8dp"-->
+            <!--android:text="2017-6-21" />-->
+
+
+    </LinearLayout>
+
+
+</android.support.v7.widget.CardView>

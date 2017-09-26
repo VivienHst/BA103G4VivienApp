@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/product_with_button_page00"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/prodButton"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25"
+            android:background="#cabaa6"
+            android:paddingBottom="10dp"
+            android:paddingLeft="68dp"
+            android:paddingRight="68dp"
+            android:paddingTop="10dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/beans01" />
+
+
+        <ImageButton
+            android:id="@+id/commButton"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25"
+            android:background="#cabaa6"
+            android:paddingBottom="10dp"
+            android:paddingLeft="68dp"
+            android:paddingRight="68dp"
+            android:paddingTop="10dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/comm01" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:id="@+id/product_with_button_frame00">
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<ImageView-->
+                <!--android:id="@+id/imageView3"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="#000000"-->
+                <!--app:srcCompat="@drawable/prod01" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/prodName"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_margin="8dp"-->
+                <!--android:text="古吉Guji 凱勇山 Kara批次"-->
+                <!--android:textSize="24sp" />-->
+
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="horizontal">-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/prodStore"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginLeft="12dp"-->
+                    <!--android:text="阿兜仔咖啡店"-->
+                    <!--android:textAlignment="center"-->
+                    <!--android:textColor="#006699"-->
+                    <!--android:textSize="20dp" />-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/prodSendFee"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginBottom="8dp"-->
+                    <!--android:layout_marginLeft="8dp"-->
+                    <!--android:text="運費：$100   滿1000免運費"-->
+                    <!--android:textSize="14sp" />-->
+
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:paddingLeft="12dp"-->
+                <!--android:paddingRight="12dp"-->
+                <!--android:weightSum="1">-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/prodPrice"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_margin="8dp"-->
+                    <!--android:text="$ 600 NT"-->
+                    <!--android:textSize="20sp" />-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/prodUnit"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_margin="8dp"-->
+                    <!--android:text="0.5磅"-->
+                    <!--android:textSize="16sp" />-->
+
+                <!--<RatingBar-->
+                    <!--android:id="@+id/ratingBar"-->
+                    <!--style="?android:attr/ratingBarStyleSmall"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginLeft="100dp"-->
+                    <!--android:layout_marginTop="16dp"-->
+                    <!--android:numStars="5"-->
+                    <!--android:rating="3.5"-->
+                    <!--android:stepSize="0.5" />-->
+
+            <!--</LinearLayout>-->
+
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="12dp"-->
+                <!--android:layout_marginRight="12dp"-->
+                <!--android:orientation="vertical">-->
+
+                <!--<Button-->
+                    <!--android:id="@+id/addToCar"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+
+                    <!--android:text="加入購物車" />-->
+
+
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_marginLeft="8dp"-->
+                    <!--android:layout_marginRight="8dp"-->
+                    <!--android:orientation="vertical">-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/prodDesc"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginBottom="4dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:text="商品描述"-->
+                        <!--android:textSize="16dp" />-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/prodFarm"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginBottom="4dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:text="農場：凱勇山咖啡農場"-->
+                        <!--android:textSize="16dp" />-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/prodREl"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginBottom="4dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:text="海拔：2050 公尺"-->
+                        <!--android:textSize="16dp" />-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/prodType"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginBottom="4dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:text="豆種：衣索比亞原生種"-->
+                        <!--android:textSize="16dp" />-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/prodFarmer"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginBottom="4dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:text="生產者：凱勇山三兄弟"-->
+                        <!--android:textSize="16dp" />-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/prodAroma"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginBottom="4dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:text="香味：鳳梨熱帶水果草莓"-->
+                        <!--android:textSize="16dp" />-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/prodRoast"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginBottom="4dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:text="烘焙度：淺焙"-->
+                        <!--android:textSize="16dp" />-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/prodProc"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginBottom="4dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:text="處理法：日曬處理法"-->
+                        <!--android:textSize="16dp" />-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/prodGread"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginBottom="4dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:text="生豆等級：G1"-->
+                        <!--android:textSize="16dp" />-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/prodRegion"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginBottom="4dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:text="地區：古吉"-->
+                        <!--android:textSize="16dp" />-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/prodContry"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginBottom="4dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:text="生產國：衣索比亞"-->
+                        <!--android:textSize="16dp" />-->
+                <!--</LinearLayout>-->
+
+
+            <!--</LinearLayout>-->
+
+
+        <!--</LinearLayout>-->
+
+    </FrameLayout>
+
+</LinearLayout>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#efdeca">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/store_img"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/store1"
+                android:layout_marginBottom="8dp"
+                android:background="#000000"/>
+
+            <TextView
+                android:id="@+id/store_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#31708f"
+                android:text="阿兜仔咖啡店"
+                android:textSize="22dp"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="4dp">
+
+                <TextView
+                    android:id="@+id/store_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="電話： 07-3707263"
+                    android:textSize="16dp"
+                    android:layout_marginBottom="4dp"/>
+
+                <TextView
+                    android:id="@+id/store_add"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="地址： 高雄市鳥松區本館路72巷11-1號"
+                    android:textSize="16dp"
+                    android:layout_marginBottom="8dp"/>
+
+                <com.google.android.gms.maps.MapView
+                    android:padding="4dp"
+                    android:id="@+id/store_mapView"
+                    class="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_alignParentTop="true" />
+
+                <TextView
+                    android:id="@+id/store_dsc_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="店家簡介"
+                    android:layout_marginBottom="8dp"
+                    android:textSize="20dp"/>
+
+                <TextView
+                    android:id="@+id/store_dsc_con"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:textSize="16dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

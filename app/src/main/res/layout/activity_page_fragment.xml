@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/actPageIv"
+                android:layout_width="match_parent"
+                android:layout_height="278dp"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/activity04" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:weightSum="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/actName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="拉花教室"
+                        android:textSize="20dp" />
+
+                    <ImageView
+                        android:id="@+id/actFollow"
+                        android:layout_width="36dp"
+                        android:layout_height="24dp"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/heart02" />
+
+                    <TextView
+                        android:id="@+id/actFollowNum"
+                        android:layout_width="30dp"
+                        android:layout_height="24dp"
+                        android:layout_marginTop="0dp"
+                        android:text="12"
+                        android:textSize="16dp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/act_host_ti"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="活動主辦者"
+                    android:textColor="#ad7934"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/memAc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="12dp"
+                    android:text="月月老師"
+                    android:textColor="#a29788"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/act_op_date_ti"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="活動時間"
+                    android:textColor="#ad7934"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/actOpDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="12dp"
+                    android:text="2017/8/21"
+                    android:textColor="#a29788"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/act_mem_count_ti"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="參加人數"
+                    android:textColor="#ad7934"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/actMemCount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="12dp"
+                    android:text="15 / 20"
+                    android:textColor="#a29788"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/act_add_ti"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="活動地點"
+                    android:textColor="#ad7934"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/actAdd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="12dp"
+                    android:text="桃園市中壢區中大路 300號"
+                    android:textColor="#a29788"
+                    android:textSize="16dp" />
+
+                <com.google.android.gms.maps.MapView
+                    android:padding="4dp"
+                    android:id="@+id/act_mapView"
+                    class="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_alignParentTop="true" />
+
+                <TextView
+                    android:id="@+id/act_info_ti"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="活動描述"
+                    android:textColor="#ad7934"
+                    android:textSize="16dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/actCont"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+
+                        android:text="以Espresso為主所做出來的卡布奇諾和拿鐵咖啡，除了擁有濃郁的完美口感之外，另一受大眾歡迎的原因，是將咖啡推上藝術的最高表現「」。美麗的拉花奶泡，所呈現的不只是味覺的滿分，更帶來令人讚嘆的視覺享受。想拉出漂亮的花樣，除了萃取一杯適當的Espresso、綿密細緻的奶泡，加上手部平穩有節奏的晃動倒入牛奶作拿鐵拉花藝術。完美的結合Espresso和奶泡才是作畫拿鐵拉花藝術中的極致，也才能夠在一杯小小的拿鐵中看到完美藝術和味道的融合。"
+                        android:textColor="#a29788"
+                        android:textSize="16dp"
+                        android:visibility="visible" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
