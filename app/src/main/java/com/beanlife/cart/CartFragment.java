@@ -6,6 +6,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -25,12 +27,15 @@ import com.beanlife.Common;
 import com.beanlife.CommonTask;
 import com.beanlife.GetImageByPkTask;
 import com.beanlife.ProdVO;
+import com.beanlife.ProductWithTab;
 import com.beanlife.R;
 import com.beanlife.StoreVO;
+import com.beanlife.checkout.CheckoutFragment;
 import com.google.gson.Gson;
 
 import com.google.gson.reflect.TypeToken;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
 
 import java.util.ArrayList;
@@ -53,6 +58,7 @@ public class CartFragment extends Fragment {
 
     private final static String TAG = "Cart Fragment";
     CartFragment.CartDetailAdapter cartAdapter;
+    String mem_ac;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -117,12 +123,11 @@ public class CartFragment extends Fragment {
             this.storeList = storeList;
             this.prodVOList = prodVOList;
             this.prodCount = prodCount;
-
         }
 
         class MyViewHolder extends RecyclerView.ViewHolder {
-            TextView  cartStoreNameTv, cartStoreProdCountTv, cartStoreTotalPayTv, cartProdCountTv,cartTotalPayTv;
-            Button cartProdListBt;
+            TextView  cartStoreNameTv, cartStoreProdCountTv, cartStoreTotalPayTv, cartProdCountTv, cartTotalPayTv;
+            Button cartProdListBt, cartProdCheckoutBt;
             ListView cartProdListLv;
             LinearLayout prodListDetailLv;
 
@@ -130,14 +135,14 @@ public class CartFragment extends Fragment {
                 super(itemView);
 
                 cartStoreNameTv = (TextView) itemView.findViewById(R.id.cart_store_name_tv);
-//                cartStoreProdCountTv = (TextView) itemView.findViewById(R.id.cart_store_prod_count_tv);
-//                cartStoreTotalPayTv = (TextView) itemView.findViewById(R.id.cart_store_total_pay_tv);
                 cartProdCountTv = (TextView) itemView.findViewById(R.id.cart_store_prod_count_tv);
                 cartTotalPayTv = (TextView) itemView.findViewById(R.id.cart_store_total_pay_tv);
 
                 cartProdListBt = (Button) itemView.findViewById(R.id.cart_prod_list_bt);
+                cartProdCheckoutBt = (Button) itemView.findViewById(R.id.cart_prod_checkout_bt);
                 cartProdListLv = (ListView) itemView.findViewById(android.R.id.list);
                 prodListDetailLv = (LinearLayout) itemView.findViewById(R.id.cart_prod_list_detail);
+
             }
         }
 
@@ -156,7 +161,7 @@ public class CartFragment extends Fragment {
         @Override
         public void onBindViewHolder(final CartFragment.CartCardAdapter.MyViewHolder viewHolder, int position) {
             final String storeNo = storeList.get(position);
-            List<ProdVO> cataProdVOList = new ArrayList<ProdVO>();
+            final List<ProdVO> cataProdVOList = new ArrayList<ProdVO>();
 
             //prodVO分類
             for(ProdVO storeProdVO : prodVOList){
@@ -164,29 +169,48 @@ public class CartFragment extends Fragment {
                     cataProdVOList.add(storeProdVO);
                 }
             }
-            cartAdapter = new CartDetailAdapter(getActivity(), cataProdVOList, storeNo, prodCount);
+            cartAdapter = new CartDetailAdapter(getActivity(), cataProdVOList, storeNo, prodCount, viewHolder.cartTotalPayTv);
 
             //*******取得店家名稱*********
             viewHolder.cartProdListLv.setAdapter(cartAdapter);
             ViewGroup.LayoutParams listViewParams = viewHolder.cartProdListLv.getLayoutParams();
+            final StoreVO storeVO = getStoreVO(storeNo);
 
-            viewHolder.cartStoreNameTv.setText(getStoreVO(storeNo).getStore_name());
+            viewHolder.cartStoreNameTv.setText(storeVO.getStore_name());
             viewHolder.cartProdCountTv.setText("商品共 " + cartAdapter.getCount() + " 項");
-            viewHolder.cartTotalPayTv.setText("共計 ： " + cartAdapter.getTotalPrice());
+            viewHolder.cartTotalPayTv.setText("共計 ： $" + cartAdapter.getTotalPrice());
+
             listViewParams.height = cartAdapter.getCount() * 250;
-            viewHolder.cartProdListBt.setOnClickListener(new View.OnClickListener() {
+//            viewHolder.cartProdListBt.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    if(viewHolder.prodListDetailLv.getVisibility() == GONE){
+//                        viewHolder.prodListDetailLv.setVisibility(View.VISIBLE);
+//
+//                    }else {
+//                        viewHolder.prodListDetailLv.setVisibility(View.GONE);
+//                    }
+//                }
+//            });
+
+            //轉到結帳頁面
+            viewHolder.cartProdCheckoutBt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(viewHolder.prodListDetailLv.getVisibility() == GONE){
+                    Fragment fragment = new CheckoutFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("prodVOList", (Serializable) cataProdVOList);
+                    bundle.putSerializable("prodCount", (Serializable) prodCount);
 
-                        viewHolder.prodListDetailLv.setVisibility(View.VISIBLE);
+                    //bundle.putSerializable("storeVO", storeVO);
+                    bundle.putSerializable("totalPrice", cartAdapter.getTotalPrice());
 
-                    }else {
-                        viewHolder.prodListDetailLv.setVisibility(View.GONE);
-
-
-                    }
-
+                    fragment.setArguments(bundle);
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.body, fragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
                 }
             });
         }
@@ -198,7 +222,6 @@ public class CartFragment extends Fragment {
         NetworkInfo networkInfo = conManager.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnected();
     }
-
 
     List<Cart_listVO> getCartVOList(String mem_ac) {
         String cartVOListString = "";
@@ -229,15 +252,18 @@ public class CartFragment extends Fragment {
         private String storeNo;
         Hashtable<String,Integer> prodCount;
         private int totalPrice, storeItemCount;
+        private TextView textV;
+
 
 
         public CartDetailAdapter(Context context, List<ProdVO> prodVOList,
-                                    String storeNo, Hashtable<String,Integer>  prodCount) {
+                                    String storeNo, Hashtable<String,Integer>  prodCount, TextView textV) {
             //prodVOList = new ArrayList<ProdVO>();
             this.storeNo = storeNo;
             this.prodVOList = prodVOList;
             this.prodCount = prodCount;
             this.context = context;
+            this.textV = textV;
         }
 
         @Override
@@ -259,6 +285,9 @@ public class CartFragment extends Fragment {
         @Override
         public View getView(int position, View prodItem, ViewGroup parent) {
             final ProdVO prodVOinList = prodVOList.get(position);
+            SharedPreferences loginState = getActivity().getSharedPreferences(Common.LOGIN_STATE, MODE_PRIVATE);
+            mem_ac = loginState.getString("userAc", "noLogIn");
+            Log.d("mem_ac", mem_ac);
 
             LayoutInflater layoutInflater = LayoutInflater.from(context);
             //final String prod_no = cart_listListItem.getProd_no();
@@ -270,7 +299,7 @@ public class CartFragment extends Fragment {
             ImageView cartItemIv;
             final TextView cartNameTv, cartProdCountTv;
             final LinearLayout changeProdLl;
-            final Button prodCountChangeBt;
+            final Button prodCountChangeBt, prodDeleteBt;
             final ImageView prodPlusIv, prodMinusIv;
             final EditText prodCountEt;
             cartItemIv = (ImageView) prodItem.findViewById(R.id.cart_item_iv);
@@ -281,6 +310,7 @@ public class CartFragment extends Fragment {
             prodPlusIv = (ImageView) prodItem.findViewById(R.id.cart_prod_plus_iv);
             prodMinusIv = (ImageView) prodItem.findViewById(R.id.cart_prod_minus_iv);
             prodCountEt = (EditText) prodItem.findViewById(R.id.cart_prod_cont_et);
+            prodDeleteBt = (Button) prodItem.findViewById(R.id.prod_delete_bt);
             final Integer[] prodCountToCarNum = new Integer[1];
 
             prodCountToCarNum[0] = prodCount.get(prodVOinList.getProd_no());
@@ -323,7 +353,6 @@ public class CartFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
 
-
                     //填入修改數量事件處理
                     if(changeProdLl.getVisibility() == View.GONE){
                         cartProdCountTv.setVisibility(View.GONE);
@@ -332,10 +361,6 @@ public class CartFragment extends Fragment {
                     }else{
 
                         String addToCarCount = prodCountEt.getText().toString();
-                        SharedPreferences loginState = getActivity().getSharedPreferences(Common.LOGIN_STATE, MODE_PRIVATE);
-                        String mem_ac = loginState.getString("userAc", "noLogIn");
-                        Log.d("mem_ac", mem_ac);
-
                         CommonTask retrieveTask = (CommonTask) new CommonTask().execute(Common.CART_URL,
                                 "updateCart_list", "mem_ac", mem_ac, "prod_no", prodVOinList.getProd_no().toString(),
                                 "prod_amount", addToCarCount);
@@ -354,16 +379,15 @@ public class CartFragment extends Fragment {
                         boolean isAddToCar =  gson.fromJson(getIsAddToCar, listType);
 
                         if(isAddToCar){
-                            Toast.makeText(view.getContext(), "已新增至購物車", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(view.getContext(), "已修改數量", Toast.LENGTH_SHORT).show();
                             cartProdCountTv.setText("$ " +prodVOinList.getProd_price() + " x "
                                     + addToCarCount);
                             prodCount.put(prodVOinList.getProd_no(), Integer.parseInt(addToCarCount));
-//                            viewHolder.cartTotalPayTv.setText("共計 ： " + cartAdapter.getTotalPrice());
-
+                            textV.setText("共計 ： " + getTotalPrice());
                         }else{
                             Toast.makeText(view.getContext(), "超過商品剩餘數量", Toast.LENGTH_SHORT).show();
-
                         }
+                        //reflashFragment();
                         cartProdCountTv.setVisibility(View.VISIBLE);
                         changeProdLl.setVisibility(View.GONE);
                         prodCountChangeBt.setText("修改數量");
@@ -382,16 +406,33 @@ public class CartFragment extends Fragment {
                     + prodCount.get(prodVOinList.getProd_no()).toString());
             new GetImageByPkTask(Common.PROD_URL, "prod_no", prodVOinList.getProd_no(), 200, cartItemIv).execute();
 
+            prodDeleteBt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    CommonTask retrieveTask = (CommonTask) new CommonTask().execute(Common.CART_URL,
+                            "deleteCart_list", "mem_ac", mem_ac, "prod_no", prodVOinList.getProd_no());
+                    reflashFragment();
+                }
+            });
+
             return prodItem;
         }
 
         public int getTotalPrice(){
+            totalPrice = 0;
             for(ProdVO prodVOinList : prodVOList) {
                 totalPrice = totalPrice + prodVOinList.getProd_price() * prodCount.get(prodVOinList.getProd_no());
             }
-            //cartTotalPayTv.setText("共計 ： " + totalPrice);
             return totalPrice;
         }
+    }
+
+    private void reflashFragment() {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.body, new CartFragment());
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     public ProdVO getProdVO(String prod_no){

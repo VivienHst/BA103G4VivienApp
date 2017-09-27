@@ -176,7 +176,6 @@ public class ProductTotalFragmentTest extends Fragment {
                     fragmentTransaction.replace(R.id.body, fragment);
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
-                    System.out.println("Product onclick");
                 }
             });
         }

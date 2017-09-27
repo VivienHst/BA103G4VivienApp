@@ -204,7 +204,6 @@ public class ProductFragment extends Fragment {
                     Toast.makeText(view.getContext(), "已新增至購物車", Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(view.getContext(), "超過商品剩餘數量", Toast.LENGTH_SHORT).show();
-
                 }
             }
         });

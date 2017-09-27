@@ -65,7 +65,19 @@
                 android:layout_marginRight="10dp"
                 android:layout_weight="0.8"
                 android:background="#c9ad76"
-                android:text="顯示商品" />
+                android:text="顯示商品"
+                android:visibility="gone"/>
+
+            <Button
+                android:id="@+id/cart_prod_checkout_bt"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+
+                android:layout_marginRight="10dp"
+                android:layout_weight="0.8"
+                android:background="#c9ad76"
+                android:text="結帳"/>
         </LinearLayout>
 
 
@@ -74,7 +86,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <ListView
                 android:id="@android:id/list"
