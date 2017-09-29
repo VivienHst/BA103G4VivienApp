@@ -92,4 +92,6 @@ public class CommonTask extends AsyncTask<String, Integer, String>{
         Log.d(TAG, "inStr : " + inStr);
         return inStr.toString();
     }
+
+
 }

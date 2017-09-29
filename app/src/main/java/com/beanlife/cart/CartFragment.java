@@ -27,7 +27,6 @@ import com.beanlife.Common;
 import com.beanlife.CommonTask;
 import com.beanlife.GetImageByPkTask;
 import com.beanlife.ProdVO;
-import com.beanlife.ProductWithTab;
 import com.beanlife.R;
 import com.beanlife.StoreVO;
 import com.beanlife.checkout.CheckoutFragment;
@@ -43,12 +42,10 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import static android.content.Context.MODE_PRIVATE;
-import static android.view.View.GONE;
 
 /**
  * Created by vivienhuang on 2017/9/25.
@@ -162,23 +159,28 @@ public class CartFragment extends Fragment {
         public void onBindViewHolder(final CartFragment.CartCardAdapter.MyViewHolder viewHolder, int position) {
             final String storeNo = storeList.get(position);
             final List<ProdVO> cataProdVOList = new ArrayList<ProdVO>();
+            final Integer totalPrice;
+            final Hashtable<String,Integer> prodCountByStore = new Hashtable<String,Integer>();
 
             //prodVO分類
             for(ProdVO storeProdVO : prodVOList){
+
                 if(storeProdVO.getStore_no().equals(storeNo)){
+                    prodCountByStore.put(storeProdVO.getProd_no(), prodCount.get(storeProdVO.getProd_no()));
                     cataProdVOList.add(storeProdVO);
                 }
             }
-            cartAdapter = new CartDetailAdapter(getActivity(), cataProdVOList, storeNo, prodCount, viewHolder.cartTotalPayTv);
+            cartAdapter = new CartDetailAdapter(getActivity(), cataProdVOList, storeNo, prodCountByStore, viewHolder.cartTotalPayTv);
 
             //*******取得店家名稱*********
             viewHolder.cartProdListLv.setAdapter(cartAdapter);
             ViewGroup.LayoutParams listViewParams = viewHolder.cartProdListLv.getLayoutParams();
             final StoreVO storeVO = getStoreVO(storeNo);
+            totalPrice = cartAdapter.getTotalPrice();
 
             viewHolder.cartStoreNameTv.setText(storeVO.getStore_name());
             viewHolder.cartProdCountTv.setText("商品共 " + cartAdapter.getCount() + " 項");
-            viewHolder.cartTotalPayTv.setText("共計 ： $" + cartAdapter.getTotalPrice());
+            viewHolder.cartTotalPayTv.setText("共計 ： $" + totalPrice);
 
             listViewParams.height = cartAdapter.getCount() * 250;
 //            viewHolder.cartProdListBt.setOnClickListener(new View.OnClickListener() {
@@ -200,10 +202,10 @@ public class CartFragment extends Fragment {
                     Fragment fragment = new CheckoutFragment();
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("prodVOList", (Serializable) cataProdVOList);
-                    bundle.putSerializable("prodCount", (Serializable) prodCount);
+                    bundle.putSerializable("prodCount", (Serializable) prodCountByStore);
 
-                    //bundle.putSerializable("storeVO", storeVO);
-                    bundle.putSerializable("totalPrice", cartAdapter.getTotalPrice());
+                    bundle.putSerializable("storeVO", storeVO);
+                    bundle.putSerializable("totalPrice", totalPrice);
 
                     fragment.setArguments(bundle);
                     FragmentManager fragmentManager = getFragmentManager();
@@ -287,7 +289,6 @@ public class CartFragment extends Fragment {
             final ProdVO prodVOinList = prodVOList.get(position);
             SharedPreferences loginState = getActivity().getSharedPreferences(Common.LOGIN_STATE, MODE_PRIVATE);
             mem_ac = loginState.getString("userAc", "noLogIn");
-            Log.d("mem_ac", mem_ac);
 
             LayoutInflater layoutInflater = LayoutInflater.from(context);
             //final String prod_no = cart_listListItem.getProd_no();
@@ -397,8 +398,8 @@ public class CartFragment extends Fragment {
             });
 
             String prodName = prodVOinList.getProd_name();
-            if(prodName.length() > 15){
-                prodName = prodName.substring(0,15) + "...";
+            if(prodName.length() > 12){
+                prodName = prodName.substring(0,12) + "...";
             }
 
             cartNameTv.setText(prodName);

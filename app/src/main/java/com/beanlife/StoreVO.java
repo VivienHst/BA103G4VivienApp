@@ -20,10 +20,12 @@ public class StoreVO implements Serializable {
     private byte[] store_pic1;
     private byte[] store_pic2;
     private byte[] store_pic3;
+    private String store_atm_info;
     private Integer store_free_ship;
     private String store_stat;
     private String store_stat_cont;
     private String store_stat_cdate;
+
 
 
     public String getStore_no() {
@@ -109,6 +111,12 @@ public class StoreVO implements Serializable {
     }
     public void setStore_free_ship(Integer store_free_ship) {
         this.store_free_ship = store_free_ship;
+    }
+    public String getStore_atm_info() {
+        return store_atm_info;
+    }
+    public void setStore_atm_info(String store_atm_info) {
+        this.store_atm_info = store_atm_info;
     }
     public String getStore_stat() {
         return store_stat;

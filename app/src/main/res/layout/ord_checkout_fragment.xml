@@ -16,339 +16,353 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="您的商品清單如下 : "
-        android:textSize="18dp" />
-
-    <ListView
-        android:id="@android:id/list"
-        android:layout_width="match_parent"
-        android:layout_height="160dp">
-
-    </ListView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="8dp">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="6dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:text="商品金額"
-            android:textSize="16dp" />
-
-        <TextView
-            android:id="@+id/checkout_prod_pay_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:gravity="right"
-            android:text="NT$3000"
-            android:textSize="20dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="6dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:text="運費"
-            android:textSize="16dp" />
-
-        <TextView
-            android:id="@+id/checkout_fee_pay_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:gravity="right"
-            android:text="NT$3000"
-            android:textSize="20dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="14dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:text="金額總計"
-            android:textSize="20dp" />
-
-        <TextView
-            android:id="@+id/checkout_total_pay_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:gravity="right"
-            android:text="NT$3000"
-            android:textSize="24dp" />
-    </LinearLayout>
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="請填入收貨資訊"
-        android:textSize="18dp" />
-
-    <EditText
-        android:id="@+id/ord_name_et"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginBottom="12dp"
-        android:background="#ffffff"
-        android:hint="姓名"
-        android:inputType="text"
-        android:paddingLeft="8dp" />
-
-    <EditText
-        android:id="@+id/ord_phone_et"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginBottom="12dp"
-        android:background="#ffffff"
-        android:hint="電話"
-        android:inputType="phone"
-        android:paddingLeft="8dp" />
-
-    <EditText
-        android:id="@+id/ord_add_et"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginBottom="12dp"
-        android:background="#ffffff"
-        android:hint="地址"
-        android:inputType="text"
-        android:paddingLeft="8dp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="請選擇付款方式"
-        android:textSize="18dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:orientation="horizontal">
-
-        <RadioGroup
-            android:id="@+id/payway_rg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/payway_cradit_rb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="16dp"
-                android:text="信用卡"
-                android:textSize="16dp" />
-
-            <RadioButton
-                android:id="@+id/payway_bank_rb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="銀行轉帳"
-                android:textSize="16dp" />
-
-        </RadioGroup>
-
-
-    </LinearLayout>
-
-    <EditText
-        android:id="@+id/ord_pay_info_bankno_et"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginBottom="10dp"
-        android:background="#ffffff"
-        android:ems="10"
-        android:hint="銀行帳號末五碼"
-        android:inputType="text"
-        android:paddingLeft="8dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="信用卡資訊"
-            android:textSize="18dp" />
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/ord_credit_et1"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_weight="0.1"
-                android:background="#ffffff"
-                android:inputType="number"
-                android:maxLength="4" />
-
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_weight="0.12"
-                android:gravity="center"
-                android:text="-"
+                android:layout_height="wrap_content"
+                android:text="您的商品清單如下 : "
                 android:textSize="18dp" />
 
-            <EditText
-                android:id="@+id/ord_credit_et2"
+            <ListView
+                android:id="@android:id/list"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_weight="0.1"
-                android:background="#ffffff"
-                android:inputType="number"
-                android:maxLength="4" />
+                android:layout_height="160dp">
 
-            <TextView
+            </ListView>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_weight="0.12"
-                android:gravity="center"
-                android:text="-"
-                android:textSize="18dp" />
-
-            <EditText
-                android:id="@+id/ord_credit_et3"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_weight="0.1"
-                android:background="#ffffff"
-                android:inputType="number"
-                android:maxLength="4" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_weight="0.12"
-                android:gravity="center"
-                android:text="-"
-                android:textSize="18dp" />
-
-            <EditText
-                android:id="@+id/ord_credit_et4"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_weight="0.1"
-                android:background="#ffffff"
-                android:inputType="number"
-                android:maxLength="4" />
-
-
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18dp"
-            android:text="信用卡到期日"
-            android:layout_marginBottom="8dp"
-            />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-
-
-
-        <EditText
-            android:id="@+id/ord_cradit_month_et"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_marginBottom="12dp"
-            android:background="#ffffff"
-            android:hint="MM"
-            android:inputType="text"
-            android:paddingLeft="8dp"
-            android:textSize="14dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="24dp"
-                android:text="  /  "/>
+                android:layout_marginBottom="80dp"
+                android:orientation="vertical"
+                android:padding="8dp">
 
-        <EditText
-            android:id="@+id/ord_cradit_year_et"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_marginBottom="12dp"
-            android:background="#ffffff"
-            android:hint="YYYY"
-            android:inputType="text"
-            android:paddingLeft="8dp"
-            android:textSize="14dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="商品金額"
+                        android:textSize="16dp" />
+
+                    <TextView
+                        android:id="@+id/checkout_prod_pay_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:gravity="right"
+                        android:text="NT$3000"
+                        android:textSize="20dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="運費"
+                        android:textSize="16dp" />
+
+                    <TextView
+                        android:id="@+id/checkout_fee_pay_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:gravity="right"
+                        android:text="NT$3000"
+                        android:textSize="20dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="14dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="金額總計"
+                        android:textSize="20dp" />
+
+                    <TextView
+                        android:id="@+id/checkout_total_pay_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:gravity="right"
+                        android:text="NT$3000"
+                        android:textSize="24dp" />
+                </LinearLayout>
 
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="請填入收貨資訊"
+                    android:textSize="18dp" />
 
-        </LinearLayout>
+                <EditText
+                    android:id="@+id/ord_name_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="#ffffff"
+                    android:hint="姓名"
+                    android:inputType="text"
+                    android:paddingLeft="8dp" />
 
-        <EditText
-            android:id="@+id/ord_cradit_back3_et"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_marginBottom="12dp"
-            android:background="#ffffff"
-            android:hint="卡片末三碼"
-            android:inputType="text"
-            android:paddingLeft="8dp"
-            android:textSize="14dp" />
+                <EditText
+                    android:id="@+id/ord_phone_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="#ffffff"
+                    android:hint="電話"
+                    android:inputType="phone"
+                    android:paddingLeft="8dp" />
 
-    </LinearLayout>
+                <EditText
+                    android:id="@+id/ord_add_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="#ffffff"
+                    android:hint="地址"
+                    android:inputType="text"
+                    android:paddingLeft="8dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="請選擇付款方式"
+                    android:textSize="18dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal">
+
+                    <RadioGroup
+                        android:id="@+id/payway_rg"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/payway_credit_rb"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="16dp"
+                            android:text="信用卡"
+                            android:textSize="16dp" />
+
+                        <RadioButton
+                            android:id="@+id/payway_bank_rb"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="銀行轉帳"
+                            android:textSize="16dp" />
+
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/ord_pay_info_bankno_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="#ffffff"
+                    android:ems="10"
+                    android:hint="匯款帳戶末五碼"
+                    android:inputType="text"
+                    android:maxLength="5"
+                    android:paddingLeft="8dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/ord_pay_info_bankac_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18dp"
+                    android:visibility="gone"/>
 
 
-    <Button
-        android:id="@+id/checkout_check_bt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#9db3a7"
-        android:text="結帳"
-        android:textSize="18dp" />
-    </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/credit_info_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="信用卡資訊"
+                        android:textSize="18dp" />
 
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/ord_credit_et1"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_weight="0.1"
+                            android:background="#ffffff"
+                            android:inputType="number"
+                            android:maxLength="4" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_weight="0.12"
+                            android:gravity="center"
+                            android:text="-"
+                            android:textSize="18dp" />
+
+                        <EditText
+                            android:id="@+id/ord_credit_et2"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_weight="0.1"
+                            android:background="#ffffff"
+                            android:inputType="number"
+                            android:maxLength="4" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_weight="0.12"
+                            android:gravity="center"
+                            android:text="-"
+                            android:textSize="18dp" />
+
+                        <EditText
+                            android:id="@+id/ord_credit_et3"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_weight="0.1"
+                            android:background="#ffffff"
+                            android:inputType="number"
+                            android:maxLength="4" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_weight="0.12"
+                            android:gravity="center"
+                            android:text="-"
+                            android:textSize="18dp" />
+
+                        <EditText
+                            android:id="@+id/ord_credit_et4"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_weight="0.1"
+                            android:background="#ffffff"
+                            android:inputType="number"
+                            android:maxLength="4" />
+
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="信用卡到期日"
+                        android:textSize="18dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+
+                        <EditText
+                            android:id="@+id/ord_credit_month_et"
+                            android:layout_width="80dp"
+                            android:layout_height="40dp"
+                            android:layout_marginBottom="12dp"
+                            android:background="#ffffff"
+                            android:hint="MM"
+                            android:inputType="text"
+                            android:maxLength="2"
+                            android:paddingLeft="8dp"
+                            android:textSize="14dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="  /  "
+                            android:textSize="24dp" />
+
+                        <EditText
+                            android:id="@+id/ord_credit_year_et"
+                            android:layout_width="80dp"
+                            android:layout_height="40dp"
+                            android:layout_marginBottom="12dp"
+                            android:background="#ffffff"
+                            android:hint="YYYY"
+                            android:inputType="text"
+                            android:maxLength="4"
+                            android:paddingLeft="8dp"
+                            android:textSize="14dp" />
+
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/ord_credit_back3_et"
+                        android:layout_width="100dp"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="#ffffff"
+                        android:hint="檢核碼"
+                        android:inputType="text"
+                        android:paddingLeft="8dp"
+                        android:textSize="14dp" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/checkout_check_bt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="#9db3a7"
+                    android:text="結帳"
+                    android:textSize="18dp" />
+
+                <Button
+                    android:id="@+id/checkout_magic_bt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="80dp"
+                    android:layout_marginTop="16dp"
+                    android:background="#9db3a7"
+                    android:text="magic button"
+                    android:textSize="18dp" />
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
