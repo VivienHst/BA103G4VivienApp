@@ -1,4 +1,4 @@
-package com.beanlife;
+package com.beanlife.act;
 
 /**
  * Created by vivienhuang on 2017/9/16.
@@ -29,9 +29,12 @@ public class ActVO implements Serializable{
 //    private byte[] act_pic1;
 //    private byte[] act_pic2;
 //    private byte[] act_pic3;
+
     private String act_stat;
     private String re_cont;
     private String review_ed_date;
+    private String act_atm_info;
+
     public ActVO() {
 
         super();
@@ -183,7 +186,13 @@ public class ActVO implements Serializable{
         review_ed_date = rEVIEW_ED_DATE;
     }
 
+    public String getAct_atm_info() {
+        return act_atm_info;
+    }
 
+    public void setAct_atm_info(String act_atm_info) {
+        this.act_atm_info = act_atm_info;
+    }
 
 
 }

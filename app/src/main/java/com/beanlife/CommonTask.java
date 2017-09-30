@@ -32,28 +32,46 @@ public class CommonTask extends AsyncTask<String, Integer, String>{
     protected String doInBackground(String... params) {
         String url = params[0];
         String action = params[1];
-        String atrNameKey = params[2];
-        String atrNameValue = params[3];
 
 
 
         String jsonIn;
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", action);
-        jsonObject.addProperty(atrNameKey, atrNameValue);
 
-        if(params.length == 6){
-            String atrNameKey2 = params[4];
-            String atrNameValue2 = params[5];
-            jsonObject.addProperty(atrNameKey2, atrNameValue2);
-        } else if(params.length == 8){
-            String atrNameKey2 = params[4];
-            String atrNameValue2 = params[5];
-            jsonObject.addProperty(atrNameKey2, atrNameValue2);
-            String atrNameKey3 = params[6];
-            String atrNameValue3 = params[7];
-            jsonObject.addProperty(atrNameKey3, atrNameValue3);
+        if(params.length >= 4) {
+            for (int i = 1 ;i < params.length/2; i++){
+                String atrNameKey = params[i * 2];
+                String atrNameValue = params[i * 2 + 1];
+                jsonObject.addProperty(atrNameKey, atrNameValue);
+            }
         }
+
+
+//        if(params.length == 4) {
+//            String atrNameKey = params[2];
+//            String atrNameValue = params[3];
+//            jsonObject.addProperty(atrNameKey, atrNameValue);
+//
+//        }else if(params.length == 6){
+//            String atrNameKey = params[2];
+//            String atrNameValue = params[3];
+//            jsonObject.addProperty(atrNameKey, atrNameValue);
+//            String atrNameKey2 = params[4];
+//            String atrNameValue2 = params[5];
+//            jsonObject.addProperty(atrNameKey2, atrNameValue2);
+//
+//        } else if(params.length == 8){
+//            String atrNameKey = params[2];
+//            String atrNameValue = params[3];
+//            jsonObject.addProperty(atrNameKey, atrNameValue);
+//            String atrNameKey2 = params[4];
+//            String atrNameValue2 = params[5];
+//            jsonObject.addProperty(atrNameKey2, atrNameValue2);
+//            String atrNameKey3 = params[6];
+//            String atrNameValue3 = params[7];
+//            jsonObject.addProperty(atrNameKey3, atrNameValue3);
+//        }
 
         try{
             jsonIn = getRemoteData(url, jsonObject.toString());

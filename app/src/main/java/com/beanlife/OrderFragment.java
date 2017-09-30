@@ -49,10 +49,9 @@ import static android.view.View.GONE;
 
 public class OrderFragment extends Fragment {
 
-    private AsyncTask retriveOrdTask;
+    private CommonTask retriveOrdTask;
     private final static String TAG = "Order Fragment";
     OrderDetailAdapter orderAdapter;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -166,74 +165,22 @@ public class OrderFragment extends Fragment {
     }
 
     List<OrdVO> getOrdVOList(String mem_ac){
-        List<OrdVO> ordList = new ArrayList<>();
+        String retrieveOrdString = "";
 
         if(networkConnected()){
-            retriveOrdTask = new OrderFragment.RetrieveOrdTask().execute(Common.ORD_URL, mem_ac);
+            retriveOrdTask = (CommonTask)new CommonTask().execute(Common.ORD_URL, "getOrdByMem_ac", "mem_ac", mem_ac);
 
             try {
-                ordList = (List) retriveOrdTask.get();
+                retrieveOrdString = retriveOrdTask.get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
-
         }
-        return ordList;
-    }
-
-    class RetrieveOrdTask extends AsyncTask<String, Void, List<OrdVO>> {
-
-        @Override
-        protected List<OrdVO> doInBackground(String... param) {
-            String url = param[0];
-            String mem_ac = param[1];
-            String jsonIn;
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("action", "getOrdByMem_ac");
-            jsonObject.addProperty("mem_ac", mem_ac);
-
-            try{
-                jsonIn = getRemoteData(url, jsonObject.toString());
-            }catch (IOException e){
-                Log.e(TAG, e.toString());
-                return null;
-            }
-
-            Gson gson = new Gson();
-            Type listType = new TypeToken<List<OrdVO>>(){}.getType();
-            return gson.fromJson(jsonIn, listType);
-        }
-    }
-
-    private String getRemoteData(String url, String jsonOut) throws IOException {
-        StringBuilder jsonIn = new StringBuilder();
-        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-        connection.setDoInput(true); // allow inputs
-        connection.setDoOutput(true); // allow outputs
-        connection.setUseCaches(false); // do not use a cached copy
-        connection.setRequestMethod("POST");
-        connection.setRequestProperty("charset", "UTF-8");
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
-        bw.write(jsonOut);
-        Log.d(TAG, "jsonOut: " + jsonOut);
-        bw.close();
-
-        int responseCode = connection.getResponseCode();
-
-        if (responseCode == 200) {
-            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String line;
-            while ((line = br.readLine()) != null) {
-                jsonIn.append(line);
-            }
-        } else {
-            Log.d(TAG, "response code: " + responseCode);
-        }
-        connection.disconnect();
-        Log.d(TAG, "jsonIn: " + jsonIn);
-        return jsonIn.toString();
+        Gson gson = new Gson();
+        Type listType = new TypeToken<List<OrdVO>>(){}.getType();
+        return gson.fromJson(retrieveOrdString, listType);
     }
 
     private class OrderDetailAdapter extends BaseAdapter{
@@ -286,8 +233,6 @@ public class OrderFragment extends Fragment {
             String ordProdVOString = "";
             String getIsProdPostedString = "";
 
-
-
             //**************取得商品名稱**************
             RetrieveProdTask getOrdProdVOString  =
                     (RetrieveProdTask) new RetrieveProdTask("getOneProd", ordListItem.getProd_no())
@@ -302,7 +247,6 @@ public class OrderFragment extends Fragment {
             Gson gson = new Gson();
             Type listType = new TypeToken<ProdVO>(){}.getType();
             final ProdVO prodVO = gson.fromJson(ordProdVOString, listType);
-
 
             //*******取得是否已經發過評論*******
             CommonTask retrieveIsPosted  =
@@ -350,7 +294,6 @@ public class OrderFragment extends Fragment {
 
         //取得訂單列表
         List<Ord_listVO> getOrderList(String ord_no) {
-            //List<Ord_listVO> ordList = new ArrayList<Ord_listVO>();
             String orderListString = "";
             if (networkConnected()) {
                 CommonTask retrieveOrderList =
@@ -363,20 +306,10 @@ public class OrderFragment extends Fragment {
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 }
-
             }
             Gson gson = new Gson();
             Type listType = new TypeToken<List<Ord_listVO>>(){}.getType();
             return gson.fromJson(orderListString, listType);
-            //return ordList;
         }
-
-        private boolean networkConnected(){
-            ConnectivityManager conManager = (ConnectivityManager) getActivity()
-                    .getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo networkInfo = conManager.getActiveNetworkInfo();
-            return networkInfo != null && networkInfo.isConnected();
-        }
-
     }
 }

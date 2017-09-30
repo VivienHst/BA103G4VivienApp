@@ -1,4 +1,4 @@
-package com.beanlife;
+package com.beanlife.act;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -22,7 +22,7 @@ public class ActPagerAdapter extends FragmentStatePagerAdapter {
         switch(position)
         {
             case 0:
-                ActivityFragment tab1 = new ActivityFragment();
+                MemberFollowActivityFragment tab1 = new MemberFollowActivityFragment();
                 return tab1;
 
             case 1:

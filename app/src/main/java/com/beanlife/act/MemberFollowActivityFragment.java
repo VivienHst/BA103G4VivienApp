@@ -1,9 +1,9 @@
-package com.beanlife;
+package com.beanlife.act;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,18 +20,14 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.beanlife.Common;
+import com.beanlife.CommonTask;
+import com.beanlife.GetImageByPkTask;
+import com.beanlife.R;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -40,16 +36,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import static android.content.Context.MODE_PRIVATE;
+
 /**
- * Created by Java on 2017/8/27.
- * 主要活動頁面，產生活動頁面
+ * Created by vivienhuang on 2017/9/30.
  */
 
-public class ActivityFragment extends Fragment {
+public class MemberFollowActivityFragment extends Fragment {
 
-    private ActivityFragment.ActivityCardAdapter adapter;
-    private AsyncTask retriveActTask;
+    private MemberFollowActivityFragment.ActivityCardAdapter adapter;
+    private CommonTask retrieveActTask, retrieveFoActTask;
     private final static String TAG = "SearchActivity";
+    private String mem_ac;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -61,13 +59,13 @@ public class ActivityFragment extends Fragment {
         return view;
     }
 
-    private void addRow(View view,int viewId){
+    private void addRow(View view, int viewId){
         RecyclerView recyclerView  = (RecyclerView) view.findViewById(viewId);
         recyclerView.setLayoutManager(
                 new StaggeredGridLayoutManager(
                         2, StaggeredGridLayoutManager.VERTICAL));
         final List<ActVO> act = getActivityList();
-        recyclerView.setAdapter(new ActivityFragment.ActivityCardAdapter(getActivity(), act));
+        recyclerView.setAdapter(new MemberFollowActivityFragment.ActivityCardAdapter(getActivity(), act));
 
     }
 
@@ -95,7 +93,7 @@ public class ActivityFragment extends Fragment {
     }
 
     private class ActivityCardAdapter extends
-            RecyclerView.Adapter<ActivityFragment.ActivityCardAdapter.MyViewHolder> {
+            RecyclerView.Adapter<MemberFollowActivityFragment.ActivityCardAdapter.MyViewHolder> {
         private Context context;
         private List<ActVO> actList;
 
@@ -122,21 +120,19 @@ public class ActivityFragment extends Fragment {
         }
 
         @Override
-        public ActivityFragment.ActivityCardAdapter.MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        public MemberFollowActivityFragment.ActivityCardAdapter.MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(context);
             View itemView = layoutInflater.inflate(R.layout.activity_card, viewGroup, false);
-            return new ActivityFragment.ActivityCardAdapter.MyViewHolder(itemView);
+            return new MemberFollowActivityFragment.ActivityCardAdapter.MyViewHolder(itemView);
         }
 
         @Override
-        public void onBindViewHolder(ActivityFragment.ActivityCardAdapter.MyViewHolder viewHolder, int position) {
+        public void onBindViewHolder(MemberFollowActivityFragment.ActivityCardAdapter.MyViewHolder viewHolder, int position) {
             final ActVO actVO = actList.get(position);
 //            viewHolder.cardImageView.setImageResource(ActivityCard.getActImg());
 //            viewHolder.cardImageView.setImageResource(R.drawable.activity01);
             String action = "act_no";
             new GetImageByPkTask(Common.ACT_URL, action, actVO.getAct_no(), 256, viewHolder.cardImageView).execute();
-
-
 
             viewHolder.cardMemName.setText(actVO.getAct_name());
 
@@ -149,7 +145,7 @@ public class ActivityFragment extends Fragment {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-//            viewHolder.cardMemLv.setText(opDate);
+
             viewHolder.cardMemLv.setText(actVO.getAct_op_date());
 
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -171,16 +167,48 @@ public class ActivityFragment extends Fragment {
         }
     }
 
-
-
     List<ActVO> getActivityList(){
         List<ActVO> actList = new ArrayList<>();
+        List<Fo_actVO> foList = new ArrayList<Fo_actVO>();
+        foList = getFoActivityList();
 
+        for(Fo_actVO fo_actVO : foList) {
+            ActVO actVO = new ActVO();
+            String act_no;
+            String actListString = "";
+            if (networkConnected()) {
+                retrieveActTask = (CommonTask) new CommonTask().execute(Common.ACT_URL, "getOne", "act_no", fo_actVO.getAct_no());
+
+                try {
+                    actListString = retrieveActTask.get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+
+            }
+            Gson gson = new Gson();
+            Type listType = new TypeToken<ActVO>() {
+            }.getType();
+            actVO = gson.fromJson(actListString, listType);
+            actList.add(actVO);
+        }
+        return actList;
+    }
+
+    List <Fo_actVO> getFoActivityList(){
+        List<Fo_actVO> actFoList = new ArrayList<>();
+        SharedPreferences loginState = getActivity().getSharedPreferences(Common.LOGIN_STATE, MODE_PRIVATE);
+        mem_ac = loginState.getString("userAc", "noLogIn");
+
+        String actListFoString = "";
         if(networkConnected()){
-            retriveActTask = new RetrieveActTask().execute(Common.ACT_URL);
+            retrieveFoActTask = (CommonTask) new CommonTask().execute(Common.ACT_URL, "getFoAct" ,
+                    "mem_ac", mem_ac);
 
             try {
-                actList = (List) retriveActTask.get();
+                actListFoString = retrieveFoActTask.get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
@@ -188,62 +216,10 @@ public class ActivityFragment extends Fragment {
             }
 
         }
-        return actList;
+        Gson gson = new Gson();
+        Type listType = new TypeToken<List<Fo_actVO>>(){}.getType();
+        return gson.fromJson(actListFoString, listType);
     }
-
-    class RetrieveActTask extends AsyncTask<String, Void, List<ActVO>>{
-
-        @Override
-        protected List<ActVO> doInBackground(String... param) {
-            String url = param[0];
-            String jsonIn;
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("action", "getAll");
-
-            try{
-                jsonIn = getRemoteData(url, jsonObject.toString());
-            }catch (IOException e){
-                Log.e(TAG, e.toString());
-                return null;
-            }
-
-            Gson gson = new Gson();
-            Type listType = new TypeToken<List<ActVO>>(){}.getType();
-            return gson.fromJson(jsonIn, listType);
-        }
-    }
-
-    private String getRemoteData(String url, String jsonOut) throws IOException {
-        StringBuilder jsonIn = new StringBuilder();
-        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-        connection.setDoInput(true); // allow inputs
-        connection.setDoOutput(true); // allow outputs
-        connection.setUseCaches(false); // do not use a cached copy
-        connection.setRequestMethod("POST");
-        connection.setRequestProperty("charset", "UTF-8");
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
-        bw.write(jsonOut);
-        Log.d(TAG, "jsonOut: " + jsonOut);
-        bw.close();
-
-        int responseCode = connection.getResponseCode();
-
-        if (responseCode == 200) {
-            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String line;
-            while ((line = br.readLine()) != null) {
-                jsonIn.append(line);
-            }
-        } else {
-            Log.d(TAG, "response code: " + responseCode);
-        }
-        connection.disconnect();
-        Log.d(TAG, "jsonIn: " + jsonIn);
-        return jsonIn.toString();
-    }
-
 
 }
-
-
 

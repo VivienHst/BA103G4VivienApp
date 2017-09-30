@@ -16,6 +16,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.beanlife.act.ActivityFragment;
+import com.beanlife.act.ActivityPageWithTab;
 import com.beanlife.cart.CartFragment;
 
 public class MainActivity extends AppCompatActivity {

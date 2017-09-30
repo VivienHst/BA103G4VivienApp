@@ -21,7 +21,14 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static com.beanlife.R.id.mapView;
 /**
@@ -33,6 +40,9 @@ public class MapFragment extends Fragment {
     private GoogleMap googleMap;
     private LatLng myLocation;
     private Marker marker_myLocation;
+    private List<StoreVO> storeList;
+    ImageView storeImgView;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -48,6 +58,8 @@ public class MapFragment extends Fragment {
 //        initPoints();
         SupportMapFragment myLocatFragment =
                 (SupportMapFragment)getFragmentManager().findFragmentById(mapView);
+
+
 //        myLocatFragment.getMapAsync(this);
         setUpMap();
         return view;
@@ -78,8 +90,15 @@ public class MapFragment extends Fragment {
         //移動到點，沒有動畫
         googleMap.moveCamera(cameraUpdate);
 
-        addMaekersToMap();
-        googleMap.setInfoWindowAdapter(new MyInfoWindowAdapter());
+        storeList = new ArrayList<StoreVO>();
+        storeList = getAllStore();
+        for (StoreVO storeVO : storeList){
+            addMakersToMap(storeVO);
+            googleMap.setInfoWindowAdapter(new MyInfoWindowAdapter(storeVO));
+
+        }
+        //addUserToMap();
+        //googleMap.setInfoWindowAdapter(new MyInfoWindowAdapter());
 
         MyMarkerListener myMakerListener = new MyMarkerListener();
 
@@ -118,32 +137,61 @@ public class MapFragment extends Fragment {
         setUpMap();
     }
 
-    private void addMaekersToMap() {
+//    private void addUserToMap() {
+//        marker_myLocation = googleMap.addMarker(new MarkerOptions()
+//                .position(myLocation )
+//                .title("阿兜仔咖啡店")
+//                .snippet("地址： 高雄市鳥松區本館路72巷11-1號")
+//                .icon(BitmapDescriptorFactory.fromResource(R.drawable.store_marker)));
+//    }
+
+    private void addMakersToMap(StoreVO storeVO) {
+        LatLng storeLL = new LatLng(Double.parseDouble(storeVO.getStore_add_lat()),
+                Double.parseDouble(storeVO.getStore_add_lon()));
         marker_myLocation = googleMap.addMarker(new MarkerOptions()
-                .position(myLocation )
-                .title("阿兜仔咖啡店")
-                .snippet("地址： 高雄市鳥松區本館路72巷11-1號")
+                .position(storeLL)
+                .title(storeVO.getStore_name())
+                .snippet(storeVO.getStore_add())
+                //.imgno(storeVO.setStore_no())
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.store_marker)));
+    }
+
+    private List<StoreVO> getAllStore(){
+        String storeVOString = "";
+        CommonTask retrieveStore = (CommonTask) new CommonTask().execute(Common.STORE_URL,"getAll");
+        try {
+            storeVOString = retrieveStore.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        Gson gson = new Gson();
+        Type listType = new TypeToken<List<StoreVO>>(){}.getType();
+        return gson.fromJson(storeVOString, listType);
     }
 
     //設定bubble的內容
     private class MyInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         private final View infoWindow;
+        StoreVO storeVO;
 
-        private MyInfoWindowAdapter() {
+        private MyInfoWindowAdapter(StoreVO storeVO) {
             infoWindow = View.inflate(getActivity(), R.layout.map_bubble, null);
+            this.storeVO = storeVO;
         }
 
         @Override
         public View getInfoWindow(Marker marker) {
 
-            int logoId = R.drawable.store1;
-            if (marker.equals(marker_myLocation)) {
-                logoId = R.drawable.store1;}
+//            int logoId = R.drawable.store1;
+//            if (marker.equals(marker_myLocation)) {
+//                logoId = R.drawable.store1;}
 
-            ImageView storeImgView = ((ImageView) infoWindow
-                    .findViewById(R.id.map_bubble_store_img_view));
-            storeImgView.setImageResource(logoId);
+            storeImgView = (ImageView) infoWindow
+                    .findViewById(R.id.map_bubble_store_img_view);
+            //storeImgView.setImageResource(logoId);
+            new GetImageByPkTask(Common.STORE_URL, "store_no", storeVO.getStore_no(), 200, storeImgView).execute();
 
             String title = marker.getTitle();
             TextView storeTitle = ((TextView) infoWindow
