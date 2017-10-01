@@ -11,6 +11,11 @@ public class Fo_actVO implements Serializable {
     private String mem_ac;
     private String fo_act_date;
 
+
+    public Fo_actVO() {
+        super();
+    }
+
     public String getAct_no() {
         return act_no;
     }

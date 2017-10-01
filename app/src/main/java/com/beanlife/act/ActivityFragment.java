@@ -71,7 +71,6 @@ public class ActivityFragment extends Fragment {
                         2, StaggeredGridLayoutManager.VERTICAL));
         final List<ActVO> act = getActivityList();
         recyclerView.setAdapter(new ActivityFragment.ActivityCardAdapter(getActivity(), act));
-
     }
 
     @Override
@@ -141,15 +140,6 @@ public class ActivityFragment extends Fragment {
 
             viewHolder.cardMemName.setText(actVO.getAct_name());
 
-            DateFormat inputDate = new SimpleDateFormat("MM月 dd, yyyy");
-            DateFormat outDate  = new SimpleDateFormat("yyyy-MM-dd");
-            String opDate="";
-            try {
-                Date convertDate = (Date) inputDate.parse(actVO.getAct_op_date());
-                opDate = outDate.format(convertDate).toString()+"++";
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
 //            viewHolder.cardMemLv.setText(opDate);
             viewHolder.cardMemLv.setText(actVO.getAct_op_date());
 
@@ -173,8 +163,6 @@ public class ActivityFragment extends Fragment {
     }
 
     List<ActVO> getActivityList(){
-        List<ActVO> actList = new ArrayList<>();
-
         String actListString = "";
         if(networkConnected()){
             retriveActTask = (CommonTask) new CommonTask().execute(Common.ACT_URL, "getAll");

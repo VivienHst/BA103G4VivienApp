@@ -10,10 +10,8 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.view.menu.MenuView;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +20,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.beanlife.prod.ProductTotalFragment;
 
 import java.util.concurrent.ExecutionException;
 
@@ -105,7 +105,7 @@ public class LogInFragment extends Fragment {
 
                     FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.body, new ProductTotalFragmentTest());
+                    fragmentTransaction.replace(R.id.body, new ProductTotalFragment());
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
                 } else{

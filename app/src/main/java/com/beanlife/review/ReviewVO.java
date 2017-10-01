@@ -1,4 +1,4 @@
-package com.beanlife;
+package com.beanlife.review;
 
 import java.io.Serializable;
 

@@ -3,6 +3,7 @@ package com.beanlife;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.beanlife.store.StoreVO;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -25,7 +26,7 @@ public class RetrieveStoreTask extends AsyncTask<String, Void, StoreVO>{
 
     String store_no, action;
 
-    RetrieveStoreTask(String action, String store_no){
+    public RetrieveStoreTask(String action, String store_no){
         this.store_no = store_no;
         this.action = action;
     }
@@ -79,6 +80,4 @@ public class RetrieveStoreTask extends AsyncTask<String, Void, StoreVO>{
         Log.d(TAG, "jsonIn : " + jsonIn);
         return jsonIn.toString();
     }
-
-
 }

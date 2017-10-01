@@ -1,8 +1,10 @@
-package com.beanlife.act;
+package com.beanlife.recyclecan;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+
+import com.beanlife.act.ActivityFragment;
 
 /**
  * Created by Vivien on 2017/8/30.

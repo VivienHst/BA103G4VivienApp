@@ -1,4 +1,5 @@
 package com.beanlife.act;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -26,10 +27,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.sql.Date;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -37,14 +34,12 @@ import java.util.concurrent.ExecutionException;
 import static android.content.Context.MODE_PRIVATE;
 
 /**
- * Created by Java on 2017/8/27.
- * 會員活動頁面，產生活動頁面
- * 已連結資料庫，狀態未設定
+ * Created by vivienhuang on 2017/9/30.
  */
 
-public class MemberPartiActivityFragment extends Fragment {
+public class MemberHostActivityFragment extends Fragment {
 
-    private MemberPartiActivityFragment.ActivityCardAdapter adapter;
+    private MemberHostActivityFragment.ActivityCardAdapter adapter;
     private CommonTask retrieveActTask, retrievePartiActTask;
     private final static String TAG = "Member Activity";
     private String mem_ac;
@@ -65,7 +60,7 @@ public class MemberPartiActivityFragment extends Fragment {
                 new StaggeredGridLayoutManager(
                         1, StaggeredGridLayoutManager.VERTICAL));
         final List<ActVO> act = getActivityList();
-        recyclerView.setAdapter(new MemberPartiActivityFragment.ActivityCardAdapter(getActivity(), act));
+        recyclerView.setAdapter(new MemberHostActivityFragment.ActivityCardAdapter(getActivity(), act));
 
     }
 
@@ -93,7 +88,7 @@ public class MemberPartiActivityFragment extends Fragment {
     }
 
     private class ActivityCardAdapter extends
-            RecyclerView.Adapter<MemberPartiActivityFragment.ActivityCardAdapter.MyViewHolder> {
+            RecyclerView.Adapter<MemberHostActivityFragment.ActivityCardAdapter.MyViewHolder> {
         private Context context;
         private List<ActVO> actList;
 
@@ -120,14 +115,14 @@ public class MemberPartiActivityFragment extends Fragment {
         }
 
         @Override
-        public MemberPartiActivityFragment.ActivityCardAdapter.MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        public MemberHostActivityFragment.ActivityCardAdapter.MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(context);
             View itemView = layoutInflater.inflate(R.layout.activity_card, viewGroup, false);
-            return new MemberPartiActivityFragment.ActivityCardAdapter.MyViewHolder(itemView);
+            return new MemberHostActivityFragment.ActivityCardAdapter.MyViewHolder(itemView);
         }
 
         @Override
-        public void onBindViewHolder(MemberPartiActivityFragment.ActivityCardAdapter.MyViewHolder viewHolder, int position) {
+        public void onBindViewHolder(MemberHostActivityFragment.ActivityCardAdapter.MyViewHolder viewHolder, int position) {
             final ActVO actVO = actList.get(position);
 //            viewHolder.cardImageView.setImageResource(ActivityCard.getActImg());
 //            viewHolder.cardImageView.setImageResource(R.drawable.activity01);
@@ -135,16 +130,6 @@ public class MemberPartiActivityFragment extends Fragment {
             new GetImageByPkTask(Common.ACT_URL, action, actVO.getAct_no(), 256, viewHolder.cardImageView).execute();
 
             viewHolder.cardMemName.setText(actVO.getAct_name());
-
-            DateFormat inputDate = new SimpleDateFormat("MM月 dd, yyyy");
-            DateFormat outDate  = new SimpleDateFormat("yyyy-MM-dd");
-            String opDate="";
-            try {
-                Date convertDate = (Date) inputDate.parse(actVO.getAct_op_date());
-                opDate = outDate.format(convertDate).toString()+"++";
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
 
             viewHolder.cardMemLv.setText(actVO.getAct_op_date());
 
@@ -168,16 +153,15 @@ public class MemberPartiActivityFragment extends Fragment {
     }
 
     List<ActVO> getActivityList(){
-        List<ActVO> actList = new ArrayList<>();
-        List<Act_pairVO> partiList = new ArrayList<Act_pairVO>();
-        partiList = getPartiActivityList();
+        List<ActVO> actList = new ArrayList<ActVO>();
 
-        for(Act_pairVO parti_actVO : partiList) {
-            ActVO actVO = new ActVO();
-            String act_no;
-            String actListString = "";
-            if (networkConnected()) {
-                retrieveActTask = (CommonTask) new CommonTask().execute(Common.ACT_URL, "getOne", "act_no", parti_actVO.getAct_no());
+        SharedPreferences loginState = getActivity().getSharedPreferences(Common.LOGIN_STATE, MODE_PRIVATE);
+        mem_ac = loginState.getString("userAc", "noLogIn");
+
+        ActVO actVO = new ActVO();
+        String actListString = "";
+        if (networkConnected()) {
+                retrieveActTask = (CommonTask) new CommonTask().execute(Common.ACT_URL, "getHostAct", "mem_ac", mem_ac);
 
                 try {
                     actListString = retrieveActTask.get();
@@ -187,39 +171,11 @@ public class MemberPartiActivityFragment extends Fragment {
                     e.printStackTrace();
                 }
 
-            }
-            Gson gson = new Gson();
-            Type listType = new TypeToken<ActVO>() {
-            }.getType();
-            actVO = gson.fromJson(actListString, listType);
-            actList.add(actVO);
         }
+        Gson gson = new Gson();
+        Type listType = new TypeToken<List<ActVO>>(){}.getType();
+        actList = gson.fromJson(actListString, listType);
         return actList;
     }
 
-    List <Act_pairVO> getPartiActivityList(){
-        //List<Fo_actVO> actFoList = new ArrayList<>();
-        SharedPreferences loginState = getActivity().getSharedPreferences(Common.LOGIN_STATE, MODE_PRIVATE);
-        mem_ac = loginState.getString("userAc", "noLogIn");
-
-        String actListPartiString = "";
-        if(networkConnected()){
-            retrievePartiActTask = (CommonTask) new CommonTask().execute(Common.ACT_URL, "getPartiAct" ,
-                    "mem_ac", mem_ac);
-            try {
-                actListPartiString = retrievePartiActTask.get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-
-        }
-        Gson gson = new Gson();
-        Type listType = new TypeToken<List<Act_pairVO>>(){}.getType();
-        return gson.fromJson(actListPartiString, listType);
-    }
-
-
 }
-

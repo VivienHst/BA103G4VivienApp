@@ -1,4 +1,4 @@
-package com.beanlife;
+package com.beanlife.review;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -21,14 +21,15 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.beanlife.Common;
+import com.beanlife.CommonTask;
+import com.beanlife.GetImageByPkTask;
+import com.beanlife.R;
+import com.beanlife.ord.OrderFragment;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**

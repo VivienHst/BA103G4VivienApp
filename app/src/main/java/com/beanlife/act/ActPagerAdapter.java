@@ -30,7 +30,7 @@ public class ActPagerAdapter extends FragmentStatePagerAdapter {
                 return tab2;
 
             case 2:
-                MemberPartiActivityFragment tab3 = new MemberPartiActivityFragment ();
+                MemberHostActivityFragment tab3 = new MemberHostActivityFragment ();
                 return tab3;
 
             default:

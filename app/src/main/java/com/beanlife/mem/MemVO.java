@@ -1,4 +1,4 @@
-package com.beanlife;
+package com.beanlife.mem;
 
 /**
  * Created by vivienhuang on 2017/9/21.

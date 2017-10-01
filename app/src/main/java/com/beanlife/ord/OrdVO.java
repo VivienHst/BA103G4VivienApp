@@ -1,4 +1,4 @@
-package com.beanlife;
+package com.beanlife.ord;
 
 import java.io.Serializable;
 

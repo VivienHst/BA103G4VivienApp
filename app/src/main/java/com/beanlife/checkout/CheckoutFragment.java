@@ -27,12 +27,11 @@ import android.widget.Toast;
 import com.beanlife.Common;
 import com.beanlife.CommonTask;
 import com.beanlife.GetImageByPkTask;
-import com.beanlife.OrdVO;
-import com.beanlife.Ord_listVO;
-import com.beanlife.OrderFragment;
-import com.beanlife.ProdVO;
+import com.beanlife.ord.OrdVO;
+import com.beanlife.ord.OrderFragment;
+import com.beanlife.prod.ProdVO;
 import com.beanlife.R;
-import com.beanlife.StoreVO;
+import com.beanlife.store.StoreVO;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -215,11 +214,12 @@ public class CheckoutFragment  extends Fragment {
                     }
 
                 } else if(pay_info.equals("銀行轉帳")){
-                    if(bankNoEt.getText().length()<5){
+                    if(bankNoEt.getText().length() < 5){
                         Toast.makeText(view.getContext(), "請填入匯款資訊", Toast.LENGTH_SHORT).show();
+                    }else {
+                        pay_info = "B" + bankNoEt.getText();
+                        payInfoCheck = true;
                     }
-                    pay_info = "B" + bankNoEt.getText();
-                    payInfoCheck = true;
                 }
 
                 //送出資料

@@ -17,7 +17,6 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.beanlife.Common;
@@ -28,10 +27,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.sql.Date;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -136,16 +131,6 @@ public class MemberFollowActivityFragment extends Fragment {
 
             viewHolder.cardMemName.setText(actVO.getAct_name());
 
-            DateFormat inputDate = new SimpleDateFormat("MM月 dd, yyyy");
-            DateFormat outDate  = new SimpleDateFormat("yyyy-MM-dd");
-            String opDate="";
-            try {
-                Date convertDate = (Date) inputDate.parse(actVO.getAct_op_date());
-                opDate = outDate.format(convertDate).toString()+"++";
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
             viewHolder.cardMemLv.setText(actVO.getAct_op_date());
 
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -174,7 +159,6 @@ public class MemberFollowActivityFragment extends Fragment {
 
         for(Fo_actVO fo_actVO : foList) {
             ActVO actVO = new ActVO();
-            String act_no;
             String actListString = "";
             if (networkConnected()) {
                 retrieveActTask = (CommonTask) new CommonTask().execute(Common.ACT_URL, "getOne", "act_no", fo_actVO.getAct_no());
@@ -206,7 +190,6 @@ public class MemberFollowActivityFragment extends Fragment {
         if(networkConnected()){
             retrieveFoActTask = (CommonTask) new CommonTask().execute(Common.ACT_URL, "getFoAct" ,
                     "mem_ac", mem_ac);
-
             try {
                 actListFoString = retrieveFoActTask.get();
             } catch (InterruptedException e) {

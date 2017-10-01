@@ -26,9 +26,9 @@ import android.widget.Toast;
 import com.beanlife.Common;
 import com.beanlife.CommonTask;
 import com.beanlife.GetImageByPkTask;
-import com.beanlife.ProdVO;
+import com.beanlife.prod.ProdVO;
 import com.beanlife.R;
-import com.beanlife.StoreVO;
+import com.beanlife.store.StoreVO;
 import com.beanlife.checkout.CheckoutFragment;
 import com.google.gson.Gson;
 

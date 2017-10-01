@@ -1,4 +1,4 @@
-package com.beanlife;
+package com.beanlife.ord;
 
 /**
  * Created by vivienhuang on 2017/9/22.

@@ -1,4 +1,4 @@
-package com.beanlife;
+package com.beanlife.store;
 
 import java.io.Serializable;
 

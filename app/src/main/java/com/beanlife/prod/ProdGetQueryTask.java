@@ -1,9 +1,8 @@
-package com.beanlife;
+package com.beanlife.prod;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.beanlife.review.ReviewVO;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -19,40 +18,63 @@ import java.net.URL;
 import java.util.List;
 
 /**
- * Created by vivienhuang on 2017/9/19.
+ * Created by Java on 2017/9/14.
  */
 
-public class CommonRetrieveTask extends AsyncTask<String, Void, List<ReviewVO>> {
-    String TAG;
-    String action, sendKey,sendValue;
+public class ProdGetQueryTask extends AsyncTask<Object, Integer, List<ProdVO>> {
 
+    private final static String TAG = "ProdGetImageTask";
+    private String url,bean_contry, proc, roast, prod_name;
 
+//    ProdGetQueryTask(String url, String bean_contry, String proc, String roast, String prod_name) {
+//        this(url, prod_no, imageSize, null);
+//        }
 
-    public CommonRetrieveTask(String action, String sendKey, String sendValue){
-
-        this.action = action;
-        this.sendKey = sendKey;
-        this.sendValue = sendValue;
+    public ProdGetQueryTask(String url, String bean_contry, String proc, String roast, String prod_name) {
+        this.url = url;
+        this.bean_contry = bean_contry;
+        this.proc = proc;
+        this.roast = roast;
+        this.prod_name = prod_name;
     }
 
     @Override
-    protected List<ReviewVO> doInBackground(String... param) {
-        String url = param[0];
+    protected List<ProdVO> doInBackground(Object... params) {
+
+        //設定向伺服器請求的參數
+//        jsonObject.addProperty("action", "getImage");
+//        jsonObject.addProperty("prod_no", prod_no);
+//        jsonObject.addProperty("imageSize", imageSize);
+//        String url = param[0];
         String jsonIn;
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("action", action);
-        jsonObject.addProperty(sendKey, sendValue);
-        try{
+        jsonObject.addProperty("action", "getQueryResult");
+        jsonObject.addProperty("bean_contry", bean_contry);
+        jsonObject.addProperty("proc", proc);
+        jsonObject.addProperty("roast", roast);
+        jsonObject.addProperty("prod_name", prod_name);
+        try {
             jsonIn = getRemoteData(url, jsonObject.toString());
-        }catch (IOException e){
+        } catch (IOException e) {
             Log.e(TAG, e.toString());
             return null;
         }
-
         Gson gson = new Gson();
-        Type listType = new TypeToken<List<ReviewVO>>(){}.getType();
+        Type listType = new TypeToken<List<ProdVO>>(){}.getType();
         return gson.fromJson(jsonIn, listType);
     }
+
+//    @Override
+//    protected void onPostExecute(ProdVO prodVO) {
+//        if (isCancelled() || imageView == null) {
+//            return;
+//        }
+//        if (prodVO != null) {
+//            imageView.setImageBitmap(prodVO);
+//        } else {
+//            imageView.setImageResource(R.drawable.search01);
+//        }
+//    }
 
     private String getRemoteData(String url, String jsonOut) throws IOException {
         StringBuilder jsonIn = new StringBuilder();

@@ -19,6 +19,10 @@ import android.view.View;
 import com.beanlife.act.ActivityFragment;
 import com.beanlife.act.ActivityPageWithTab;
 import com.beanlife.cart.CartFragment;
+import com.beanlife.mem.MemberCenterFragment;
+import com.beanlife.ord.OrderFragment;
+import com.beanlife.prod.ProductTotalFragment;
+import com.beanlife.search.SearchFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -75,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                 drawerLayout.closeDrawers();
                 switch (menuItem.getItemId()) {
                     case R.id.item_Market:
-                        switchFragment(new ProductTotalFragmentTest());
+                        switchFragment(new ProductTotalFragment());
                         setTitle(R.string.text_Market);
                         break;
 
@@ -85,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.item_About:
-                        switchFragment(new ProductTotalFragmentTest());
+                        switchFragment(new ProductTotalFragment());
                         setTitle(R.string.text_ＡboutUs);
                         break;
 
@@ -116,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
                     case R.id.nvMemLogout:
                         logOut();
-                        switchFragment(new ProductTotalFragmentTest());
+                        switchFragment(new ProductTotalFragment());
                         setTitle(R.string.text_Market);
                         break;
                 }
@@ -126,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initBody(){
-        switchFragment(new ProductTotalFragmentTest());
+        switchFragment(new ProductTotalFragment());
         setTitle(R.string.text_Market);
     }
 
