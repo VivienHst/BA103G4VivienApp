@@ -53,7 +53,7 @@ public class ActivityPageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        actVO = (ActVO) getArguments().getSerializable("act");
+        actVO = (ActVO) getArguments().getSerializable("actVO");
 
         view = inflater.inflate(R.layout.activity_page_fragment, container, false);
         findView();
@@ -88,7 +88,7 @@ public class ActivityPageFragment extends Fragment {
         actFollowNumTv.setText(getFoCount(actVO.getAct_no()));
         memAcTv.setText(actVO.getMem_ac());
         actOpDateTv.setText(actVO.getAct_op_date());
-        actMemCountTv.setText(actVO.getMem_count());
+        actMemCountTv.setText(actVO.getMem_count().toString());
         actAddTv.setText(actVO.getAct_add());
         actContTv.setText(actVO.getAct_cont());
         actFollowIconIv.setImageResource(R.drawable.like_no);

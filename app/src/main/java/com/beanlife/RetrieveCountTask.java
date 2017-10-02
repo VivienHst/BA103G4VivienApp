@@ -28,7 +28,7 @@ public class RetrieveCountTask extends AsyncTask<String, Void, String> {
 
 
 
-    RetrieveCountTask(String action, String countItem) {
+    public RetrieveCountTask(String action, String countItem) {
 
         this.action = action;
         this.countItem = countItem;

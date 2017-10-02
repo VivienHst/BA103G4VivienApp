@@ -148,7 +148,7 @@ public class ActivityFragment extends Fragment {
                 public void onClick(View v) {
                     Fragment fragment = new ActivityPageFragment();
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable("act", actVO);
+                    bundle.putSerializable("actVO", actVO);
                     Log.d("actVO", actVO.getAct_name());
                     fragment.setArguments(bundle);
                     FragmentManager fragmentManager = getFragmentManager();

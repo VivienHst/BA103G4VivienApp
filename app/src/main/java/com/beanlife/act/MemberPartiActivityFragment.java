@@ -151,9 +151,9 @@ public class MemberPartiActivityFragment extends Fragment {
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Fragment fragment = new ActivityPageFragment();
+                    Fragment fragment = new MemberPartiActivityContFragment();
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable("act", actVO);
+                    bundle.putSerializable("actVO", actVO);
                     Log.d("actVO", actVO.getAct_name());
                     fragment.setArguments(bundle);
                     FragmentManager fragmentManager = getFragmentManager();

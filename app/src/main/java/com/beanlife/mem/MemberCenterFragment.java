@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.beanlife.R;
 
@@ -13,6 +14,7 @@ import com.beanlife.R;
 
 public class MemberCenterFragment extends Fragment {
     private View view;
+    private Button showQRcodeBt;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -26,5 +28,8 @@ public class MemberCenterFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    private void findView(){
+
+    }
 }
 

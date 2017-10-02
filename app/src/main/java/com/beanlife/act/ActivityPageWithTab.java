@@ -3,6 +3,8 @@ package com.beanlife.act;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +14,6 @@ import com.beanlife.R;
 
 /**
  * Created by Vivien on 2017/9/3.
- * 尚未完成，預計為會員活動頁面w/tab
  */
 
 public class ActivityPageWithTab extends Fragment {
@@ -54,5 +55,39 @@ public class ActivityPageWithTab extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    private class  ActPagerAdapter extends FragmentStatePagerAdapter {
+
+        int nNumOfTabs;
+        public ActPagerAdapter(FragmentManager fm, int nNumOfTabs)
+        {
+            super(fm);
+            this.nNumOfTabs=nNumOfTabs;
+        }
+        @Override
+        public Fragment getItem(int position) {
+            switch(position)
+            {
+                case 0:
+                    MemberFollowActivityFragment tab1 = new MemberFollowActivityFragment();
+                    return tab1;
+
+                case 1:
+                    MemberPartiActivityFragment tab2 = new MemberPartiActivityFragment ();
+                    return tab2;
+
+                case 2:
+                    MemberHostActivityFragment tab3 = new MemberHostActivityFragment ();
+                    return tab3;
+
+                default:
+                    return null;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return nNumOfTabs;
+        }
+    }
 
 }

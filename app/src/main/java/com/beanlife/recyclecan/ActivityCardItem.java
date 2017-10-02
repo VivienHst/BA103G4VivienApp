@@ -1,4 +1,4 @@
-package com.beanlife.act;
+package com.beanlife.recyclecan;
 
 /**
  * Created by Java on 2017/9/4.
