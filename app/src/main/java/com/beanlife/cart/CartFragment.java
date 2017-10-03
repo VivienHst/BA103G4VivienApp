@@ -256,8 +256,6 @@ public class CartFragment extends Fragment {
         private int totalPrice, storeItemCount;
         private TextView textV;
 
-
-
         public CartDetailAdapter(Context context, List<ProdVO> prodVOList,
                                     String storeNo, Hashtable<String,Integer>  prodCount, TextView textV) {
             //prodVOList = new ArrayList<ProdVO>();

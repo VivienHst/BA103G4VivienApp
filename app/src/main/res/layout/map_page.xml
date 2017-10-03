@@ -4,19 +4,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
         class="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        />
 
     <SearchView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/searchView"
+        android:layout_width="320sp"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/mapView"
+        android:layout_margin="8dp"
         android:background="#ffffff"
-        android:layout_margin="8dp"/>
+        />
+
 
 </FrameLayout>

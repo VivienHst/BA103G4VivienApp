@@ -2,6 +2,7 @@ package com.beanlife;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.beanlife.mem.MemVO;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -110,6 +111,5 @@ public class CommonTask extends AsyncTask<String, Integer, String>{
         Log.d(TAG, "inStr : " + inStr);
         return inStr.toString();
     }
-
 
 }

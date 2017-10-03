@@ -150,23 +150,6 @@ public class SearchResultFragment extends Fragment {
         setHasOptionsMenu(false);
     }
 
-//    @Override
-//    public void onListItemClick(ListView l, View v, int position, long id) {
-//        super.onListItemClick(l, v, position, id);
-//        ProdVO prodVO = prodResultList.get(position);
-//        Fragment fragment = new ProductWithTab();
-//        Bundle bundle = new Bundle();
-//        bundle.putSerializable("prod", prodVO);
-//        fragment.setArguments(bundle);
-//        FragmentManager fragmentManager = getFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.replace(R.id.body, fragment);
-//        fragmentTransaction.addToBackStack(null);
-//        fragmentTransaction.commit();
-//        System.out.println("Product onclick");
-//    }
-
-
     //確認網路是否連接
     private boolean networkConnected() {
         ConnectivityManager conManager =
@@ -207,6 +190,4 @@ public class SearchResultFragment extends Fragment {
         }
         return prodResultList;
     }
-
-
 }

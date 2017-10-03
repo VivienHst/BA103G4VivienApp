@@ -67,21 +67,14 @@ public class MemberHostActivityContFragment  extends Fragment {
         actQRCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                IntentIntegrator integrator = new IntentIntegrator(getActivity());
-//                // Set to true to enable saving the barcode image and sending its path in the result Intent.
-//                integrator.setBarcodeImageEnabled(true);
-//                // Set to false to disable beep on scan.
-//                integrator.setBeepEnabled(false);
-//                // Use the specified camera ID.
-//                integrator.setCameraId(0);
-//                // By default, the orientation is locked. Set to false to not lock.
-//                integrator.setOrientationLocked(false);
-//                // Set a prompt to display on the capture screen.
-//                integrator.setPrompt("Scan a QR Code");
-//                // Initiates a scan
-//                integrator.initiateScan();
-
                 switchFragment(new MemberHostActivityScanFragment());
+            }
+        });
+
+        actClock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchFragment(new MemberHostActivityListFragment());
             }
         });
 
@@ -105,16 +98,4 @@ public class MemberHostActivityContFragment  extends Fragment {
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
-
-    private void switchFragment(Fragment fragment, String msg) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("msg", msg);
-        fragment.setArguments(bundle);
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.mem_act_part_container, fragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
-    }
-
 }

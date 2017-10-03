@@ -1,16 +1,23 @@
 package com.beanlife;
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.beanlife.store.StoreVO;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -28,7 +35,9 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import static com.beanlife.R.id.mapView;
@@ -42,13 +51,18 @@ public class MapFragment extends Fragment {
     private LatLng myLocation;
     private Marker marker_myLocation;
     private List<StoreVO> storeList;
-    ImageView storeImgView;
+    private ImageView storeImgView;
+    private GoogleApiClient googleApiClient;
+    private Location lastLocation;
+
+
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.map_page, container, false);
+        googleApiClient = null;
         mapview = (MapView) view.findViewById(mapView);
         mapview.onCreate(savedInstanceState);
         mapview.onResume();
@@ -57,10 +71,9 @@ public class MapFragment extends Fragment {
 
         googleMap = mapview.getMap();
 //        initPoints();
+
         SupportMapFragment myLocatFragment =
                 (SupportMapFragment)getFragmentManager().findFragmentById(mapView);
-
-
 //        myLocatFragment.getMapAsync(this);
         setUpMap();
         return view;
@@ -71,10 +84,40 @@ public class MapFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        askPermissions();
     }
 
     private void initPoints() {
-        myLocation = new LatLng(24.9676446,121.1910268);
+        GoogleApiClient.ConnectionCallbacks connectionCallbacks =
+                new GoogleApiClient.ConnectionCallbacks() {
+                    @Override
+                    public void onConnected(@Nullable Bundle bundle) {
+                        if (ActivityCompat.checkSelfPermission(getActivity(),
+                                Manifest.permission.ACCESS_COARSE_LOCATION)
+                                == PackageManager.PERMISSION_GRANTED){
+                            lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+
+                        }
+                    }
+
+                    @Override
+                    public void onConnectionSuspended(int i) {
+                    }
+                };
+        if (googleApiClient == null){
+            googleApiClient = new GoogleApiClient.Builder(getActivity()).
+                    addApi(LocationServices.API).addConnectionCallbacks(connectionCallbacks).build();
+        }
+        googleApiClient.connect();
+
+        if(lastLocation != null){
+            myLocation = new LatLng(lastLocation.getLatitude(),lastLocation.getLongitude());
+        } else {
+            myLocation = new LatLng(24.9676446,121.1910268);
+        }
+
+        googleMap.setMyLocationEnabled(true);
+
     }
 
     private void setUpMap(){
@@ -85,7 +128,7 @@ public class MapFragment extends Fragment {
             googleMap.setMyLocationEnabled(true);
         }
         googleMap.getUiSettings().setZoomControlsEnabled(true);
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(myLocation).zoom(18).build();
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(myLocation).zoom((float) 7.5).build();
         CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
 //        googleMap.animateCamera(cameraUpdate);
         //移動到點，沒有動畫
@@ -95,43 +138,44 @@ public class MapFragment extends Fragment {
         storeList = getAllStore();
         for (StoreVO storeVO : storeList){
             addMakersToMap(storeVO);
+            new GetImageByPkTask(Common.STORE_URL, "store_no", storeVO.getStore_no(), 200, storeImgView).execute();
+
             googleMap.setInfoWindowAdapter(new MyInfoWindowAdapter(storeVO));
 
         }
         //addUserToMap();
         //googleMap.setInfoWindowAdapter(new MyInfoWindowAdapter());
 
-        MyMarkerListener myMakerListener = new MyMarkerListener();
+        //MyMarkerListener myMakerListener = new MyMarkerListener();
 
     }
 
-    private class MyMarkerListener implements GoogleMap.OnMarkerClickListener,
-            GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerDragListener {
-        @Override
-        public void onInfoWindowClick(Marker marker) {
-
-        }
-
-        @Override
-        public boolean onMarkerClick(Marker marker) {
-            return false;
-        }
-
-        @Override
-        public void onMarkerDragStart(Marker marker) {
-
-        }
-
-        @Override
-        public void onMarkerDrag(Marker marker) {
-
-        }
-
-        @Override
-        public void onMarkerDragEnd(Marker marker) {
-
-        }
-    }
+//    private class MyMarkerListener implements GoogleMap.OnMarkerClickListener,
+//            GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerDragListener {
+//        @Override
+//        public void onInfoWindowClick(Marker marker) {
+//        }
+//
+//        @Override
+//        public boolean onMarkerClick(Marker marker) {
+//            return false;
+//        }
+//
+//        @Override
+//        public void onMarkerDragStart(Marker marker) {
+//
+//        }
+//
+//        @Override
+//        public void onMarkerDrag(Marker marker) {
+//
+//        }
+//
+//        @Override
+//        public void onMarkerDragEnd(Marker marker) {
+//
+//        }
+//    }
 
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
@@ -185,14 +229,10 @@ public class MapFragment extends Fragment {
         @Override
         public View getInfoWindow(Marker marker) {
 
-//            int logoId = R.drawable.store1;
-//            if (marker.equals(marker_myLocation)) {
-//                logoId = R.drawable.store1;}
-
-            storeImgView = (ImageView) infoWindow
-                    .findViewById(R.id.map_bubble_store_img_view);
+            storeImgView = (ImageView) infoWindow.findViewById(R.id.map_bubble_store_img_view);
             //storeImgView.setImageResource(logoId);
-            new GetImageByPkTask(Common.STORE_URL, "store_no", storeVO.getStore_no(), 200, storeImgView).execute();
+            //ImageView storeImgView;
+
 
             String title = marker.getTitle();
             TextView storeTitle = ((TextView) infoWindow
@@ -211,4 +251,46 @@ public class MapFragment extends Fragment {
             return null;
         }
     }
+
+    private static final int REQ_PERMISSIONS = 0;
+
+    // New Permission see Appendix A
+    private void askPermissions() {
+        String[] permissions = {
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+        };
+
+        Set<String> permissionsRequest = new HashSet<>();
+        for (String permission : permissions) {
+            int result = ContextCompat.checkSelfPermission(getActivity(), permission);
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                permissionsRequest.add(permission);
+            }
+        }
+
+        if (!permissionsRequest.isEmpty()) {
+            ActivityCompat.requestPermissions(getActivity(),
+                    permissionsRequest.toArray(new String[permissionsRequest.size()]),
+                    REQ_PERMISSIONS);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQ_PERMISSIONS:
+                for (int result : grantResults) {
+                    if (result != PackageManager.PERMISSION_GRANTED) {
+
+                    }
+                }
+                break;
+        }
+    }
+
+
+
 }

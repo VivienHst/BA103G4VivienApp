@@ -56,7 +56,7 @@ public class MemberPartiActivityQRCodeFragment extends Fragment {
 
         partiActTv.setText(actVO.getAct_name());
         int dimension = getResources().getDisplayMetrics().widthPixels;
-        final String act_pairString =actVO.getAct_no() + "," + mem_ac;
+        final String act_pairString = actVO.getAct_no() + "," + mem_ac;
         QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(act_pairString, null,
                 Contents.Type.TEXT, BarcodeFormat.QR_CODE.toString(), dimension);
         Bitmap bitmap = null;

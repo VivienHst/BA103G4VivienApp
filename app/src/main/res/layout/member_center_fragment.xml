@@ -3,41 +3,57 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#f7ebde">
+    android:background="#f7ebde"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/centerMemImg"
+        <android.support.v7.widget.CardView
+            android:id="@+id/view2"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_margin="12dp"
-            android:scaleType="fitXY"
-            app:srcCompat="@drawable/mem01" />
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"
+            android:elevation="12dp"
+            android:innerRadius="0dp"
+            android:shape="ring"
+            android:thicknessRatio="1.9"
+            app:cardCornerRadius="50dp">
+
+            <ImageView
+                android:id="@+id/center_mem_img"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/mem02" />
+
+        </android.support.v7.widget.CardView>
+
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginTop="24dp"
             android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/centerMemName"
+                android:id="@+id/center_mem_ac_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:layout_marginBottom="12dp"
+                android:layout_marginTop="16dp"
                 android:text="mrbean0123"
                 android:textColor="#006699"
                 android:textSize="20dp" />
 
             <TextView
-                android:id="@+id/cenetrMemLv"
+                android:id="@+id/center_mem_lv_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
@@ -46,70 +62,249 @@
 
         </LinearLayout>
 
-        <!--<ImageButton-->
-            <!--android:id="@+id/imageButton"-->
-            <!--android:layout_width="40dp"-->
-            <!--android:layout_height="40dp"-->
-            <!--android:background="#ffffff"-->
-            <!--android:layout_marginTop="16dp"-->
-            <!--android:layout_marginLeft="80dp"-->
-            <!--android:padding="2dp"-->
-            <!--android:scaleType="fitCenter"-->
-            <!--app:srcCompat="@drawable/chat01" />-->
+        <ImageView
+            android:id="@+id/mem_center_edit_iv"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="12dp"
+            android:layout_marginLeft="60dp"
+            android:padding="6dp"
+
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/edit01" />
+
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="361dp"
+        android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/centerOrderBt"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:background="#e7fbf0"
-            android:shadowRadius="@integer/google_play_services_version"
-            android:text="訂單查詢" />
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/centerFoProdBt"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:text="會員姓名 : "
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/center_mem_name_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:text="豆豆先生"
+                android:textSize="16dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:background="#e7fbf0"
-            android:shadowRadius="@integer/google_play_services_version"
-            android:text="追蹤商品管理" />
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/centerFoSoreBt"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:text="E-Mail : "
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/center_mem_email_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:text="mrbean@bmail.com"
+                android:textSize="16dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:background="#e7fbf0"
-            android:shadowRadius="@integer/google_play_services_version"
-            android:text="追蹤店家管理" />
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/centerActBt"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:text="電話 : "
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/center_mem_phone_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:text="0912345678"
+                android:textSize="16dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:background="#e7fbf0"
-            android:shadowRadius="@integer/google_play_services_version"
-            android:text="活動管理" />
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/centerMemDataBt"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:text="地址 : "
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/center_mem_add_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:text="中壢市中大路300號"
+                android:textSize="16dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:background="#e7fbf0"
-            android:shadowRadius="@integer/google_play_services_version"
-            android:text="會員資料管理" />
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:text="積分 : "
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/center_mem_pt_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:text="120 / 200"
+                android:textSize="16dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:text="註冊日期 : "
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/center_mem_date_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:text="2016-05-18"
+                android:textSize="16dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:text="偏好口味"
+                android:textSize="16dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:text="地區 : "
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/center_mem_reg_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:text="巴西"
+                android:textSize="16dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:text="處理法 : "
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/center_mem_proc_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:text="水洗"
+                android:textSize="16dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:text="烘焙度 : "
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/center_mem_roast_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:text="淺焙"
+                android:textSize="16dp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
