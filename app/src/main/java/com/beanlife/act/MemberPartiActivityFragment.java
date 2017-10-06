@@ -49,6 +49,11 @@ public class MemberPartiActivityFragment extends Fragment {
     private final static String TAG = "Member Activity";
     private String mem_ac;
 
+    public static MemberPartiActivityFragment newInstance() {
+        MemberPartiActivityFragment f = new MemberPartiActivityFragment();
+        return f;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
@@ -132,7 +137,7 @@ public class MemberPartiActivityFragment extends Fragment {
 //            viewHolder.cardImageView.setImageResource(ActivityCard.getActImg());
 //            viewHolder.cardImageView.setImageResource(R.drawable.activity01);
             String action = "act_no";
-            new GetImageByPkTask(Common.ACT_URL, action, actVO.getAct_no(), 256, viewHolder.cardImageView).execute();
+          //  new GetImageByPkTask(Common.ACT_URL, action, actVO.getAct_no(), 256, viewHolder.cardImageView).execute();
 
             viewHolder.cardMemName.setText(actVO.getAct_name());
 

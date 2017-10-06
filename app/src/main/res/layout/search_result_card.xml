@@ -60,7 +60,8 @@
                 android:layout_marginTop="6dp"
                 android:text="GoodProduct"
                 android:textColor="#555555"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:visibility="gone"/>
 
         </LinearLayout>
 

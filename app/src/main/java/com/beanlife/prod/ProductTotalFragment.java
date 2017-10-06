@@ -222,6 +222,8 @@ public class ProductTotalFragment extends Fragment {
     public void onPause() {
         super.onPause();
         menu.findItem(R.id.action_search).setVisible(false);
+        menu.findItem(R.id.action_shopping_car).setVisible(false);
+
     }
 
 }

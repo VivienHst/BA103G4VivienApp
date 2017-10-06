@@ -72,15 +72,7 @@
 
                 </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/mem_center_ed_edit_iv"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="bottom"
-                    android:layout_marginBottom="12dp"
-                    android:layout_marginLeft="80dp"
-                    android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/edit01" />
+
 
 
             </LinearLayout>

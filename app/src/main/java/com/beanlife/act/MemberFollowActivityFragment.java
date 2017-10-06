@@ -41,7 +41,7 @@ public class MemberFollowActivityFragment extends Fragment {
 
     private MemberFollowActivityFragment.ActivityCardAdapter adapter;
     private CommonTask retrieveActTask, retrieveFoActTask;
-    private final static String TAG = "SearchActivity";
+    private final static String TAG = "mem";
     private String mem_ac;
 
     @Override
@@ -204,5 +204,9 @@ public class MemberFollowActivityFragment extends Fragment {
         return gson.fromJson(actListFoString, listType);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
 }
 

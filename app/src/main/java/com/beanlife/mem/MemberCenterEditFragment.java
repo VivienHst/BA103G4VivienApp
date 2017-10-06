@@ -1,11 +1,25 @@
 package com.beanlife.mem;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +28,19 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.beanlife.Common;
 import com.beanlife.CommonTask;
 import com.beanlife.R;
 import com.google.gson.Gson;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+import static android.app.Activity.RESULT_OK;
 import static android.view.View.VISIBLE;
 
 /**
@@ -37,7 +58,11 @@ public class MemberCenterEditFragment extends Fragment {
     private Button chkBtn, cancelBtn;
     private MemVO memVO;
     private String mem_ac;
-    private CommonTask retrieveMemVO;
+    private CommonTask retrieveMemVO, retrieveMemImg;
+    private File file;
+    private static final int REQUEST_TAKE_PICTURE = 0;
+    private static final int REQUEST_PICK_IMAGE = 1;
+    private byte[]image;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -73,15 +98,20 @@ public class MemberCenterEditFragment extends Fragment {
         cancelBtn = (Button) view.findViewById(R.id.mem_ed_cancel_btn);
 
 
+        byte[] memOrgImg = getImg(memVO.getMem_ac());
+        Bitmap picture = BitmapFactory.decodeByteArray(memOrgImg, 0, memOrgImg.length);
+        centerMemEdIv.setImageBitmap(picture);
+
         centerMemAcTv.setText(memVO.getMem_ac());
-        centerMemLvTv.setText(memVO.getGrade_no());
+        centerMemLvTv.setText(memVO.getGrade_no().toString());
         centerMemPswEt.setText(memVO.getMem_pwd());
+        centerMemPswChkEt.setText(memVO.getMem_pwd());
         centerMemLnameEt.setText(memVO.getMem_lname());
         centerMemFnameEt.setText(memVO.getMem_fname());
-
         centerMemEmailEt.setText(memVO.getMem_email());
         centerMemPhoneEt.setText(memVO.getMem_phone());
         centerMemAddEt.setText(memVO.getMem_add());
+
 
         String likeSet = memVO.getMem_set();
         String[] likeSetToken = likeSet.split(",");
@@ -113,8 +143,10 @@ public class MemberCenterEditFragment extends Fragment {
         chkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setMemVO();
-                switchFragment(new MemberCenterFragment());
+                if(checkInput()){
+                    setMemVO();
+                    switchFragment(new MemberCenterFragment());
+                }
             }
         });
 
@@ -124,6 +156,27 @@ public class MemberCenterEditFragment extends Fragment {
                 switchFragment(new MemberCenterFragment());
             }
         });
+
+        centerMemEdIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                picChangeAlert();
+            }
+        });
+    }
+
+    private byte[]getImg(String mem_ac){
+        retrieveMemImg = (CommonTask) new CommonTask().execute(Common.MEM_URL,"getImageNoShrink","mem_ac",mem_ac);
+        String memImgBase64 = "";
+        try {
+            memImgBase64 = retrieveMemImg.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        image = Base64.decode(memImgBase64, Base64.DEFAULT);
+        return image;
     }
 
     private void setMemVO(){
@@ -135,10 +188,33 @@ public class MemberCenterEditFragment extends Fragment {
         memVO.setMem_add(centerMemAddEt.getText().toString());
         memVO.setMem_set(centerMemRegEt.getText().toString() + "," + centerMemProcEt.getText().toString() +
                 "," + centerMemRoastEt.getText().toString());
+        String imgToBase64 = Base64.encodeToString(image, Base64.DEFAULT);
 
         Gson gson = new Gson();
         String memVOString = gson.toJson(memVO);
-        retrieveMemVO =(CommonTask) new CommonTask().execute(Common.MEM_URL, "updateMem" , "memVO", memVOString);
+        retrieveMemVO =(CommonTask) new CommonTask().execute(Common.MEM_URL, "updateMem" , "memVO",
+                memVOString, "memPic", imgToBase64);
+    }
+
+    private boolean checkInput(){
+        boolean checkInput = false;
+        if(centerMemPswEt.getText().length() < 5){
+            Toast.makeText(view.getContext(), "密碼必須大於五碼", Toast.LENGTH_SHORT).show();
+        } else if(!centerMemPswEt.getText().toString().equals(centerMemPswChkEt.getText().toString())){
+            Toast.makeText(view.getContext(), "確認密碼不符", Toast.LENGTH_SHORT).show();
+        } else if(centerMemLnameEt.getText().toString().trim().isEmpty() || centerMemFnameEt.getText().toString().trim().isEmpty()){
+            Toast.makeText(view.getContext(), "姓名不可為空", Toast.LENGTH_SHORT).show();
+        } else if(centerMemEmailEt.getText().toString().trim().isEmpty()){
+            Toast.makeText(view.getContext(), "信箱不可為空", Toast.LENGTH_SHORT).show();
+        } else if(!centerMemEmailEt.getText().toString().contains("@")){
+            Toast.makeText(view.getContext(), "信箱格式錯誤", Toast.LENGTH_SHORT).show();
+        } else if(centerMemPhoneEt.getText().toString().trim().length() < 10
+                || !centerMemPhoneEt.getText().toString().startsWith("09")){
+            Toast.makeText(view.getContext(), "電話格式錯誤", Toast.LENGTH_SHORT).show();
+        } else {
+            checkInput = true;
+        }
+        return checkInput;
     }
 
     private void switchFragment(Fragment fragment) {
@@ -150,4 +226,77 @@ public class MemberCenterEditFragment extends Fragment {
         fragmentTransaction.commit();
     }
 
+    private void picChangeAlert(){
+        AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(getActivity());
+        myAlertDialog.setTitle("修改個人照片");
+        myAlertDialog.setMessage("選擇照片來源");
+
+        //選擇相簿照片
+        DialogInterface.OnClickListener albumOnClick = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(Intent.ACTION_PICK,
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, REQUEST_PICK_IMAGE);
+            }
+        };
+
+        //使用相機
+        DialogInterface.OnClickListener cameraOnClick = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+                file = new File(file, "picture.jpg");
+                Uri contentUri = FileProvider.getUriForFile(getActivity(),
+                        getActivity().getPackageName() + ".provider" ,file);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri);
+                if(isIntentAvailable(getActivity(), intent)){
+                    startActivityForResult(intent, REQUEST_TAKE_PICTURE);
+                }
+
+            }
+        };
+
+        myAlertDialog.setPositiveButton("相簿", albumOnClick);
+        myAlertDialog.setNegativeButton("相機", cameraOnClick);
+        myAlertDialog.show();
+    }
+
+    private boolean isIntentAvailable(Context context, Intent intent){
+        PackageManager packageManager= context.getPackageManager();
+        List<ResolveInfo> list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+        return list.size() > 0;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_TAKE_PICTURE:
+                    Bitmap picture = BitmapFactory.decodeFile(file.getPath());
+                    centerMemEdIv.setImageBitmap(picture);
+                    ByteArrayOutputStream out1 = new ByteArrayOutputStream();
+                    picture.compress(Bitmap.CompressFormat.JPEG, 100, out1);
+                    image = out1.toByteArray();
+                    break;
+                case REQUEST_PICK_IMAGE:
+                    Uri uri = intent.getData();
+                    String[] columns = {MediaStore.Images.Media.DATA};
+                    Cursor cursor = getActivity().getContentResolver().query(uri, columns,
+                            null, null, null);
+                    if (cursor != null && cursor.moveToFirst()) {
+                        String imagePath = cursor.getString(0);
+                        cursor.close();
+                        Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+                        centerMemEdIv.setImageBitmap(bitmap);
+                        ByteArrayOutputStream out2 = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out2);
+                        image = out2.toByteArray();
+                    }
+                    break;
+            }
+        }
+    }
 }

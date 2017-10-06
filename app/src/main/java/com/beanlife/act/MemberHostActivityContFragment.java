@@ -1,31 +1,44 @@
 package com.beanlife.act;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.beanlife.Common;
+import com.beanlife.CommonTask;
+import com.beanlife.GetImageByPkTask;
 import com.beanlife.R;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
+import java.lang.reflect.Type;
+import java.util.concurrent.ExecutionException;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by vivienhuang on 2017/10/2.
  */
 
 public class MemberHostActivityContFragment  extends Fragment {
-    View view;
-    FrameLayout part_container;
-    ImageView actCont, actQRCode, actClock;
-    ActVO actVO;
-    String mem_ac;
+    private View view;
+    private FrameLayout part_container;
+    private ImageView actCont, actQRCode, actClock;
+    private ActVO actVO;
+    private String mem_ac;
 
 
     @Override
@@ -67,6 +80,9 @@ public class MemberHostActivityContFragment  extends Fragment {
         actQRCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //存入偏好設定
+                SharedPreferences loginState = getActivity().getSharedPreferences(Common.SCAN_STATE, MODE_PRIVATE);
+                loginState.edit().putString("act_no", actVO.getAct_no()).apply();
                 switchFragment(new MemberHostActivityScanFragment());
             }
         });
@@ -98,4 +114,6 @@ public class MemberHostActivityContFragment  extends Fragment {
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
+
+
 }

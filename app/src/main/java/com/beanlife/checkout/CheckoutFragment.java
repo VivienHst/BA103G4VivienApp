@@ -27,13 +27,16 @@ import android.widget.Toast;
 import com.beanlife.Common;
 import com.beanlife.CommonTask;
 import com.beanlife.GetImageByPkTask;
+import com.beanlife.mem.MemVO;
 import com.beanlife.ord.OrdVO;
 import com.beanlife.ord.OrderFragment;
 import com.beanlife.prod.ProdVO;
 import com.beanlife.R;
 import com.beanlife.store.StoreVO;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -61,9 +64,11 @@ public class CheckoutFragment  extends Fragment {
     private String totalPrice, mem_ac, ord_name, ord_phone, ord_add, pay_info, ord_state;
     private OrdVO ordVO;
     private StoreVO storeVO;
+    private MemVO memVO;
     private Integer total_pay, maxFee;
     private LinearLayout creditInfoLl;
     private List<Integer> feeList;
+    private CommonTask retrieveMemVO;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -143,7 +148,6 @@ public class CheckoutFragment  extends Fragment {
                         bankAcInfo.setVisibility(View.VISIBLE);
                         creditInfoLl.setVisibility(View.GONE);
                         pay_info = "銀行轉帳";
-
                         ord_state = "未付款";
 
                         break;
@@ -159,7 +163,12 @@ public class CheckoutFragment  extends Fragment {
             }
         });
 
-        //快速輸入測試用資料
+        memVO = getMemVO();
+        ordNameEt.setText(memVO.getMem_lname() + memVO.getMem_fname());
+        ordPhoneEt.setText(memVO.getMem_phone().toString());
+        ordAddEt.setText(memVO.getMem_add());
+
+        //************快速輸入測試用資料**************
         checkMagicBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -178,7 +187,6 @@ public class CheckoutFragment  extends Fragment {
                 Calendar addDate = Calendar.getInstance();
                 int nowYear = addDate.get(Calendar.YEAR);
                 int nowMonth = addDate.get(Calendar.MONTH) + 1;
-
 
                 //確認資料是否填妥
                 if (ordNameEt.getText().length() == 0 ){
@@ -270,6 +278,28 @@ public class CheckoutFragment  extends Fragment {
 
 
         return ordVO;
+    }
+
+    private MemVO getMemVO(){
+        SharedPreferences loginState = getActivity().getSharedPreferences(Common.LOGIN_STATE, MODE_PRIVATE);
+        mem_ac = loginState.getString("userAc", "noLogIn");
+
+        String memVOString = "";
+        if(networkConnected()){
+            retrieveMemVO = (CommonTask) new CommonTask().execute(Common.MEM_URL, "getOneMem",
+                    "mem_ac", mem_ac);
+            try {
+                memVOString = retrieveMemVO.get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+
+        }
+        Gson gson = new Gson();
+        Type listType = new TypeToken<MemVO>(){}.getType();
+        return gson.fromJson(memVOString, listType);
     }
 
     private boolean networkConnected(){

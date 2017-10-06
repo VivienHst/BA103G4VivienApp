@@ -110,7 +110,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:text="請填入收貨資訊"
+                    android:text="請確認收貨資訊"
                     android:textSize="18dp" />
 
                 <EditText

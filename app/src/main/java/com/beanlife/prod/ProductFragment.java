@@ -75,13 +75,12 @@ public class ProductFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        this.menu = menu;
-        //顯示購物車,放大鏡
-        menu.findItem(R.id.action_search).setVisible(true);
-        menu.findItem(R.id.action_shopping_car).setVisible(isLogIn());
-    }
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        super.onCreateOptionsMenu(menu, inflater);
+//        //顯示購物車,放大鏡
+//       // menu.findItem(R.id.action_search).setVisible(true);
+//        menu.findItem(R.id.action_shopping_car).setVisible(isLogIn());
+//    }
 
     private boolean isLogIn(){
         boolean isLogIn;

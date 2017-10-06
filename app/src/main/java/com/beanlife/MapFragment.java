@@ -1,6 +1,7 @@
 package com.beanlife;
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,7 +18,9 @@ import android.widget.Toast;
 
 import com.beanlife.store.StoreVO;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -33,10 +36,14 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
@@ -55,9 +62,6 @@ public class MapFragment extends Fragment {
     private GoogleApiClient googleApiClient;
     private Location lastLocation;
 
-
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
@@ -72,7 +76,7 @@ public class MapFragment extends Fragment {
         googleMap = mapview.getMap();
 //        initPoints();
 
-        SupportMapFragment myLocatFragment =
+        SupportMapFragment myLocFragment =
                 (SupportMapFragment)getFragmentManager().findFragmentById(mapView);
 //        myLocatFragment.getMapAsync(this);
         setUpMap();
@@ -87,6 +91,19 @@ public class MapFragment extends Fragment {
         askPermissions();
     }
 
+    private LocationListener locationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            //updateLastLocationInfo(location);
+            lastLocation = location;
+            LatLng myLocation = new LatLng(lastLocation.getLatitude(),lastLocation.getLongitude());
+            CameraPosition cameraPosition = new CameraPosition.Builder().target(myLocation).zoom(14).build();
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
+            googleMap.animateCamera(cameraUpdate);
+            //googleMap.moveCamera(cameraUpdate);
+        }
+    };
+
     private void initPoints() {
         GoogleApiClient.ConnectionCallbacks connectionCallbacks =
                 new GoogleApiClient.ConnectionCallbacks() {
@@ -96,7 +113,12 @@ public class MapFragment extends Fragment {
                                 Manifest.permission.ACCESS_COARSE_LOCATION)
                                 == PackageManager.PERMISSION_GRANTED){
                             lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-
+                            LocationRequest locationRequest = LocationRequest.create()
+                                    .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                                    .setInterval(1000)
+                                    .setSmallestDisplacement(1);
+                            LocationServices.FusedLocationApi.requestLocationUpdates(
+                                    googleApiClient, locationRequest, locationListener);
                         }
                     }
 
@@ -104,9 +126,12 @@ public class MapFragment extends Fragment {
                     public void onConnectionSuspended(int i) {
                     }
                 };
+
         if (googleApiClient == null){
             googleApiClient = new GoogleApiClient.Builder(getActivity()).
-                    addApi(LocationServices.API).addConnectionCallbacks(connectionCallbacks).build();
+                    addApi(LocationServices.API)
+                    .addConnectionCallbacks(connectionCallbacks)
+                    .build();
         }
         googleApiClient.connect();
 
@@ -128,7 +153,7 @@ public class MapFragment extends Fragment {
             googleMap.setMyLocationEnabled(true);
         }
         googleMap.getUiSettings().setZoomControlsEnabled(true);
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(myLocation).zoom((float) 7.5).build();
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(myLocation).zoom(14).build();
         CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
 //        googleMap.animateCamera(cameraUpdate);
         //移動到點，沒有動畫
@@ -136,18 +161,8 @@ public class MapFragment extends Fragment {
 
         storeList = new ArrayList<StoreVO>();
         storeList = getAllStore();
-        for (StoreVO storeVO : storeList){
-            addMakersToMap(storeVO);
-            new GetImageByPkTask(Common.STORE_URL, "store_no", storeVO.getStore_no(), 200, storeImgView).execute();
 
-            googleMap.setInfoWindowAdapter(new MyInfoWindowAdapter(storeVO));
-
-        }
-        //addUserToMap();
-        //googleMap.setInfoWindowAdapter(new MyInfoWindowAdapter());
-
-        //MyMarkerListener myMakerListener = new MyMarkerListener();
-
+        googleMap.setInfoWindowAdapter(new MyInfoWindowAdapter(addMakersToMap(storeList)));
     }
 
 //    private class MyMarkerListener implements GoogleMap.OnMarkerClickListener,
@@ -190,15 +205,21 @@ public class MapFragment extends Fragment {
 //                .icon(BitmapDescriptorFactory.fromResource(R.drawable.store_marker)));
 //    }
 
-    private void addMakersToMap(StoreVO storeVO) {
-        LatLng storeLL = new LatLng(Double.parseDouble(storeVO.getStore_add_lat()),
-                Double.parseDouble(storeVO.getStore_add_lon()));
-        marker_myLocation = googleMap.addMarker(new MarkerOptions()
-                .position(storeLL)
-                .title(storeVO.getStore_name())
-                .snippet(storeVO.getStore_add())
-                //.imgno(storeVO.setStore_no())
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.store_marker)));
+    private Map<Marker, StoreVO> addMakersToMap(List<StoreVO> storeList) {
+        Map<Marker, StoreVO> makerMap = new HashMap<Marker, StoreVO>();
+
+        for (StoreVO storeVO : storeList){
+            LatLng storeLL = new LatLng(Double.parseDouble(storeVO.getStore_add_lat()),
+                    Double.parseDouble(storeVO.getStore_add_lon()));
+            marker_myLocation = googleMap.addMarker(new MarkerOptions()
+                    .position(storeLL)
+                    .title(storeVO.getStore_name())
+                    .snippet(storeVO.getStore_add())
+                    //.imgno(storeVO.setStore_no())
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.store_marker)));
+            makerMap.put(marker_myLocation, storeVO);
+        }
+        return makerMap;
     }
 
     private List<StoreVO> getAllStore(){
@@ -220,19 +241,25 @@ public class MapFragment extends Fragment {
     private class MyInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         private final View infoWindow;
         StoreVO storeVO;
+        Map<Marker, StoreVO> makerMap;
 
-        private MyInfoWindowAdapter(StoreVO storeVO) {
+        private MyInfoWindowAdapter(Map<Marker, StoreVO> makerMap) {
             infoWindow = View.inflate(getActivity(), R.layout.map_bubble, null);
-            this.storeVO = storeVO;
+            this.makerMap = makerMap;
         }
 
         @Override
         public View getInfoWindow(Marker marker) {
 
             storeImgView = (ImageView) infoWindow.findViewById(R.id.map_bubble_store_img_view);
-            //storeImgView.setImageResource(logoId);
-            //ImageView storeImgView;
 
+            try {
+                Bitmap bm = new GetImageByPkTask(Common.STORE_URL, "store_no",
+                        makerMap.get(marker).getStore_no(), 200, null).execute().get();
+                storeImgView.setImageBitmap(bm);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             String title = marker.getTitle();
             TextView storeTitle = ((TextView) infoWindow

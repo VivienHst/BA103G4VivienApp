@@ -20,5 +20,7 @@ public class Common {
 
     //login state
     public final static String LOGIN_STATE = "loginState";
+    public final static String SCAN_STATE = "Act NO";
+
 
 }

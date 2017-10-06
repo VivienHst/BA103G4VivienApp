@@ -5,30 +5,41 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.beanlife.R;
+import com.beanlife.cart.CartFragment;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Created by Vivien on 2017/9/3.
- */
-
+ * 會員活動內頁
+*/
 public class ActivityPageWithTab extends Fragment {
-
+    private View view;
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
+    private ActPagerAdapter adapter;
+    private List<Fragment> fragmentList ;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.my_act_tab, container, false);
-        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.my_act_tabs);
+        view = inflater.inflate(R.layout.my_act_tab, container, false);
+        tabLayout = (TabLayout) view.findViewById(R.id.my_act_tabs);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        final ViewPager viewPager = (ViewPager) view.findViewById(R.id.my_act_viewpager);
-        final ActPagerAdapter adapter = new ActPagerAdapter(getFragmentManager(), tabLayout.getTabCount());
+        viewPager = (ViewPager) view.findViewById(R.id.my_act_viewpager);
+        adapter = new ActPagerAdapter(getFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(3);
+
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -38,6 +49,7 @@ public class ActivityPageWithTab extends Fragment {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
+
                 viewPager.setCurrentItem(tab.getPosition());
             }
 
@@ -51,13 +63,20 @@ public class ActivityPageWithTab extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     private class  ActPagerAdapter extends FragmentStatePagerAdapter {
 
+
         int nNumOfTabs;
+        FragmentManager fm;
         public ActPagerAdapter(FragmentManager fm, int nNumOfTabs)
         {
             super(fm);
@@ -65,6 +84,7 @@ public class ActivityPageWithTab extends Fragment {
         }
         @Override
         public Fragment getItem(int position) {
+
             switch(position)
             {
                 case 0:
@@ -83,11 +103,16 @@ public class ActivityPageWithTab extends Fragment {
                     return null;
             }
         }
-
         @Override
         public int getCount() {
             return nNumOfTabs;
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
     }
 
 }

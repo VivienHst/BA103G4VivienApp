@@ -1,6 +1,7 @@
 package com.beanlife.prod;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -25,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 /**
  * Created by Vivien on 2017/9/7.
@@ -36,7 +39,7 @@ public class ProductWithTab extends Fragment {
     private StoreVO store;
     private ReviewVO review;
     private  List<ReviewVO> reviewVOList;
-    private RetrieveStoreTask retriveStoreTask;
+    private RetrieveStoreTask retrieveStoreTask;
     private final static String TAG = "ProductWithTab";
     private Menu menu;
 
@@ -92,10 +95,10 @@ public class ProductWithTab extends Fragment {
     private StoreVO getStore(String store_no){
         StoreVO storeVO = new StoreVO();
         if(networkConnected()){
-            retriveStoreTask = (RetrieveStoreTask) new RetrieveStoreTask("getOneStore", store_no).execute(Common.STORE_URL);
+            retrieveStoreTask = (RetrieveStoreTask) new RetrieveStoreTask("getOneStore", store_no).execute(Common.STORE_URL);
 
             try {
-                storeVO = (StoreVO) retriveStoreTask.get();
+                storeVO = (StoreVO) retrieveStoreTask.get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
@@ -127,7 +130,6 @@ public class ProductWithTab extends Fragment {
             Log.d(TAG, "Network Not Connect");
         }
         return reviewList;
-
     }
 
 
@@ -137,12 +139,21 @@ public class ProductWithTab extends Fragment {
         this.menu = menu;
         //顯示放大鏡
         menu.findItem(R.id.action_search).setVisible(true);
+        menu.findItem(R.id.action_shopping_car).setVisible(isLogIn());
     }
 
     @Override
     public void onPause() {
-        menu.findItem(R.id.action_search).setVisible(false);
         super.onPause();
+        menu.findItem(R.id.action_search).setVisible(false);
+        menu.findItem(R.id.action_shopping_car).setVisible(false);
+    }
+
+    private boolean isLogIn(){
+        boolean isLogIn;
+        SharedPreferences loginState = getActivity().getSharedPreferences(Common.LOGIN_STATE, MODE_PRIVATE);
+        isLogIn = loginState.getBoolean("login", false);
+        return isLogIn;
     }
 
 }

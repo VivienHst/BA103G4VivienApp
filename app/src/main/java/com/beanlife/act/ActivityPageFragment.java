@@ -37,6 +37,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by vivienhuang on 2017/9/5.
+ * 活動內頁
  */
 
 public class ActivityPageFragment extends Fragment {
