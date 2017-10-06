@@ -142,7 +142,8 @@ public class MemberHostActivityFragment extends Fragment {
                     bundle.putSerializable("actVO", actVO);
                     Log.d("actVO", actVO.getAct_name());
                     fragment.setArguments(bundle);
-                    FragmentManager fragmentManager = getFragmentManager();
+                    Fragment pFragment = getParentFragment();
+                    FragmentManager fragmentManager = pFragment.getFragmentManager();
 
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.body, fragment);

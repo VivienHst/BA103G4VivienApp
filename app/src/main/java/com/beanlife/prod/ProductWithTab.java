@@ -56,7 +56,7 @@ public class ProductWithTab extends Fragment {
             tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
             final ViewPager viewPager = (ViewPager) view.findViewById(R.id.prod_tab_viewpager);
             final ProdPagerAdapter adapter =
-                    new ProdPagerAdapter(getFragmentManager(), tabLayout.getTabCount(), prod, store, reviewVOList);
+                    new ProdPagerAdapter(getChildFragmentManager(), tabLayout.getTabCount(), prod, store, reviewVOList);
 
             viewPager.setAdapter(adapter);
             viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));

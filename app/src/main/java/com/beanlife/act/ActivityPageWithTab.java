@@ -36,9 +36,10 @@ public class ActivityPageWithTab extends Fragment {
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         viewPager = (ViewPager) view.findViewById(R.id.my_act_viewpager);
-        adapter = new ActPagerAdapter(getFragmentManager(), tabLayout.getTabCount());
+
+        adapter = new ActPagerAdapter(getChildFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
-        viewPager.setOffscreenPageLimit(3);
+//        viewPager.setOffscreenPageLimit(3);
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -74,7 +75,6 @@ public class ActivityPageWithTab extends Fragment {
 
     private class  ActPagerAdapter extends FragmentStatePagerAdapter {
 
-
         int nNumOfTabs;
         FragmentManager fm;
         public ActPagerAdapter(FragmentManager fm, int nNumOfTabs)
@@ -84,7 +84,8 @@ public class ActivityPageWithTab extends Fragment {
         }
         @Override
         public Fragment getItem(int position) {
-
+            //return fragmentList.get(position);
+//
             switch(position)
             {
                 case 0:
@@ -109,10 +110,5 @@ public class ActivityPageWithTab extends Fragment {
         }
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-    }
 
 }
