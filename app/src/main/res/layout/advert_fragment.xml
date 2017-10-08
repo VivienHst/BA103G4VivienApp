@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="180dp"
+    android:orientation="vertical"
+    android:id="@+id/ad_fragment">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/ad_img"
+        android:src="@drawable/home01"
+        android:scaleType="centerCrop"/>
+    <View
+        android:id="@+id/adImgGradi"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:adjustViewBounds="true"
+        android:background="@drawable/gradient_black03"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/ad_info_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="17dp"
+        android:text="廣告資訊廣告資訊廣告資訊廣告資訊"
+        android:textColor="#ffffff"
+        android:textSize="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="45dp"
+        android:layout_marginRight="45dp"
+
+        android:layout_marginStart="45dp" />
+
+
+</RelativeLayout>

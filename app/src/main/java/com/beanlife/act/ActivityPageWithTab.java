@@ -5,15 +5,11 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.beanlife.R;
-import com.beanlife.cart.CartFragment;
-
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -109,6 +105,4 @@ public class ActivityPageWithTab extends Fragment {
             return nNumOfTabs;
         }
     }
-
-
 }

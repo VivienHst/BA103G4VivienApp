@@ -17,6 +17,8 @@ public class Common {
     public final static String LIKE_REV_URL = "http://" + URL + "/BA103G4vivien/Like_revServletForApp";
     public final static String ORD_URL = "http://" + URL + "/BA103G4vivien/OrdServletForApp";
     public final static String CART_URL = "http://" + URL + "/BA103G4vivien/Cart_listServletForApp";
+    public final static String AD_URL = "http://" + URL + "/BA103G4vivien/AdServletForApp";
+
 
     //login state
     public final static String LOGIN_STATE = "loginState";

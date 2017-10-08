@@ -97,13 +97,15 @@ public class SearchResultFragment extends Fragment {
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
             ImageView prodSearchResultIv;
-            TextView prodNameTv, prodPriceTv;
+            TextView prodNameTv, prodPriceTv, prodDescTv;
 
             MyViewHolder(View itemView) {
                 super(itemView);
                 prodSearchResultIv = (ImageView) itemView.findViewById(R.id.prod_search_result_iv);
                 prodNameTv = (TextView) itemView.findViewById(R.id.search_result_prod_name);
                 prodPriceTv = (TextView) itemView.findViewById(R.id.search_result_prod_price);
+                prodDescTv = (TextView) itemView.findViewById(R.id.search_result_prod_desc);
+
             }
         }
 
@@ -114,10 +116,17 @@ public class SearchResultFragment extends Fragment {
 
             //****有網路再開
             String action = "prod_no";
-            new GetImageByPkTask(Common.PROD_URL, action, prodVO.getProd_no(), 150, viewHolder.prodSearchResultIv).execute();
-            viewHolder.prodNameTv.setText(prodVO.getProd_name());
-            viewHolder.prodPriceTv.setText(prodVO.getProd_price().toString());
-
+            new GetImageByPkTask(Common.PROD_URL, action, prodVO.getProd_no(), 150,
+                    viewHolder.prodSearchResultIv).execute();
+            String prodName = prodVO.getProd_name();
+            if(prodName.length()>12){
+                prodName = prodName.substring(0,12) + "...";
+            }
+            viewHolder.prodNameTv.setText(prodName);
+            viewHolder.prodPriceTv.setText("NT$ " + prodVO.getProd_price() + "   "
+                    + prodVO.getProd_wt() + " lb");
+            viewHolder.prodDescTv.setText(prodVO.getBean_contry() + "  " + prodVO.getProc()
+                    + "  " + prodVO.getRoast());
 
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -137,12 +146,6 @@ public class SearchResultFragment extends Fragment {
         }
 
     }
-
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        setHasOptionsMenu(true);
-//    }
 
     @Override
     public void onPause() {

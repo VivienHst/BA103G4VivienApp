@@ -214,8 +214,7 @@ public class MapFragment extends Fragment {
             marker_myLocation = googleMap.addMarker(new MarkerOptions()
                     .position(storeLL)
                     .title(storeVO.getStore_name())
-                    .snippet(storeVO.getStore_add())
-                    //.imgno(storeVO.setStore_no())
+                    .snippet(storeVO.getStore_add() + ","+ storeVO.getStore_phone())
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.store_marker)));
             makerMap.put(marker_myLocation, storeVO);
         }
@@ -267,11 +266,18 @@ public class MapFragment extends Fragment {
             storeTitle.setText(title);
 
             String snippet = marker.getSnippet();
+            String[] snipToken = snippet.split(",");
             TextView tvSnippet = ((TextView) infoWindow
                     .findViewById(R.id.store_add));
-            tvSnippet.setText(snippet);
+            tvSnippet.setText(snipToken[0]);
+
+            TextView tvSnippet2 = ((TextView) infoWindow
+                    .findViewById(R.id.store_phone));
+            tvSnippet2.setText(snipToken[1]);
             return infoWindow;
         }
+
+
 
         @Override
         public View getInfoContents(Marker marker) {

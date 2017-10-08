@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="2dp"
-                android:text="ProductName"
+                android:text="商品名稱商品名稱商品名稱"
                 android:textColor="#311f00"
                 android:textSize="20sp" />
 
@@ -47,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="8dp"
                 android:text="$500"
                 android:textColor="#555555"
                 android:textSize="15sp" />
@@ -57,11 +57,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="8dp"
                 android:text="GoodProduct"
                 android:textColor="#555555"
-                android:textSize="15sp"
-                android:visibility="gone"/>
+                android:textSize="15sp"/>
 
         </LinearLayout>
 

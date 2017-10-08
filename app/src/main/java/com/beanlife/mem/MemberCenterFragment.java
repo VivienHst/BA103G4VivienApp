@@ -26,7 +26,9 @@ import com.google.gson.reflect.TypeToken;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -43,6 +45,7 @@ public class MemberCenterFragment extends Fragment {
     private MemVO memVO;
     private String mem_ac;
     private CommonTask retrieveMemVO;
+    private String memGrade;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -76,7 +79,7 @@ public class MemberCenterFragment extends Fragment {
         memVO = getMemVO();
 
         centerMemAcTv.setText(memVO.getMem_ac());
-        centerMemLvTv.setText(memVO.getGrade_no().toString());
+        centerMemLvTv.setText(memGrade);
         centerMemNameTv.setText(memVO.getMem_lname() + memVO.getMem_fname());
         centerMemEmailTv.setText(memVO.getMem_email());
         centerMemPhoneTv.setText(memVO.getMem_phone());
@@ -108,13 +111,39 @@ public class MemberCenterFragment extends Fragment {
         });
     }
 
+//    MemVO getMemVO(){
+//        SharedPreferences loginState = getActivity().getSharedPreferences(Common.LOGIN_STATE, MODE_PRIVATE);
+//        mem_ac = loginState.getString("userAc", "noLogIn");
+//
+//        String memVOString = "";
+//        if(networkConnected()){
+//            retrieveMemVO = (CommonTask) new CommonTask().execute(Common.MEM_URL, "getOneMem",
+//                    "mem_ac", mem_ac);
+//            try {
+//                memVOString = retrieveMemVO.get();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            } catch (ExecutionException e) {
+//                e.printStackTrace();
+//            }
+//
+//        }
+//        Gson gson = new Gson();
+//        Type listType = new TypeToken<MemVO
+//                >(){}.getType();
+//        return gson.fromJson(memVOString, listType);
+//    }
+
+
     MemVO getMemVO(){
+        Map<String,Object> memWithGrade = new HashMap<String,Object>();
+        MemVO memVOl = new MemVO();
         SharedPreferences loginState = getActivity().getSharedPreferences(Common.LOGIN_STATE, MODE_PRIVATE);
         mem_ac = loginState.getString("userAc", "noLogIn");
 
         String memVOString = "";
         if(networkConnected()){
-            retrieveMemVO = (CommonTask) new CommonTask().execute(Common.MEM_URL, "getOneMem",
+            retrieveMemVO = (CommonTask) new CommonTask().execute(Common.MEM_URL, "getMemWithGrade",
                     "mem_ac", mem_ac);
             try {
                 memVOString = retrieveMemVO.get();
@@ -126,8 +155,15 @@ public class MemberCenterFragment extends Fragment {
 
         }
         Gson gson = new Gson();
-        Type listType = new TypeToken<MemVO>(){}.getType();
-        return gson.fromJson(memVOString, listType);
+        Type listType = new TypeToken<HashMap<String,Object>>(){}.getType();
+        Type listTypeMemVO = new TypeToken<MemVO>(){}.getType();
+        memWithGrade = gson.fromJson(memVOString, listType);
+        memVOl = gson.fromJson(gson.toJson(memWithGrade.get("memVO")), listTypeMemVO);
+
+        //取得對應等級稱號
+        memGrade = memWithGrade.get("gradeTitle").toString();
+
+        return memVOl;
     }
 
     private boolean networkConnected(){

@@ -42,7 +42,7 @@
             />
 
         <TextView
-            android:id="@+id/textView_contry"
+            android:id="@+id/textView_country"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -52,11 +52,10 @@
             android:textSize="16dp" />
 
         <Spinner
-            android:id="@+id/spinner_prod_contry"
+            android:id="@+id/spinner_prod_country"
             android:layout_width="match_parent"
             android:layout_height="32dp"
             android:layout_margin="8dp"
-            android:entries="@array/prod_contry"
             android:padding="0dp" />
 
         <TextView

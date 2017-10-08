@@ -275,8 +275,6 @@ public class CheckoutFragment  extends Fragment {
         ordVO.setSend_fee(maxFee);
         ordVO.setOrd_stat(ord_state);
         ordVO.setPay_info(pay_info);
-
-
         return ordVO;
     }
 

@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ import com.beanlife.CommonTask;
 import com.beanlife.GetImageByPkTask;
 import com.beanlife.R;
 import com.beanlife.RetrieveProdTask;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -44,6 +46,7 @@ public class ProductFragment extends Fragment {
             prodGradeTv, prodContryTv, prodRegionTv, prodFarmTv, prodFarmerTv, prodElTv, prodProcTv,
             prodRoastTv, prodAromaTv, prodSupTv;
     private ImageView productIv, prodPlusIv, prodMinusIv;
+    private LinearLayout addToCarLl;
     private EditText prodCountEt;
     private RatingBar prodRating;
     private ProdVO prodVO;
@@ -115,13 +118,14 @@ public class ProductFragment extends Fragment {
         prodRating = (RatingBar) view.findViewById(R.id.prod_rb);
         prodSupTv = (TextView) view.findViewById(R.id.prodSup);
         addToCar =  (Button) view.findViewById(R.id.add_to_car_bt);
+        addToCarLl = (LinearLayout) view.findViewById(R.id.add_to_car_ll);
 
         new GetImageByPkTask(Common.PROD_URL, action, prodVO.getProd_no(), 800, productIv).execute();
         prodNameTv.setText(prodVO.getProd_name());
         storeNameTv.setText(storeName);
         prodContTv.setText(prodVO.getProd_cont());
         prodSendfeeTv.setText("運費 : " + prodVO.getSend_fee().toString() + "滿1000免運費");
-        prodPriceTv.setText("$" + prodVO.getProd_price().toString() + "NT");
+        prodPriceTv.setText("NT$" + prodVO.getProd_price().toString());
         prodUnitTv.setText(prodVO.getProd_wt().toString() + "磅");
         prodTypeTv.setText("豆種 : " + prodVO.getBean_type());
         prodGradeTv.setText("生豆等級 : " + prodVO.getBean_grade());
@@ -136,6 +140,12 @@ public class ProductFragment extends Fragment {
         prodSupTv.setText("尚餘數量 : " + prodVO.getProd_sup());
 
         prodRating.setRating(Float.parseFloat(getProdScore(prodVO.getProd_no())));
+
+        if(isLogIn()){
+            addToCarLl.setVisibility(View.VISIBLE);
+        } else{
+            addToCarLl.setVisibility(View.GONE);
+        }
 
         String prodCountToCar = prodCountEt.getText().toString();
         prodPlusIv.setOnClickListener(new View.OnClickListener() {
@@ -234,4 +244,6 @@ public class ProductFragment extends Fragment {
         }
         return getProdScore;
     }
+
+
 }

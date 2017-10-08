@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.beanlife.Common;
@@ -26,17 +27,19 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Java on 2017/9/3.
  * 商品頁面中的評論頁面
- * 需要改檔名
  */
 
 public class ReviewFragment extends Fragment {
     private CommonTask retrieveMemTask;
+    String memGrade;
 
     private List<ReviewVO> reviewVOList;
     @Override
@@ -94,6 +97,7 @@ public class ReviewFragment extends Fragment {
             ImageView memImageIv;
             TextView memNameTv, memLvTv, commDateTv, commLikeTv,
                     commWeightTv, commWaterTv, commDegreeTv, commTimeTv;
+            RatingBar memReviewRb;
 
             MyViewHolder(View itemView) {
                 super(itemView);
@@ -106,6 +110,7 @@ public class ReviewFragment extends Fragment {
                 commWaterTv = (TextView) itemView.findViewById(R.id.commWaterTv);
                 commDegreeTv = (TextView) itemView.findViewById(R.id.commDegreeTv);
                 commTimeTv = (TextView) itemView.findViewById(R.id.commTimeTv);
+                memReviewRb = (RatingBar) itemView.findViewById(R.id.mem_prod_review_rb);
             }
         }
 
@@ -132,10 +137,12 @@ public class ReviewFragment extends Fragment {
             useSecs = useSecs%60;
             //viewHolder.memImageIv.setImageResource(R.drawable.mem01);
             viewHolder.memNameTv.setText(getMemVO(reviewVO.getOrd_no()).getMem_ac());
-            viewHolder.memLvTv.setText(getMemVO(reviewVO.getOrd_no()).getGrade_no().toString());
+            viewHolder.memLvTv.setText(memGrade);
+
 
             new GetImageByPkTask(Common.MEM_URL, "mem_ac", getMemVO(reviewVO.getOrd_no()).getMem_ac(), 150, viewHolder.memImageIv).execute();
             viewHolder.commDateTv.setText(reviewVO.getRev_date());
+            viewHolder.memReviewRb.setRating(reviewVO.getProd_score());
             viewHolder.commLikeTv.setText(getCount(reviewVO.getRev_no()));
             viewHolder.commWeightTv.setText(useWayToken[0] + " g");
             viewHolder.commWaterTv.setText(useWayToken[1] + " ml");
@@ -170,7 +177,9 @@ public class ReviewFragment extends Fragment {
     }
 
     private MemVO getMemVO(String ord_no){
-        //MemVO memVO = new MemVO();
+        MemVO memVOl = new MemVO();
+        Map<String,Object> memWithGrade = new HashMap<String,Object>();
+
         String getMemString = "";
         retrieveMemTask = (CommonTask) new CommonTask().execute(Common.MEM_URL, "getMemByOrd", "ord_no" ,ord_no);
         try {
@@ -180,9 +189,17 @@ public class ReviewFragment extends Fragment {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+
         Gson gson = new Gson();
-        Type listType = new TypeToken<MemVO>(){}.getType();
-        return gson.fromJson(getMemString, listType);
+        Type listType = new TypeToken<HashMap<String,Object>>(){}.getType();
+        Type listTypeMemVO = new TypeToken<MemVO>(){}.getType();
+        memWithGrade = gson.fromJson(getMemString, listType);
+        memVOl = gson.fromJson(gson.toJson(memWithGrade.get("memVO")), listTypeMemVO);
+
+        //取得對應等級稱號
+        memGrade = memWithGrade.get("gradeTitle").toString();
+
+        return memVOl;
 
     }
 

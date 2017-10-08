@@ -4,11 +4,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -24,20 +25,17 @@ import com.beanlife.Common;
 import com.beanlife.CommonTask;
 import com.beanlife.GetImageByPkTask;
 import com.beanlife.R;
+import com.beanlife.act.ActivityPageWithTab;
+import com.beanlife.ad.AdVO;
+import com.beanlife.ad.AdvertFragment;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -50,26 +48,51 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class ProductTotalFragment extends Fragment {
     private final static String TAG = "SearchActivity";
-    private CommonTask retrieveProdTask;
+    private CommonTask retrieveProdTask, retrieveHotProdTask, retrieveAdTask;
     private Menu menu;
+    private View view;
+    private ViewPager viewPager;
+    private ProductTotalFragment.AdPagerAdapter adapter;
+    private List<AdvertFragment> fragmentLists;
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
-        View view;
+
         view = inflater.inflate(R.layout.product_fragment, container, false);
-        addRow(view, R.id.rv_prod_card);
-        addRow(view, R.id.new_prod_card);
-        addRow(view, R.id.recom_prod_card);
+        viewPager = (ViewPager) view.findViewById(R.id.prod_ad_viewpager);
+        addHotProdRow(R.id.rv_prod_card);
+        addRow(R.id.new_prod_card);
+        addRow(R.id.recom_prod_card);
+        fragmentLists = new ArrayList();
+        fragmentLists = getAdList();
+        adapter = new ProductTotalFragment.AdPagerAdapter(getChildFragmentManager(), fragmentLists);
+        viewPager.setAdapter(adapter);
 
         return view;
     }
 
-    private void addRow(View view,int viewId){
+    private void addHotProdRow(int viewId){
 
         RecyclerView recyclerView  = (RecyclerView) view.findViewById(viewId);
         recyclerView.setLayoutManager(
                 new StaggeredGridLayoutManager(
                         1, StaggeredGridLayoutManager.HORIZONTAL));
+        //final List<ProdVO> prod = getProductList();
+        final List<ProdVO> prod = getHotProd();
+        recyclerView.setAdapter(new ProductCardAdapter(getActivity(), prod));
+
+    }
+
+    private void addRow(int viewId){
+
+        RecyclerView recyclerView  = (RecyclerView) view.findViewById(viewId);
+        recyclerView.setLayoutManager(
+                new StaggeredGridLayoutManager(
+                        1, StaggeredGridLayoutManager.HORIZONTAL));
+        //final List<ProdVO> prod = getProductList();
         final List<ProdVO> prod = getProductList();
         recyclerView.setAdapter(new ProductCardAdapter(getActivity(), prod));
 
@@ -185,6 +208,24 @@ public class ProductTotalFragment extends Fragment {
 
     }
 
+    List<ProdVO> getHotProd(){
+
+        Set<ProdVO> hotProdVOSet = new HashSet<ProdVO>();
+        String prodSetString = "";
+        retrieveHotProdTask = (CommonTask) new CommonTask().execute(Common.PROD_URL,"getHotProd");
+        try {
+            prodSetString = retrieveHotProdTask.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        Gson gson = new Gson();
+        Type listType = new TypeToken<List<ProdVO>>(){}.getType();
+        return  gson.fromJson(prodSetString, listType);
+
+    }
+
     List<ProdVO> getProductList(){
         List<ProdVO> prodList = new ArrayList<>();
         String prodListString = "";
@@ -216,6 +257,52 @@ public class ProductTotalFragment extends Fragment {
         prodList =  gson.fromJson(prodListString, listType);
         return prodList;
         
+    }
+    //廣告頁面
+    private class AdPagerAdapter extends FragmentStatePagerAdapter {
+
+        int nNumOfTabs;
+        FragmentManager fm;
+
+        List<AdvertFragment> fragmentLists;
+
+//        fragmentLists = getAdList();
+        public AdPagerAdapter(FragmentManager fm, List<AdvertFragment> fragmentLists)
+        {
+            super(fm);
+            this.fragmentLists=fragmentLists;
+        }
+        @Override
+        public Fragment getItem(int position) {
+
+            return fragmentLists.get(position);
+        }
+        @Override
+        public int getCount() {
+            return fragmentLists.size();
+        }
+    }
+
+    List<AdvertFragment> getAdList(){
+        List<AdvertFragment> fragmentList = new ArrayList<>();
+        List<AdVO> adVOList = new ArrayList<AdVO>();
+        retrieveAdTask = (CommonTask) new CommonTask().execute(Common.AD_URL, "getAll");
+        String adVOString = "";
+        try {
+            adVOString = retrieveAdTask.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        Gson gson = new Gson();
+        Type listType = new TypeToken<List<AdVO>>(){}.getType();
+        adVOList =  gson.fromJson(adVOString, listType);
+
+        for(AdVO adVO : adVOList){
+            fragmentList.add(new AdvertFragment(adVO));
+        }
+        return fragmentList;
     }
 
     @Override

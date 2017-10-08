@@ -1,5 +1,6 @@
 package com.beanlife.search;
 
+import android.companion.CompanionDeviceManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -9,11 +10,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.Spinner;
 
+import com.beanlife.Common;
+import com.beanlife.CommonTask;
 import com.beanlife.R;
+import com.beanlife.act.Fo_actVO;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Array;
+import java.lang.reflect.Type;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Java on 2017/8/30.
@@ -23,10 +37,11 @@ import com.beanlife.R;
 public class SearchFragment extends Fragment {
     private View prodPage,view;
     private Button resultButton;
-    private Spinner spProdProc, spProdContry, spProdRoast;
+    private Spinner spProdProc, spProdCountry, spProdRoast;
     private SearchView svProdName;
-    private String bean_contry, prodProc, roast, prod_name;
+    private String bean_country, prodProc, roast, prod_name;
     private String[] queryString;
+    private CommonTask getCountryTask;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -43,7 +58,7 @@ public class SearchFragment extends Fragment {
 
                 Log.d("Product Key Word", prod_name);
 
-                queryString = new String[]{bean_contry, prodProc, roast, prod_name};
+                queryString = new String[]{bean_country, prodProc, roast, prod_name};
                 Fragment fragment = new SearchResultFragment();
                 FragmentManager fragmentManager = getFragmentManager();
                 Bundle bundle = new Bundle();
@@ -84,16 +99,23 @@ public class SearchFragment extends Fragment {
             }
         });
 
-        spProdContry = (Spinner)view.findViewById(R.id.spinner_prod_contry);
-        bean_contry = "%%";
-        spProdContry.setSelection(0, true);
-        spProdContry.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
+        spProdCountry = (Spinner)view.findViewById(R.id.spinner_prod_country);
+        String[] countryString = getCountryString();
+        Array.set(countryString, 0, "請選擇");
+
+        ArrayAdapter<String> adapterCon = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_spinner_item, countryString);
+        adapterCon.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spProdCountry.setAdapter(adapterCon);
+        bean_country = "%%";
+        spProdCountry.setSelection(0, true);
+        spProdCountry.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
 
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                bean_contry = adapterView.getItemAtPosition(i).toString();
-                if(bean_contry.equals("請選擇")){
-                    bean_contry = "%%";
+                bean_country = adapterView.getItemAtPosition(i).toString();
+                if(bean_country.equals("請選擇")){
+                    bean_country = "%%";
                 }
             }
             @Override
@@ -120,5 +142,25 @@ public class SearchFragment extends Fragment {
         });
 
     }
+
+    String[] getCountryString(){
+        Set<String> conSet = new HashSet<String>();
+        String getConSetString = "";
+
+        getCountryTask = (CommonTask) new CommonTask().execute(Common.PROD_URL,"getProdAtr");
+        try {
+            getConSetString = getCountryTask.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        Gson gson = new Gson();
+
+        Type listType = new TypeToken<String[]>(){}.getType();
+        return gson.fromJson(getConSetString, listType);
+    }
+
 
 }

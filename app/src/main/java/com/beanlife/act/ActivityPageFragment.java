@@ -50,6 +50,7 @@ public class ActivityPageFragment extends Fragment {
     private MapView actMv;
     private CommonTask retrieveFoCount, retrieveIsFollow, retrieveAddFollow, retrieveDeleteFollow;
     private String mem_ac;
+    private boolean isFollowed;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,7 +59,6 @@ public class ActivityPageFragment extends Fragment {
 
         view = inflater.inflate(R.layout.activity_page_fragment, container, false);
         findView();
-        onClickFollow();
 
         setUpMap(savedInstanceState);
         return view;
@@ -93,6 +93,8 @@ public class ActivityPageFragment extends Fragment {
         actAddTv.setText(actVO.getAct_add());
         actContTv.setText(actVO.getAct_cont());
         actFollowIconIv.setImageResource(R.drawable.like_no);
+        onClickFollow();
+
 
 
     }
@@ -109,6 +111,7 @@ public class ActivityPageFragment extends Fragment {
                         retrieveDeleteFollow = (CommonTask) new CommonTask().execute(Common.ACT_URL,
                                 "deleteFoAct", "mem_ac", mem_ac, "act_no", actVO.getAct_no());
                         actFollowNumTv.setText(getFoCount(actVO.getAct_no()));
+                        onClickFollow();
                     }
                 });
 
@@ -121,19 +124,11 @@ public class ActivityPageFragment extends Fragment {
                         retrieveAddFollow = (CommonTask) new CommonTask().execute(Common.ACT_URL,
                                 "addFoAct", "mem_ac", mem_ac, "act_no", actVO.getAct_no());
                         actFollowNumTv.setText(getFoCount(actVO.getAct_no()));
+                        onClickFollow();
                     }
                 });
             }
         }
-    }
-
-    private void reflashFragment() {
-
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.body, new ActivityPageFragment());
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
     }
 
     private void setUpMap(Bundle savedInstanceState) {
@@ -169,7 +164,7 @@ public class ActivityPageFragment extends Fragment {
     }
 
     private boolean isFollowed(String act_no) {
-        boolean isFollowed = false;
+        isFollowed = false;
         SharedPreferences loginState = getActivity().getSharedPreferences(Common.LOGIN_STATE, MODE_PRIVATE);
         mem_ac = loginState.getString("userAc", "noLogIn");
 

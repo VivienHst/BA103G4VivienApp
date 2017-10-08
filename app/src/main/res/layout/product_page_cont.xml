@@ -137,7 +137,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_marginBottom="16dp"
-                        android:layout_marginTop="8dp">
+                        android:layout_marginTop="8dp"
+                        android:id="@+id/add_to_car_ll"
+                        android:visibility="gone">
 
 
                         <ImageView
@@ -184,6 +186,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="8dp"
+                        android:layout_marginTop="8dp"
                         android:orientation="vertical">
 
                         <TextView
