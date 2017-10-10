@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -22,6 +23,7 @@
             android:queryHint="KeyWord">
 
         </SearchView>
+
         <TextView
             android:id="@+id/textView_proc"
             android:layout_width="match_parent"
@@ -38,8 +40,7 @@
             android:layout_height="32dp"
             android:layout_margin="8dp"
             android:entries="@array/prod_proc"
-            android:padding="0dp"
-            />
+            android:padding="0dp" />
 
         <TextView
             android:id="@+id/textView_country"
@@ -76,6 +77,16 @@
             android:entries="@array/prod_roast"
             android:padding="0dp" />
 
+
+        <org.florescu.android.rangeseekbar.RangeSeekBar
+            android:id="@+id/proc_range_sb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:absoluteMaxValue="7"
+            app:absoluteMinValue="1"
+            app:showLabels="true" />
+
+
         <Button
             android:id="@+id/search_result"
             android:layout_width="match_parent"
@@ -84,6 +95,7 @@
             android:background="#ddc8af"
             android:text="搜尋"
             android:textSize="18dp" />
+
 
     </LinearLayout>
 

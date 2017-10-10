@@ -25,6 +25,7 @@ import com.beanlife.Common;
 import com.beanlife.CommonTask;
 import com.beanlife.GetImageByPkTask;
 import com.beanlife.R;
+import com.beanlife.ord.MemberOrderFragment;
 import com.beanlife.ord.OrderFragment;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -81,7 +82,7 @@ public class ReviewWriteFragment extends Fragment {
                     }
 
                     Toast.makeText(view.getContext(), "已新增成功", Toast.LENGTH_SHORT).show();
-                    Fragment fragment = new OrderFragment();
+                    Fragment fragment = new MemberOrderFragment();
                     FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.body, fragment);

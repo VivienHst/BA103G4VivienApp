@@ -189,7 +189,7 @@
                     android:background="#ffffff"
                     android:ems="10"
                     android:hint="匯款帳戶末五碼"
-                    android:inputType="text"
+                    android:inputType="number"
                     android:maxLength="5"
                     android:paddingLeft="8dp"
                     android:visibility="gone" />
@@ -306,7 +306,7 @@
                             android:layout_marginBottom="12dp"
                             android:background="#ffffff"
                             android:hint="MM"
-                            android:inputType="text"
+                            android:inputType="number"
                             android:maxLength="2"
                             android:paddingLeft="8dp"
                             android:textSize="14dp" />
@@ -324,7 +324,7 @@
                             android:layout_marginBottom="12dp"
                             android:background="#ffffff"
                             android:hint="YYYY"
-                            android:inputType="text"
+                            android:inputType="number"
                             android:maxLength="4"
                             android:paddingLeft="8dp"
                             android:textSize="14dp" />

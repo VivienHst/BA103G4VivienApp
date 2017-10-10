@@ -6,8 +6,10 @@ package com.beanlife;
  */
 
 public class Common {
-//    public final static String URL = "10.0.2.2:8081";
-    public final static String URL = "10.120.38.16:8081";
+    public final static String URL = "10.0.2.2:8081";
+//    public final static String URL = "10.120.38.16:8081";
+//    public final static String URL = "192.168.171.44:8081";
+
 
     public final static String PROD_URL = "http://" + URL + "/BA103G4vivien/ProdServletForApp";
     public final static String ACT_URL = "http://" + URL + "/BA103G4vivien/ActServletForApp";

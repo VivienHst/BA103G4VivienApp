@@ -72,6 +72,7 @@
 
 
     </LinearLayout>
+
     <Button
         android:id="@+id/magicButton"
         android:layout_width="match_parent"
@@ -81,5 +82,15 @@
         android:text="amy little magic button"
         android:textSize="12dp"
         android:background="#9db3a7"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:gravity="center_horizontal|bottom"
+        android:layout_margin="4dp"
+        android:textSize="10dp"
+        android:text="COPYRIGHT (C) 2017 BeanLife, \n Inc. ALL RIGHTS RESERVED."/>
+
 
 </LinearLayout>

@@ -48,14 +48,12 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class ProductTotalFragment extends Fragment {
     private final static String TAG = "SearchActivity";
-    private CommonTask retrieveProdTask, retrieveHotProdTask, retrieveAdTask;
+    private CommonTask retrieveProdTask, retrieveHotProdTask,retrieveNewProdTask, retrieveAdTask;
     private Menu menu;
     private View view;
     private ViewPager viewPager;
     private ProductTotalFragment.AdPagerAdapter adapter;
     private List<AdvertFragment> fragmentLists;
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -64,8 +62,8 @@ public class ProductTotalFragment extends Fragment {
         view = inflater.inflate(R.layout.product_fragment, container, false);
         viewPager = (ViewPager) view.findViewById(R.id.prod_ad_viewpager);
         addHotProdRow(R.id.rv_prod_card);
-        addRow(R.id.new_prod_card);
-        addRow(R.id.recom_prod_card);
+        addNewProdRow(R.id.new_prod_card);
+        //addRow(R.id.recom_prod_card);
         fragmentLists = new ArrayList();
         fragmentLists = getAdList();
         adapter = new ProductTotalFragment.AdPagerAdapter(getChildFragmentManager(), fragmentLists);
@@ -82,6 +80,18 @@ public class ProductTotalFragment extends Fragment {
                         1, StaggeredGridLayoutManager.HORIZONTAL));
         //final List<ProdVO> prod = getProductList();
         final List<ProdVO> prod = getHotProd();
+        recyclerView.setAdapter(new ProductCardAdapter(getActivity(), prod));
+
+    }
+
+    private void addNewProdRow(int viewId){
+
+        RecyclerView recyclerView  = (RecyclerView) view.findViewById(viewId);
+        recyclerView.setLayoutManager(
+                new StaggeredGridLayoutManager(
+                        1, StaggeredGridLayoutManager.HORIZONTAL));
+        //final List<ProdVO> prod = getProductList();
+        final List<ProdVO> prod = getNewProd();
         recyclerView.setAdapter(new ProductCardAdapter(getActivity(), prod));
 
     }
@@ -215,6 +225,24 @@ public class ProductTotalFragment extends Fragment {
         retrieveHotProdTask = (CommonTask) new CommonTask().execute(Common.PROD_URL,"getHotProd");
         try {
             prodSetString = retrieveHotProdTask.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        Gson gson = new Gson();
+        Type listType = new TypeToken<List<ProdVO>>(){}.getType();
+        return  gson.fromJson(prodSetString, listType);
+
+    }
+
+    List<ProdVO> getNewProd(){
+
+        List<ProdVO> newProdVOSet = new ArrayList<ProdVO>();
+        String prodSetString = "";
+        retrieveNewProdTask = (CommonTask) new CommonTask().execute(Common.PROD_URL,"getNewProd");
+        try {
+            prodSetString = retrieveNewProdTask.get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

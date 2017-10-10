@@ -34,6 +34,7 @@ import com.beanlife.act.MemberHostActivityContFragment;
 import com.beanlife.act.MemberHostActivityScanFragment;
 import com.beanlife.cart.CartFragment;
 import com.beanlife.mem.MemberCenterFragment;
+import com.beanlife.ord.MemberOrderFragment;
 import com.beanlife.ord.OrderFragment;
 import com.beanlife.prod.ProductTotalFragment;
 import com.beanlife.search.SearchFragment;
@@ -114,9 +115,11 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("Scan" , intentResult.getContents());
                 } else {
                     hostScanTv.setText("錯誤的活動配對");
+                    hostScanIv.setImageResource(R.drawable.qr_code);
                 }
             } else {
                 hostScanTv.setText("錯誤的QRCode");
+                hostScanIv.setImageResource(R.drawable.qr_code);
             }
         }
 
@@ -162,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
                     case R.id.item_About:
                         switchFragment(new ProductTotalFragment());
-                        setTitle(R.string.text_ＡboutUs);
+                        setTitle(R.string.text_AboutUs);
                         break;
 
                     case R.id.nvMemData:
@@ -176,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.nvMemOrd:
-                        switchFragment(new OrderFragment());
+                        switchFragment(new MemberOrderFragment());
                         setTitle("訂單查詢");
                         break;
 

@@ -22,6 +22,8 @@ import com.beanlife.act.Fo_actVO;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.florescu.android.rangeseekbar.RangeSeekBar;
+
 import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.HashSet;
@@ -42,6 +44,7 @@ public class SearchFragment extends Fragment {
     private String bean_country, prodProc, roast, prod_name;
     private String[] queryString;
     private CommonTask getCountryTask;
+    private org.florescu.android.rangeseekbar.RangeSeekBar sbProdProc;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -83,6 +86,25 @@ public class SearchFragment extends Fragment {
         svProdName = (SearchView) view.findViewById(R.id.searchView_prodName);
 
         spProdProc = (Spinner)view.findViewById(R.id.spinner_prod_proc);
+
+        /************* RangeSeekBar**************/
+       // sbProdProc = view.findViewById(R.id.proc_range_sb);
+        // Setup the new range seek bar
+        RangeSeekBar<Integer> rangeSeekBar = new RangeSeekBar<>(getActivity());
+        // Set the range
+        rangeSeekBar.setRangeValues(0, 7);
+        rangeSeekBar.setSelectedMinValue(0);
+        rangeSeekBar.setSelectedMaxValue(7);
+
+        // Add to layout
+
+        // Seek bar for which we will set text color in code
+        RangeSeekBar rangeSeekBarTextColorWithCode = (RangeSeekBar) view.findViewById(R.id.proc_range_sb);
+        rangeSeekBarTextColorWithCode.setTextAboveThumbsColorResource(android.R.color.black);
+        /************* RangeSeekBar**************/
+
+
+
         prodProc = "%%";
         spProdProc.setSelection(0, true);
         spProdProc.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){

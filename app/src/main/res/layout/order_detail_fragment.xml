@@ -57,6 +57,7 @@
                 android:layout_weight="5"
                 android:background="#c9ad76"
                 android:text="發表心得"
+                android:visibility="gone"
                 />
 
 

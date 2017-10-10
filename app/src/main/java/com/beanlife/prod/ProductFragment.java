@@ -56,6 +56,8 @@ public class ProductFragment extends Fragment {
     Integer prodCountToCarNum;
     Menu menu;
 
+    private ProdAttrView prodAttrView;
+
     public void getProdVO(ProdVO prodVO){
         this.prodVO = prodVO;
     }
@@ -120,6 +122,8 @@ public class ProductFragment extends Fragment {
         addToCar =  (Button) view.findViewById(R.id.add_to_car_bt);
         addToCarLl = (LinearLayout) view.findViewById(R.id.add_to_car_ll);
 
+        prodAttrView = (ProdAttrView) view.findViewById(R.id.prodAttrGv);
+
         new GetImageByPkTask(Common.PROD_URL, action, prodVO.getProd_no(), 800, productIv).execute();
         prodNameTv.setText(prodVO.getProd_name());
         storeNameTv.setText(storeName);
@@ -138,6 +142,16 @@ public class ProductFragment extends Fragment {
         prodRoastTv.setText("烘焙度 : " + prodVO.getRoast());
         prodAromaTv.setText("香味 : " + prodVO.getBean_aroma());
         prodSupTv.setText("尚餘數量 : " + prodVO.getProd_sup());
+
+        prodAttrView.setAcid(prodVO.getBean_attr_acid());
+        prodAttrView.setAroma(prodVO.getBean_attr_aroma());
+
+        prodAttrView.setAfter(prodVO.getBean_attr_after());
+
+        prodAttrView.setBal(prodVO.getBean_attr_bal());
+
+        prodAttrView.setBody(prodVO.getBean_attr_body());
+
 
         prodRating.setRating(Float.parseFloat(getProdScore(prodVO.getProd_no())));
 

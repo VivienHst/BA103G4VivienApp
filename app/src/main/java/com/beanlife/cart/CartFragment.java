@@ -389,7 +389,7 @@ public class CartFragment extends Fragment {
                         //reflashFragment();
                         cartProdCountTv.setVisibility(View.VISIBLE);
                         changeProdLl.setVisibility(View.GONE);
-                        prodCountChangeBt.setText("修改數量");
+                        prodCountChangeBt.setText("修改");
                     }
 
                 }

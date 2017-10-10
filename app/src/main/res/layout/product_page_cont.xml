@@ -23,9 +23,9 @@
                 android:orientation="vertical">
                 <!---->
                 <!--<android.support.v4.view.ViewPager-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="100dp"-->
-                    <!--app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="100dp"-->
+                <!--app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
                 <!--</android.support.v4.view.ViewPager>-->
 
                 <ImageView
@@ -47,10 +47,10 @@
                     android:id="@+id/prodSup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="12dp"
                     android:layout_marginBottom="4dp"
-                    android:text="商品尚餘：20"
+                    android:layout_marginRight="12dp"
                     android:gravity="right"
+                    android:text="商品尚餘：20"
                     android:textSize="16dp" />
 
 
@@ -79,7 +79,10 @@
                         android:text="運費：$100   滿1000免運費"
                         android:textSize="14sp" />
 
+
+
                 </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -114,17 +117,16 @@
                             style="?android:attr/ratingBarStyleSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
                             android:numStars="5"
                             android:rating="3.5"
-                            android:stepSize="0.5"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentEnd="true" />
+                            android:stepSize="0.5" />
                     </RelativeLayout>
 
 
                 </LinearLayout>
-
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -134,49 +136,50 @@
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/add_to_car_ll"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_marginBottom="16dp"
                         android:layout_marginTop="8dp"
-                        android:id="@+id/add_to_car_ll"
-                        android:visibility="gone">
+                        android:layout_weight="1">
 
 
                         <ImageView
+                            android:id="@+id/prod_minus_iv"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:id="@+id/prod_minus_iv"
                             android:layout_weight="0.4"
-                            android:scaleType="centerInside"
                             android:padding="12dp"
+                            android:scaleType="centerInside"
                             app:srcCompat="@drawable/prod_minus01" />
 
                         <EditText
+                            android:id="@+id/prod_cont_et"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:id="@+id/prod_cont_et"
                             android:layout_weight="0.4"
-                            android:text="1"
-                            android:textSize="24dp"
                             android:gravity="center"
-                            android:inputType="number"/>
+                            android:inputType="number"
+                            android:text="1"
+                            android:textSize="24dp" />
 
                         <ImageView
+                            android:id="@+id/prod_plus_iv"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:id="@+id/prod_plus_iv"
                             android:layout_weight="0.4"
-                            android:scaleType="centerInside"
                             android:padding="12dp"
+                            android:scaleType="centerInside"
                             app:srcCompat="@drawable/prod_plus01" />
 
                         <Button
                             android:id="@+id/add_to_car_bt"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="#e4bd71"
                             android:layout_weight="0.4"
-                            android:text="加入購物車"/>
+                            android:background="#e4bd71"
+                            android:layout_margin="4dp"
+                            android:text="加入購物車" />
 
 
                     </LinearLayout>
@@ -197,6 +200,68 @@
                             android:layout_weight="1"
                             android:text="商品描述"
                             android:textSize="20dp" />
+
+                        <RelativeLayout
+                            android:layout_width="190dp"
+                            android:layout_height="180dp">
+
+                            <TextView
+                                android:id="@+id/body_attr"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="醇度"
+                                android:layout_centerHorizontal="true" />
+
+                            <TextView
+                                android:id="@+id/body_acid"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_alignTop="@+id/prodAttrGv"
+                                android:layout_marginTop="50dp"
+                                android:text="酸度" />
+
+                            <TextView
+                                android:id="@+id/body_after"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBaseline="@+id/body_acid"
+                                android:layout_alignBottom="@+id/body_acid"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentStart="true"
+                                android:text="餘味" />
+
+                            <TextView
+                                android:id="@+id/bal_attr"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentStart="true"
+                                android:layout_marginBottom="11dp"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginStart="13dp"
+                                android:text="平衡度" />
+
+                            <TextView
+                                android:id="@+id/aroma_attr"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="香氣"
+                                android:layout_alignBottom="@+id/prodAttrGv"
+                                android:layout_toLeftOf="@+id/body_acid"
+                                android:layout_toStartOf="@+id/body_acid" />
+
+                            <com.beanlife.prod.ProdAttrView
+                                android:id="@+id/prodAttrGv"
+                                android:layout_width="160dp"
+                                android:layout_height="160dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"/>
+
+                        </RelativeLayout>
+
 
                         <TextView
                             android:id="@+id/prodType"

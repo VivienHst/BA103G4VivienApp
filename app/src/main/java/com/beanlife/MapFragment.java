@@ -215,7 +215,7 @@ public class MapFragment extends Fragment {
                     .position(storeLL)
                     .title(storeVO.getStore_name())
                     .snippet(storeVO.getStore_add() + ","+ storeVO.getStore_phone())
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.store_marker)));
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_store)));
             makerMap.put(marker_myLocation, storeVO);
         }
         return makerMap;

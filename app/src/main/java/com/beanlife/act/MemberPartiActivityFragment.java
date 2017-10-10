@@ -137,7 +137,7 @@ public class MemberPartiActivityFragment extends Fragment {
 //            viewHolder.cardImageView.setImageResource(ActivityCard.getActImg());
 //            viewHolder.cardImageView.setImageResource(R.drawable.activity01);
             String action = "act_no";
-          //  new GetImageByPkTask(Common.ACT_URL, action, actVO.getAct_no(), 256, viewHolder.cardImageView).execute();
+            new GetImageByPkTask(Common.ACT_URL, action, actVO.getAct_no(), 256, viewHolder.cardImageView).execute();
 
             viewHolder.cardMemName.setText(actVO.getAct_name());
 

@@ -28,6 +28,7 @@ import com.beanlife.Common;
 import com.beanlife.CommonTask;
 import com.beanlife.GetImageByPkTask;
 import com.beanlife.mem.MemVO;
+import com.beanlife.ord.MemberOrderFragment;
 import com.beanlife.ord.OrdVO;
 import com.beanlife.ord.OrderFragment;
 import com.beanlife.prod.ProdVO;
@@ -247,7 +248,7 @@ public class CheckoutFragment  extends Fragment {
                     }
 
                     Toast.makeText(view.getContext(), "已送出訂單", Toast.LENGTH_SHORT).show();
-                    Fragment fragment = new OrderFragment();
+                    Fragment fragment = new MemberOrderFragment();
                     FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.body, fragment);

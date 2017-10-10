@@ -23,7 +23,17 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/navigate_header"
-        app:menu="@menu/navigate_menu"
-    />
+        app:menu="@menu/navigate_menu">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:gravity="center_horizontal|bottom"
+        android:layout_margin="4dp"
+        android:textSize="10dp"
+        android:text="COPYRIGHT (C) 2017 BeanLife, \n Inc. ALL RIGHTS RESERVED."/>
+
+    </android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>

@@ -49,6 +49,13 @@ public class OrderFragment extends Fragment {
     private CommonTask retriveOrdTask;
     private final static String TAG = "Order Fragment";
     OrderDetailAdapter orderAdapter;
+    List<OrdVO> ordVOList;
+    String ordStat;
+
+    OrderFragment(List<OrdVO> ordVOList, String ordStat){
+        this.ordVOList = ordVOList;
+        this.ordStat = ordStat;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -71,7 +78,7 @@ public class OrderFragment extends Fragment {
         Log.d("user ac",user_ac);
         final List<OrdVO> ord = getOrdVOList(user_ac);
         //加入各筆訂單
-        recyclerView.setAdapter(new OrderFragment.OrderCardAdapter(getActivity(), ord));
+        recyclerView.setAdapter(new OrderFragment.OrderCardAdapter(getActivity(), ordVOList));
     }
 
     @Override
@@ -245,24 +252,27 @@ public class OrderFragment extends Fragment {
             Type listType = new TypeToken<ProdVO>(){}.getType();
             final ProdVO prodVO = gson.fromJson(ordProdVOString, listType);
 
-            //*******取得是否已經發過評論*******
-            CommonTask retrieveIsPosted  =
-                    (CommonTask) new CommonTask().execute(Common.REVIEW_URL, "isPostedReview",
-                            "ord_no", ordListItem.getOrd_no(), "prod_no", ordListItem.getProd_no());
-            try {
-                getIsProdPostedString = retrieveIsPosted.get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
+            if(ordStat.equals("已出貨")){
+                //*******取得是否已經發過評論*******
+                CommonTask retrieveIsPosted  =
+                        (CommonTask) new CommonTask().execute(Common.REVIEW_URL, "isPostedReview",
+                                "ord_no", ordListItem.getOrd_no(), "prod_no", ordListItem.getProd_no());
+                try {
+                    getIsProdPostedString = retrieveIsPosted.get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+                Gson getIsPostedGson = new Gson();
+                Type isPostedType = new TypeToken<Boolean>(){}.getType();
+                final Boolean isPostedString = getIsPostedGson.fromJson(getIsProdPostedString, isPostedType);
+                if (!isPostedString){
+                    writeReviewBt.setVisibility(View.VISIBLE);
+                }
             }
-            Gson getIsPostedGson = new Gson();
-            Type isPostedType = new TypeToken<Boolean>(){}.getType();
-            final Boolean isPostedString = getIsPostedGson.fromJson(getIsProdPostedString, isPostedType);
 
-            if (isPostedString){
-                writeReviewBt.setVisibility(GONE);
-            }
+
 
             prodNameTv.setText(prodVO.getProd_name());
             prodPriceCountTv.setText("數量 : " + ordListItem.getAmont().toString());
@@ -278,7 +288,10 @@ public class OrderFragment extends Fragment {
                     bundle.putSerializable("ord_no", ord_no);
                     bundle.putSerializable("prod_name", prodVO.getProd_name());
                     fragment.setArguments(bundle);
-                    FragmentManager fragmentManager = getFragmentManager();
+                    Fragment pFragment = getParentFragment();
+                    FragmentManager fragmentManager = pFragment.getFragmentManager();
+
+                    //FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.body, fragment);
                     fragmentTransaction.addToBackStack(null);

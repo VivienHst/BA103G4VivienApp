@@ -40,7 +40,6 @@ import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -49,17 +48,18 @@ import static android.app.Activity.RESULT_OK;
 import static android.view.View.VISIBLE;
 
 /**
- * Created by vivienhuang on 2017/10/3.
+ * Created by Vivien on 2017/10/10.
+ * 驗證未完成
  */
 
-public class MemberCenterEditFragment extends Fragment {
+public class MemberRegisterFragment extends Fragment {
 
     private View view;
-    private ImageView centerMemEdIv;
-    private TextView centerMemAcTv, centerMemLvTv;
-    private EditText centerMemPswEt, centerMemPswChkEt, centerMemLnameEt, centerMemFnameEt, centerMemEmailEt,
-            centerMemPhoneEt, centerMemAddEt, centerMemRegEt;
-    private Spinner centerMemProcSp, centerMemRoastSp;
+    private ImageView regMemEdIv;
+    private TextView regMemAcTv, regMemLvTv;
+    private EditText regMemAcEt, regMemPswEt, regMemPswChkEt, regMemLnameEt, regMemFnameEt, regMemEmailEt,
+            regMemPhoneEt, regMemAddEt, regMemRegEt;
+    private Spinner regMemProcSp, regMemRoastSp;
     private LinearLayout chkPswLl;
     private Button chkBtn, cancelBtn;
     private MemVO memVO;
@@ -76,8 +76,7 @@ public class MemberCenterEditFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         super.onCreateView(inflater, container, savedInstanceState);
-        view = inflater.inflate(R.layout.member_center_edit_fragment, container, false);
-        memVO = (MemVO) getArguments().getSerializable("memVO");
+        view = inflater.inflate(R.layout.member_register_fragment, container, false);
         findView();
         return view;
     }
@@ -88,110 +87,21 @@ public class MemberCenterEditFragment extends Fragment {
     }
 
     private void findView(){
-        centerMemAcTv = (TextView) view.findViewById(R.id.center_mem_ac_ed_tv);
-        centerMemLvTv = (TextView) view.findViewById(R.id.center_mem_lv_ed_tv);
-        centerMemEdIv = (ImageView) view.findViewById(R.id.center_mem_ed_img);
-        centerMemPswEt = (EditText) view.findViewById(R.id.center_mem_psw_et);
-        centerMemPswChkEt = (EditText) view.findViewById(R.id.center_mem_psw_chk_et);
-        centerMemLnameEt = (EditText) view.findViewById(R.id.center_mem_lname_et);
-        centerMemFnameEt = (EditText) view.findViewById(R.id.center_mem_fname_et);
-        centerMemEmailEt = (EditText) view.findViewById(R.id.center_mem_email_et);
-        centerMemPhoneEt = (EditText) view.findViewById(R.id.center_mem_phone_et);
-        centerMemAddEt = (EditText) view.findViewById(R.id.center_mem_add_et);
-        centerMemRegEt = (EditText) view.findViewById(R.id.center_mem_reg_et);
-        chkPswLl = (LinearLayout) view.findViewById(R.id.center_mem_psw_chk_ll);
+        regMemEdIv = (ImageView) view.findViewById(R.id.reg_mem_ed_img);
+        regMemAcEt = (EditText) view.findViewById(R.id.reg_mem_ac_et);
+        regMemPswEt = (EditText) view.findViewById(R.id.reg_mem_psw_et);
+        regMemPswChkEt = (EditText) view.findViewById(R.id.reg_mem_psw_chk_et);
+        regMemLnameEt = (EditText) view.findViewById(R.id.reg_mem_lname_et);
+        regMemFnameEt = (EditText) view.findViewById(R.id.reg_mem_fname_et);
+        regMemEmailEt = (EditText) view.findViewById(R.id.reg_mem_email_et);
+        regMemPhoneEt = (EditText) view.findViewById(R.id.reg_mem_phone_et);
+        regMemAddEt = (EditText) view.findViewById(R.id.reg_mem_add_et);
+        regMemRegEt = (EditText) view.findViewById(R.id.reg_mem_reg_et);
         chkBtn = (Button) view.findViewById(R.id.mem_ed_chk_btn);
         cancelBtn = (Button) view.findViewById(R.id.mem_ed_cancel_btn);
-        centerMemProcSp = (Spinner) view.findViewById(R.id.center_mem_proc_sp);
-        centerMemRoastSp = (Spinner) view.findViewById(R.id.center_mem_roast_sp);
+        regMemProcSp = (Spinner) view.findViewById(R.id.reg_mem_proc_sp);
+        regMemRoastSp = (Spinner) view.findViewById(R.id.reg_mem_roast_sp);
 
-        byte[] memOrgImg = getImg(memVO.getMem_ac());
-        Bitmap picture = BitmapFactory.decodeByteArray(memOrgImg, 0, memOrgImg.length);
-        centerMemEdIv.setImageBitmap(picture);
-
-        centerMemAcTv.setText(memVO.getMem_ac());
-        centerMemLvTv.setText(memVO.getGrade_no().toString());
-        centerMemPswEt.setText(memVO.getMem_pwd());
-        centerMemPswChkEt.setText(memVO.getMem_pwd());
-        centerMemLnameEt.setText(memVO.getMem_lname());
-        centerMemFnameEt.setText(memVO.getMem_fname());
-        centerMemEmailEt.setText(memVO.getMem_email());
-        centerMemPhoneEt.setText(memVO.getMem_phone());
-        centerMemAddEt.setText(memVO.getMem_add());
-
-
-        String likeSet = memVO.getMem_set();
-        likeSetToken = likeSet.split(",");
-        centerMemRegEt.setText(likeSetToken[0]);
-
-        Resources res = getResources();
-
-        //選擇處理法
-        String[] procAr = res.getStringArray(R.array.prod_proc);
-
-        if(!likeSetToken[1].equals("")){
-            Integer procIndex = Arrays.asList(procAr).indexOf(likeSetToken[1]);
-            centerMemProcSp.setSelection(procIndex, true);
-        }else{
-            centerMemProcSp.setSelection(0, true);
-        }
-
-
-        centerMemProcSp.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                likeSetToken[1] = adapterView.getItemAtPosition(i).toString();
-                if(likeSetToken[1].equals("請選擇")){
-                    likeSetToken[1] = "";
-                }
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
-
-        //選擇烘焙度
-        String[] roastAr = res.getStringArray(R.array.prod_roast);
-        if(!likeSetToken[2].equals("")){
-            Integer roastIndex = Arrays.asList(roastAr).indexOf(likeSetToken[2]);
-            centerMemRoastSp.setSelection(roastIndex, true);
-        }else{
-            centerMemRoastSp.setSelection(0, true);
-        }
-
-        centerMemRoastSp.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                likeSetToken[2] = adapterView.getItemAtPosition(i).toString();
-                if(likeSetToken[2].equals("請選擇")){
-                    likeSetToken[2] = "";
-                }
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
-
-        centerMemPswEt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if(!memVO.getMem_pwd().equals(centerMemPswEt.getText().toString())) {
-                    chkPswLl.setVisibility(VISIBLE);
-                } else {
-                    chkPswLl.setVisibility(View.GONE);
-                }
-            }
-        });
 
         chkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -210,62 +120,71 @@ public class MemberCenterEditFragment extends Fragment {
             }
         });
 
-        centerMemEdIv.setOnClickListener(new View.OnClickListener() {
+        regMemEdIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 picChangeAlert();
             }
         });
     }
-
-    private byte[]getImg(String mem_ac){
-        retrieveMemImg = (CommonTask) new CommonTask().execute(Common.MEM_URL,"getImageNoShrink","mem_ac",mem_ac);
-        String memImgBase64 = "";
-        try {
-            memImgBase64 = retrieveMemImg.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        image = Base64.decode(memImgBase64, Base64.DEFAULT);
-        return image;
-    }
+//
+//    private byte[]getImg(String mem_ac){
+//        retrieveMemImg = (CommonTask) new CommonTask().execute(Common.MEM_URL,"getImageNoShrink","mem_ac",mem_ac);
+//        String memImgBase64 = "";
+//        try {
+//            memImgBase64 = retrieveMemImg.get();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        }
+//        image = Base64.decode(memImgBase64, Base64.DEFAULT);
+//        return image;
+//    }
 
     private void setMemVO(){
+        memVO.setMem_ac(regMemAcEt.getText().toString());
+        memVO.setMem_pwd(regMemPswEt.getText().toString());
+        memVO.setMem_phone(regMemPhoneEt.getText().toString());
 
+        if (regMemLnameEt.getText().toString().trim().length()>0){
+            memVO.setMem_lname(regMemLnameEt.getText().toString());
+        }
+        if (regMemFnameEt.getText().toString().trim().length()>0){
+            memVO.setMem_lname(regMemFnameEt.getText().toString());
+        }
+        if (regMemEmailEt.getText().toString().trim().length()>0){
+            memVO.setMem_email(regMemEmailEt.getText().toString());
+        }
+        if (regMemAddEt.getText().toString().trim().length()>0){
+            memVO.setMem_add(regMemAddEt.getText().toString());
+        }
 
+//        if (regMemFnameEt.getText().toString().trim().length()>0){
+//            memVO.setMem_set(regMemRegEt.getText().toString() + "," + likeSetToken[1] + "," + likeSetToken[2]);
+//        }
 
-
-        memVO.setMem_pwd(centerMemPswEt.getText().toString());
-        memVO.setMem_lname(centerMemLnameEt.getText().toString());
-        memVO.setMem_fname(centerMemFnameEt.getText().toString());
-        memVO.setMem_email(centerMemEmailEt.getText().toString());
-        memVO.setMem_phone(centerMemPhoneEt.getText().toString());
-        memVO.setMem_add(centerMemAddEt.getText().toString());
-        memVO.setMem_set(centerMemRegEt.getText().toString() + "," + likeSetToken[1] + "," + likeSetToken[2]);
         String imgToBase64 = Base64.encodeToString(image, Base64.DEFAULT);
 
         Gson gson = new Gson();
         String memVOString = gson.toJson(memVO);
-        retrieveMemVO =(CommonTask) new CommonTask().execute(Common.MEM_URL, "updateMem" , "memVO",
+        retrieveMemVO =(CommonTask) new CommonTask().execute(Common.MEM_URL, "insertMem" , "memVO",
                 memVOString, "memPic", imgToBase64);
     }
 
     private boolean checkInput(){
         boolean checkInput = false;
-        if(centerMemPswEt.getText().length() < 5){
+        if(regMemPswEt.getText().length() < 5){
             Toast.makeText(view.getContext(), "密碼必須大於五碼", Toast.LENGTH_SHORT).show();
-        } else if(!centerMemPswEt.getText().toString().equals(centerMemPswChkEt.getText().toString())){
+        } else if(!regMemPswEt.getText().toString().equals(regMemPswChkEt.getText().toString())){
             Toast.makeText(view.getContext(), "確認密碼不符", Toast.LENGTH_SHORT).show();
-        } else if(centerMemPhoneEt.getText().toString().trim().length() < 10){
+        } else if(regMemPhoneEt.getText().toString().trim().length() < 10){
             Toast.makeText(view.getContext(), "電話格式錯誤", Toast.LENGTH_SHORT).show();
-        } else if(!centerMemEmailEt.getText().toString().trim().isEmpty() &&
-                !centerMemEmailEt.getText().toString().contains("@")){
+        } else if(!regMemEmailEt.getText().toString().trim().isEmpty() &&
+                !regMemEmailEt.getText().toString().contains("@")){
             Toast.makeText(view.getContext(), "信箱格式錯誤", Toast.LENGTH_SHORT).show();} else {
             checkInput = true;
-        }  checkInput = true;
-
+        }
         return checkInput;
     }
 
@@ -280,7 +199,7 @@ public class MemberCenterEditFragment extends Fragment {
 
     private void picChangeAlert(){
         AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(getActivity());
-        myAlertDialog.setTitle("修改個人照片");
+        myAlertDialog.setTitle("新增頭像");
         myAlertDialog.setMessage("選擇照片來源");
 
         //選擇相簿照片
@@ -328,7 +247,7 @@ public class MemberCenterEditFragment extends Fragment {
             switch (requestCode) {
                 case REQUEST_TAKE_PICTURE:
                     Bitmap picture = BitmapFactory.decodeFile(file.getPath());
-                    centerMemEdIv.setImageBitmap(picture);
+                    regMemEdIv.setImageBitmap(picture);
                     ByteArrayOutputStream out1 = new ByteArrayOutputStream();
                     picture.compress(Bitmap.CompressFormat.JPEG, 100, out1);
                     image = out1.toByteArray();
@@ -342,7 +261,7 @@ public class MemberCenterEditFragment extends Fragment {
                         String imagePath = cursor.getString(0);
                         cursor.close();
                         Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-                        centerMemEdIv.setImageBitmap(bitmap);
+                        regMemEdIv.setImageBitmap(bitmap);
                         ByteArrayOutputStream out2 = new ByteArrayOutputStream();
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out2);
                         image = out2.toByteArray();

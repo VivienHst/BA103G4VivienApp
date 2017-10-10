@@ -10,7 +10,10 @@
     <string name="text_Map">地圖</string>
     <string name="text_Activity">活動</string>
     <string name="text_Message">私訊</string>
-    <string name="text_ＡboutUs">關於我們</string>
+    <string name="text_AboutUs">關於我們</string>
+
+    <string name="demo_min_label">極淺焙</string>
+    <string name="demo_max_label">重焙</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -28,13 +31,6 @@
 
     <string-array name="prod_contry">
         <item>請選擇</item>
-        <item>巴西</item>
-        <item>巴拿馬</item>
-        <item>印尼</item>
-        <item>衣索比亞</item>
-        <item>肯亞</item>
-        <item>夏威夷</item>
-        <item>尼加瓜拉</item>
     </string-array>
 
     <string-array name="prod_roast">
