@@ -145,11 +145,8 @@ public class ProductFragment extends Fragment {
 
         prodAttrView.setAcid(prodVO.getBean_attr_acid());
         prodAttrView.setAroma(prodVO.getBean_attr_aroma());
-
         prodAttrView.setAfter(prodVO.getBean_attr_after());
-
         prodAttrView.setBal(prodVO.getBean_attr_bal());
-
         prodAttrView.setBody(prodVO.getBean_attr_body());
 
 

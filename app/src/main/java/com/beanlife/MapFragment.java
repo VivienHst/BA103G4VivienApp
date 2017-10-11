@@ -8,6 +8,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.beanlife.prod.ProductWithTab;
+import com.beanlife.store.StoreContFragment;
 import com.beanlife.store.StoreVO;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
@@ -161,36 +165,59 @@ public class MapFragment extends Fragment {
 
         storeList = new ArrayList<StoreVO>();
         storeList = getAllStore();
+        Map<Marker, StoreVO> makerMapS = addMakersToMap(storeList);
 
-        googleMap.setInfoWindowAdapter(new MyInfoWindowAdapter(addMakersToMap(storeList)));
+        googleMap.setInfoWindowAdapter(new MyInfoWindowAdapter(makerMapS));
+        googleMap.setOnInfoWindowClickListener(new MyMarkerListener(makerMapS));
     }
 
-//    private class MyMarkerListener implements GoogleMap.OnMarkerClickListener,
-//            GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerDragListener {
-//        @Override
-//        public void onInfoWindowClick(Marker marker) {
-//        }
-//
-//        @Override
-//        public boolean onMarkerClick(Marker marker) {
-//            return false;
-//        }
-//
-//        @Override
-//        public void onMarkerDragStart(Marker marker) {
-//
-//        }
-//
-//        @Override
-//        public void onMarkerDrag(Marker marker) {
-//
-//        }
-//
-//        @Override
-//        public void onMarkerDragEnd(Marker marker) {
-//
-//        }
-//    }
+    private class MyMarkerListener implements GoogleMap.OnMarkerClickListener,
+            GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerDragListener {
+
+        Map<Marker, StoreVO> makerMap;
+
+        private MyMarkerListener(Map<Marker, StoreVO> makerMap) {
+            this.makerMap = makerMap;
+        }
+
+
+        @Override
+        public void onInfoWindowClick(Marker marker) {
+            Fragment fragment = new StoreContFragment();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("storeVO", makerMap.get(marker));
+            fragment.setArguments(bundle);
+            //Fragment pFragment = getParentFragment();
+            //fragment.setArguments(bundle);
+
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.body, fragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+
+        }
+
+        @Override
+        public boolean onMarkerClick(Marker marker) {
+            return false;
+        }
+
+        @Override
+        public void onMarkerDragStart(Marker marker) {
+
+        }
+
+        @Override
+        public void onMarkerDrag(Marker marker) {
+
+        }
+
+        @Override
+        public void onMarkerDragEnd(Marker marker) {
+
+        }
+    }
 
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
@@ -274,9 +301,9 @@ public class MapFragment extends Fragment {
             TextView tvSnippet2 = ((TextView) infoWindow
                     .findViewById(R.id.store_phone));
             tvSnippet2.setText(snipToken[1]);
+
             return infoWindow;
         }
-
 
 
         @Override

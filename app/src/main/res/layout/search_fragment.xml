@@ -78,13 +78,13 @@
             android:padding="0dp" />
 
 
-        <org.florescu.android.rangeseekbar.RangeSeekBar
-            android:id="@+id/proc_range_sb"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:absoluteMaxValue="7"
-            app:absoluteMinValue="1"
-            app:showLabels="true" />
+        <!--<org.florescu.android.rangeseekbar.RangeSeekBar-->
+            <!--android:id="@+id/proc_range_sb"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--app:absoluteMaxValue="7"-->
+            <!--app:absoluteMinValue="1"-->
+            <!--app:showLabels="true" />-->
 
 
         <Button

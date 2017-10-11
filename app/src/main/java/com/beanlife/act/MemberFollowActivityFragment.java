@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,23 +44,51 @@ public class MemberFollowActivityFragment extends Fragment {
     private CommonTask retrieveActTask, retrieveFoActTask;
     private final static String TAG = "mem";
     private String mem_ac;
+    private List<ActVO> act;
+    private SearchView actFoSv;
+    private View view;
+    private RecyclerView recyclerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.activity_fragment_layout, container, false);
+        view = inflater.inflate(R.layout.activity_fragment_layout, container, false);
 
         addRow(view, R.id.rv_act_card);
-
+        getSearchResult(act);
         return view;
     }
 
+    void getSearchResult(final List<ActVO> act){
+        actFoSv = (SearchView) view.findViewById(R.id.act_search_sv);
+
+        actFoSv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                CharSequence keyWord = actFoSv.getQuery();
+                List<ActVO> list = new ArrayList<ActVO>();
+                for (ActVO actVO : act) {
+                    if (actVO.getAct_name().contains(keyWord)) {
+                        list.add(actVO);
+                    }
+                }
+                recyclerView.setAdapter(new MemberFollowActivityFragment.ActivityCardAdapter(getActivity(), list));
+                return false;
+            }
+        });
+    }
+
     private void addRow(View view, int viewId){
-        RecyclerView recyclerView  = (RecyclerView) view.findViewById(viewId);
+        recyclerView  = (RecyclerView) view.findViewById(viewId);
         recyclerView.setLayoutManager(
                 new StaggeredGridLayoutManager(
                         2, StaggeredGridLayoutManager.VERTICAL));
-        final List<ActVO> act = getActivityList();
+        act = getActivityList();
         recyclerView.setAdapter(new MemberFollowActivityFragment.ActivityCardAdapter(getActivity(), act));
 
     }

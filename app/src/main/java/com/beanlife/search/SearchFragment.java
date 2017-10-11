@@ -90,17 +90,17 @@ public class SearchFragment extends Fragment {
         /************* RangeSeekBar**************/
        // sbProdProc = view.findViewById(R.id.proc_range_sb);
         // Setup the new range seek bar
-        RangeSeekBar<Integer> rangeSeekBar = new RangeSeekBar<>(getActivity());
-        // Set the range
-        rangeSeekBar.setRangeValues(0, 7);
-        rangeSeekBar.setSelectedMinValue(0);
-        rangeSeekBar.setSelectedMaxValue(7);
-
-        // Add to layout
-
-        // Seek bar for which we will set text color in code
-        RangeSeekBar rangeSeekBarTextColorWithCode = (RangeSeekBar) view.findViewById(R.id.proc_range_sb);
-        rangeSeekBarTextColorWithCode.setTextAboveThumbsColorResource(android.R.color.black);
+//        RangeSeekBar<Integer> rangeSeekBar = new RangeSeekBar<>(getActivity());
+//        // Set the range
+//        rangeSeekBar.setRangeValues(0, 7);
+//        rangeSeekBar.setSelectedMinValue(0);
+//        rangeSeekBar.setSelectedMaxValue(7);
+//
+//        // Add to layout
+//
+//        // Seek bar for which we will set text color in code
+//        RangeSeekBar rangeSeekBarTextColorWithCode = (RangeSeekBar) view.findViewById(R.id.proc_range_sb);
+//        rangeSeekBarTextColorWithCode.setTextAboveThumbsColorResource(android.R.color.black);
         /************* RangeSeekBar**************/
 
 

@@ -1,5 +1,6 @@
 package com.beanlife;
 import android.Manifest;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -53,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     Menu menu;
+    public static NotificationManager notificationManager;
+    private final static int NOTIFICATION_ID = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
         setUpActionBar();
         initDrawer();
         initBody();
+
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
     }
 
     @Override
@@ -307,4 +313,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
+
+
 }

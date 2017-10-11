@@ -15,7 +15,7 @@ import java.util.List;
  * Created by Java on 2017/9/11.
  */
 
-class ProdPagerAdapter extends FragmentStatePagerAdapter {
+public  class ProdPagerAdapter extends FragmentStatePagerAdapter {
 
     ProdVO prodVO;
     StoreVO storeVO;

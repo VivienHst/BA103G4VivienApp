@@ -25,7 +25,8 @@
 
         <item
             android:id="@+id/item_About"
-            android:title="關於我們" />
+            android:title="關於我們"
+            android:visible="false"/>
 
         <item android:title="會員"
             android:id="@+id/memCenter"
@@ -38,7 +39,8 @@
 
                 <item
                     android:id="@+id/nvFoManage"
-                    android:title="追蹤管理" />
+                    android:title="追蹤管理"
+                    android:visible="false"/>
 
                 <item
                     android:id="@+id/nvAct"

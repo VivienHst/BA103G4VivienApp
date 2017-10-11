@@ -92,21 +92,6 @@ public class ActivityFragment extends Fragment {
             }
         });
 
-//        actSv.setOnSearchClickListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View view, boolean b) {
-//                CharSequence keyWord = actSv.getQuery();
-//                List<ActVO> list = new ArrayList<ActVO>();
-//                for (ActVO actVO: act){
-//                    if(actVO.getAct_name().contains(keyWord)){
-//                        list.add(actVO);
-//
-//                    }
-//                }
-//                recyclerView.setAdapter(new ActivityFragment.ActivityCardAdapter(getActivity(), list));
-//
-//            }
-//        });
     }
 
     private void addRow(int viewId){

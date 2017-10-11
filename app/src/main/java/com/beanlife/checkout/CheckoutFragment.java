@@ -1,6 +1,7 @@
 package com.beanlife.checkout;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -27,8 +28,10 @@ import android.widget.Toast;
 import com.beanlife.Common;
 import com.beanlife.CommonTask;
 import com.beanlife.GetImageByPkTask;
+import com.beanlife.MainActivity;
 import com.beanlife.mem.MemVO;
 import com.beanlife.ord.MemberOrderFragment;
+import com.beanlife.ord.NotifyOrderService;
 import com.beanlife.ord.OrdVO;
 import com.beanlife.ord.OrderFragment;
 import com.beanlife.prod.ProdVO;
@@ -70,6 +73,7 @@ public class CheckoutFragment  extends Fragment {
     private LinearLayout creditInfoLl;
     private List<Integer> feeList;
     private CommonTask retrieveMemVO;
+    private NotifyOrderService notifyOrderService;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -176,6 +180,7 @@ public class CheckoutFragment  extends Fragment {
                 ordNameEt.setText("布朗先生");
                 ordPhoneEt.setText("0988345678");
                 ordAddEt.setText("中壢市中大路300號");
+                //doBindService();
             }
         });
 
@@ -228,6 +233,7 @@ public class CheckoutFragment  extends Fragment {
                     }else {
                         pay_info = "B" + bankNoEt.getText();
                         payInfoCheck = true;
+
                     }
                 }
 
@@ -368,4 +374,22 @@ public class CheckoutFragment  extends Fragment {
             return maxFee;
         }
     }
+
+    void doBindService(){
+//        Intent intent = new Intent(getActivity(), NotifyOrderService.class);
+//        getActivity().bindService(intent, serviceCon, Context.BIND_AUTO_CREATE);
+        getActivity().startService(new Intent(getActivity(),NotifyOrderService.class));
+    }
+//    private ServiceConnection serviceCon = new ServiceConnection() {
+//        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+//        @Override
+//        public void onServiceConnected(ComponentName componentName, IBinder binder) {
+//            notifyOrderService = ((NotifyOrderService.ServiceBinder) binder).getService();
+//        }
+//
+//        @Override
+//        public void onServiceDisconnected(ComponentName componentName) {
+//
+//        }
+//    };
 }

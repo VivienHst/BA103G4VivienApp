@@ -75,9 +75,6 @@ public class ProdAttrView extends View {
         paint.setColor(Color.BLACK);
         int range = 40;
 
-
-
-
         for(int i = 1; i <= 5; i++){
             float sin54 = (float) (Math.sin(Math.toRadians(54))*i*range);
             float cos54 = (float) (Math.cos(Math.toRadians(54))*i*range);
@@ -98,11 +95,11 @@ public class ProdAttrView extends View {
         float cos72 = (float) (Math.cos(Math.toRadians(72))*range);
         float h = (float)((Math.cos(Math.toRadians(54))*range)/2+(Math.sin(Math.toRadians(72))*range)/2);
 
-        paint.setColor(Color.GREEN);
+        paint.setColor(Color.parseColor("#84BA15"));
         paint.setStrokeWidth(5);
         Path path = new Path();
         paint.setStyle(Paint.Style.FILL);
-        paint.setAlpha(125);
+        paint.setAlpha(150);
 
         path.moveTo(offset, offset - h * body);
         path.lineTo(offset + sin54 * acid, offset - h * acid + cos54 * acid);

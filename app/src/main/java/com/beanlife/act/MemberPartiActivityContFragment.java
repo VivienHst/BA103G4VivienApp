@@ -72,7 +72,7 @@ public class MemberPartiActivityContFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putSerializable("actVO", actVO);
         fragment.setArguments(bundle);
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getChildFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.mem_act_part_container, fragment);
         fragmentTransaction.addToBackStack(null);
