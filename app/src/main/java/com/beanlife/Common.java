@@ -7,8 +7,10 @@ package com.beanlife;
 
 public class Common {
 //    public final static String URL = "10.0.2.2:8081";
-    public final static String URL = "10.120.38.16:8081";
+//    public final static String URL = "10.120.38.27:8081";
 //    public final static String URL = "192.168.171.44:8081";
+    public final static String URL = "10.120.38.16:8081";
+
 
 
     public final static String PROD_URL = "http://" + URL + "/BA103G4vivien/ProdServletForApp";
@@ -20,11 +22,12 @@ public class Common {
     public final static String ORD_URL = "http://" + URL + "/BA103G4vivien/OrdServletForApp";
     public final static String CART_URL = "http://" + URL + "/BA103G4vivien/Cart_listServletForApp";
     public final static String AD_URL = "http://" + URL + "/BA103G4vivien/AdServletForApp";
+    public final static String MSG_URL = "http://" + URL + "/BA103G4vivien/MsgServletForApp";
+
+    public static final String SERVER_URL = "ws://" + URL + "/BA103G4ryu/MyEchoServer/";
 
 
     //login state
     public final static String LOGIN_STATE = "loginState";
     public final static String SCAN_STATE = "Act NO";
-
-
 }
