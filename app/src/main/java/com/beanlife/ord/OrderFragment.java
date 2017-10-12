@@ -27,8 +27,10 @@ import com.beanlife.CommonTask;
 import com.beanlife.GetImageByPkTask;
 import com.beanlife.R;
 import com.beanlife.RetrieveProdTask;
+import com.beanlife.msg.MsgFragment;
 import com.beanlife.review.ReviewWriteFragment;
 import com.beanlife.prod.ProdVO;
+import com.beanlife.store.StoreVO;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -46,11 +48,12 @@ import static android.view.View.GONE;
 
 public class OrderFragment extends Fragment {
 
-    private CommonTask retriveOrdTask;
+    private CommonTask retriveOrdTask, retrieveStoreTask;
     private final static String TAG = "Order Fragment";
     OrderDetailAdapter orderAdapter;
     List<OrdVO> ordVOList;
     String ordStat;
+    String user_ac;
 
     OrderFragment(List<OrdVO> ordVOList, String ordStat){
         this.ordVOList = ordVOList;
@@ -74,11 +77,12 @@ public class OrderFragment extends Fragment {
         //*****取得登入會員帳號*****
         SharedPreferences loginState = getActivity().getSharedPreferences(Common.LOGIN_STATE, MODE_PRIVATE);
         //沒有登入回傳noLogIn
-        String user_ac = loginState.getString("userAc", "noLogIn");
+        user_ac = loginState.getString("userAc", "noLogIn");
         Log.d("user ac",user_ac);
         final List<OrdVO> ord = getOrdVOList(user_ac);
         //加入各筆訂單
         recyclerView.setAdapter(new OrderFragment.OrderCardAdapter(getActivity(), ordVOList));
+
     }
 
     @Override
@@ -99,7 +103,7 @@ public class OrderFragment extends Fragment {
         class MyViewHolder extends RecyclerView.ViewHolder {
             ImageView orderStateIv;
             TextView orderStateTv, orderNoTv, orderDateTv, orderProdCountTv, orderTotalPayTv;
-            Button ordListBt;
+            Button ordListBt, ordChatBt;
             ListView ordListLv;
             LinearLayout ordListDetailLv;
 
@@ -112,8 +116,12 @@ public class OrderFragment extends Fragment {
                 orderProdCountTv = (TextView) itemView.findViewById(R.id.order_prod_count);
                 orderTotalPayTv = (TextView) itemView.findViewById(R.id.order_total_pay);
                 ordListBt = (Button) itemView.findViewById(R.id.ord_list_bt);
+                ordChatBt = (Button) itemView.findViewById(R.id.ord_chat_bt);
                 ordListLv = (ListView) itemView.findViewById(android.R.id.list);
                 ordListDetailLv = (LinearLayout) itemView.findViewById(R.id.ord_list_detail);
+
+
+
             }
         }
 
@@ -132,6 +140,7 @@ public class OrderFragment extends Fragment {
         @Override
         public void onBindViewHolder(final OrderFragment.OrderCardAdapter.MyViewHolder viewHolder, int position) {
             final OrdVO ordVO = OrderCardList.get(position);
+            final StoreVO storeVO;
             viewHolder.orderStateIv.setImageResource(R.drawable.order_state01);
             viewHolder.orderStateTv.setText(ordVO.getOrd_stat());
             viewHolder.orderNoTv.setText(ordVO.getOrd_no());
@@ -139,12 +148,32 @@ public class OrderFragment extends Fragment {
             viewHolder.orderDateTv.setText(ordVO.getOrd_date());
             viewHolder.orderTotalPayTv.setText("$" + ordVO.getTotal_pay().toString());
 
+            storeVO = getStoreVO(ordVO.getOrd_no());
+
+            viewHolder.ordChatBt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Fragment fragment = new MsgFragment(user_ac, storeVO.getMem_ac());
+                    Fragment pFragment = getParentFragment();
+                    FragmentManager fragmentManager = pFragment.getFragmentManager();
+
+                    //FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.body, fragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+
+                }
+            });
+
             //加入訂單細項
             orderAdapter = new OrderDetailAdapter(getActivity(), ordVO.getOrd_no());
             viewHolder.ordListLv.setAdapter(orderAdapter);
             ViewGroup.LayoutParams listViewParams = viewHolder.ordListDetailLv.getLayoutParams();
 
             listViewParams.height = orderAdapter.getCount()*240;
+
 
             //訂單細項開關
             viewHolder.ordListBt.setOnClickListener(new View.OnClickListener() {
@@ -158,7 +187,29 @@ public class OrderFragment extends Fragment {
                     }
                 }
             });
+
+
         }
+    }
+
+    private StoreVO getStoreVO(String ord_no){
+            //取得StoreVO
+
+            retrieveStoreTask = (CommonTask) new CommonTask().execute(Common.STORE_URL, "getStoreByOrd",
+                    "ord_no", ord_no);
+
+            String storeString = "";
+
+            try {
+                storeString = retrieveStoreTask.get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+            Gson gson = new Gson();
+            Type storeType = new TypeToken<StoreVO>(){}.getType();
+        return gson.fromJson(storeString, storeType);
     }
 
     private boolean networkConnected(){
@@ -192,6 +243,7 @@ public class OrderFragment extends Fragment {
         private Context context;
         private List<Ord_listVO> ord_listVOList;
         private String ord_no;
+        StoreVO storeVO= new StoreVO();
 
         public OrderDetailAdapter(Context context, String ord_no) {
 
@@ -199,7 +251,11 @@ public class OrderFragment extends Fragment {
                 this.ord_no = ord_no;
                 this.context = context;
                 this.ord_listVOList = ord_listVOList;
-            }
+        }
+
+
+
+
 
         @Override
         public int getCount() {
@@ -221,6 +277,7 @@ public class OrderFragment extends Fragment {
             final Ord_listVO ordListItem = ord_listVOList.get(position);
             LayoutInflater layoutInflater = LayoutInflater.from(context);
             final String prod_no = ordListItem.getProd_no();
+
 
 
             if(prodItem == null){
@@ -272,11 +329,10 @@ public class OrderFragment extends Fragment {
                 }
             }
 
-
-
             prodNameTv.setText(prodVO.getProd_name());
             prodPriceCountTv.setText("數量 : " + ordListItem.getAmont().toString());
             new GetImageByPkTask(Common.PROD_URL, "prod_no", prod_no, 200, prodItemIv).execute();
+
 
             //********轉到寫商品評論*********
             writeReviewBt.setOnClickListener(new View.OnClickListener() {
@@ -301,6 +357,8 @@ public class OrderFragment extends Fragment {
 
             return prodItem;
         }
+
+
 
         //取得訂單列表
         List<Ord_listVO> getOrderList(String ord_no) {

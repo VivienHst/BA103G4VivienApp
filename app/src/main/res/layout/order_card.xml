@@ -103,6 +103,16 @@
                         android:textSize="16dp" />
 
                     <Button
+                        android:id="@+id/ord_chat_bt"
+                        android:layout_width="80dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="right"
+                        android:background="#c9ad76"
+                        android:text="聯絡店家"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true" />
+
+                    <Button
                         android:id="@+id/ord_list_bt"
                         android:layout_width="80dp"
                         android:layout_height="40dp"

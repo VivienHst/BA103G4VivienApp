@@ -1,5 +1,6 @@
 package com.beanlife.act;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -9,8 +10,12 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.beanlife.Common;
 import com.beanlife.R;
 import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 /**
@@ -23,10 +28,15 @@ public class ActivityPageWithTab extends Fragment {
     private TabLayout tabLayout;
     private ActPagerAdapter adapter;
     private List<Fragment> fragmentList ;
+    private String memAc;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
+
+        SharedPreferences loginState = getActivity().getSharedPreferences(Common.LOGIN_STATE, MODE_PRIVATE);
+        memAc = loginState.getString("userAc", "noLogIn");
+
         view = inflater.inflate(R.layout.my_act_tab, container, false);
         tabLayout = (TabLayout) view.findViewById(R.id.my_act_tabs);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -89,11 +99,11 @@ public class ActivityPageWithTab extends Fragment {
                     return tab1;
 
                 case 1:
-                    MemberPartiActivityFragment tab2 = new MemberPartiActivityFragment ();
+                    MemberPartiActivityFragment tab2 = new MemberPartiActivityFragment();
                     return tab2;
 
                 case 2:
-                    MemberHostActivityFragment tab3 = new MemberHostActivityFragment ();
+                    MemberHostActivityFragment tab3 = new MemberHostActivityFragment (memAc);
                     return tab3;
 
                 default:

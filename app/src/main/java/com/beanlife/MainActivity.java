@@ -27,16 +27,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.beanlife.act.ActVO;
 import com.beanlife.act.Act_pairVO;
 import com.beanlife.act.ActivityFragment;
 import com.beanlife.act.ActivityPageWithTab;
-import com.beanlife.act.MemberHostActivityContFragment;
-import com.beanlife.act.MemberHostActivityScanFragment;
 import com.beanlife.cart.CartFragment;
 import com.beanlife.mem.MemberCenterFragment;
+import com.beanlife.msg.MessageCenterFragment;
+import com.beanlife.msg.MsgFragment;
 import com.beanlife.ord.MemberOrderFragment;
-import com.beanlife.ord.OrderFragment;
 import com.beanlife.prod.ProductTotalFragment;
 import com.beanlife.search.SearchFragment;
 import com.google.gson.Gson;
@@ -204,6 +202,17 @@ public class MainActivity extends AppCompatActivity {
                         switchFragment(new ProductTotalFragment());
                         setTitle(R.string.text_Market);
                         break;
+
+
+                    case R.id.nvFoManage:
+//                        Intent intent = new Intent(MainActivity.this, MessageTestActivity.class);
+//                        intent.putExtra("userName", "");
+//                        startActivity(intent);
+                        switchFragment(new MessageCenterFragment());
+                        setTitle(R.string.text_Message);
+                        break;
+
+
                 }
                 return true;
             }
@@ -276,7 +285,8 @@ public class MainActivity extends AppCompatActivity {
     private void askPermissions() {
         String[] permissions = {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.ACCESS_FINE_LOCATION
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.CAMERA
         };
 
         Set<String> permissionsRequest = new HashSet<>();

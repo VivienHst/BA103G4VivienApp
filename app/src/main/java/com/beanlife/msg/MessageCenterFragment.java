@@ -1,9 +1,9 @@
-package com.beanlife.act;
+package com.beanlife.msg;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -22,8 +22,8 @@ import com.beanlife.Common;
 import com.beanlife.CommonTask;
 import com.beanlife.GetImageByPkTask;
 import com.beanlife.R;
-import com.beanlife.msg.MsgFragment;
-import com.beanlife.prod.ProdGetQueryTask;
+import com.beanlife.act.ActVO;
+import com.beanlife.act.Act_pairVO;
 import com.beanlife.prod.ProdVO;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -31,31 +31,32 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
+import static android.content.Context.MODE_PRIVATE;
+
 /**
- * Created by vivienhuang on 2017/10/2.
+ * Created by vivienhuang on 2017/10/13.
  */
 
-public class MemberHostActivityListFragment  extends Fragment {
-    private static final String TAG = "Member List Fragment";
-    private MemberHostActivityListFragment.MemPairCardAdapter adapter;
+public class MessageCenterFragment extends Fragment {
+    private static final String TAG = "Member Message Fragment";
+    private MessageCenterFragment.MemPairCardAdapter adapter;
     private CommonTask retrieveMemTask;
     private ActVO actVO;
-    private List<Act_pairVO> mem_pairVOList;
-    private String mem_ac;
-
-    MemberHostActivityListFragment(String mem_ac){
-        this.mem_ac = mem_ac;
-    }
+    private List<String> memAcList;
+    private String myName;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
-        actVO = new ActVO();
-        actVO = (ActVO) getArguments().getSerializable("actVO");
-        View view = inflater.inflate(R.layout.member_activity_host_list_fargment, container, false);
-        addRow(view, R.id.act_mem_pair_rv);
+        View view = inflater.inflate(R.layout.message_center_fragment, container, false);
+        // final List<ProdVO> prod = getProductList();
+        SharedPreferences loginState = getActivity().getSharedPreferences(Common.LOGIN_STATE, MODE_PRIVATE);
+        myName = loginState.getString("userAc", "noLogIn");
+
+        addRow(view, R.id.msg_mem_pair_rv);
         return view;
     }
 
@@ -69,68 +70,59 @@ public class MemberHostActivityListFragment  extends Fragment {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(viewId);
         recyclerView.setLayoutManager(
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
-        final List<Act_pairVO> act_pairVOList = getMemPairList();
-
-        for(Act_pairVO act_pairVO : act_pairVOList){
-            if(act_pairVO.getMem_ac().equals(mem_ac)){
-                act_pairVOList.remove(act_pairVO);
-            }
-        }
-        recyclerView.setAdapter(new MemberHostActivityListFragment.MemPairCardAdapter(getActivity(), act_pairVOList));
+        memAcList = getMemList();
+        recyclerView.setAdapter(new MessageCenterFragment.MemPairCardAdapter(getActivity(), memAcList));
 
     }
 
     private class MemPairCardAdapter extends
-            RecyclerView.Adapter<MemberHostActivityListFragment.MemPairCardAdapter.MyViewHolder>{
+            RecyclerView.Adapter<MessageCenterFragment.MemPairCardAdapter.MyViewHolder>{
 
         private Context context;
-        private List<Act_pairVO> act_pairVOs;
+        private List<String> memList;
 
-        MemPairCardAdapter(Context context, List<Act_pairVO> act_pairVOs) {
+        MemPairCardAdapter(Context context, List<String> memList) {
             this.context = context;
-            this.act_pairVOs = act_pairVOs;
+            this.memList = memList;
         }
 
         @Override
-        public MemberHostActivityListFragment.MemPairCardAdapter.MyViewHolder onCreateViewHolder
-                (ViewGroup parent, int viewType) {
+        public MessageCenterFragment.MemPairCardAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(context);
-            View itemView = layoutInflater.inflate(R.layout.member_activity_pair_card, parent, false);
-            return new MemberHostActivityListFragment.MemPairCardAdapter.MyViewHolder(itemView);
+            View itemView = layoutInflater.inflate(R.layout.member_message_pair_card, parent, false);
+            return new MessageCenterFragment.MemPairCardAdapter.MyViewHolder(itemView);
         }
 
         @Override
         public int getItemCount() {
-            return act_pairVOs.size();
+            return memList.size();
         }
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
-            ImageView actMemPairIv;
-            TextView actMemAcTv, actMemPayStateTV;
+            ImageView msgMemPairIv;
+            TextView msgMemAcTv;
 
             MyViewHolder(View itemView) {
                 super(itemView);
-                actMemPairIv = (ImageView) itemView.findViewById(R.id.act_mem_pair_iv);
-                actMemAcTv = (TextView) itemView.findViewById(R.id.act_mem_ac_tv);
-                actMemPayStateTV = (TextView) itemView.findViewById(R.id.act_mem_pay_state_tv);
+                msgMemPairIv = (ImageView) itemView.findViewById(R.id.msg_mem_pair_iv);
+                msgMemAcTv = (TextView) itemView.findViewById(R.id.msg_mem_ac_tv);
             }
         }
 
         @Override
-        public void onBindViewHolder(MemberHostActivityListFragment.MemPairCardAdapter.MyViewHolder viewHolder, int position) {
-            final Act_pairVO act_pairVO = act_pairVOs.get(position);
+        public void onBindViewHolder(MessageCenterFragment.MemPairCardAdapter.MyViewHolder viewHolder, int position) {
+            final String memAc = memList.get(position);
 
-            new GetImageByPkTask(Common.MEM_URL, "mem_ac", act_pairVO.getMem_ac(), 150, viewHolder.actMemPairIv).execute();
-            viewHolder.actMemAcTv.setText(act_pairVO.getMem_ac());
-            viewHolder.actMemPayStateTV.setText(act_pairVO.getPay_state() + " / " + act_pairVO.getChk_state());
+            new GetImageByPkTask(Common.MEM_URL, "mem_ac", memAc, 150, viewHolder.msgMemPairIv).execute();
+            viewHolder.msgMemAcTv.setText(memAc);
 
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Fragment fragment = new MsgFragment(actVO.getMem_ac(), act_pairVO.getMem_ac());
-                    Fragment pFragment = getParentFragment();
-                    FragmentManager fragmentManager = pFragment.getFragmentManager();
-//                    FragmentManager fragmentManager = getFragmentManager();
+                    Fragment fragment = new MsgFragment(myName, memAc);
+//                    Fragment pFragment = getParentFragment();
+//                    FragmentManager fragmentManager = pFragment.getFragmentManager();
+                    FragmentManager fragmentManager = getFragmentManager();
 
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.body, fragment);
@@ -149,14 +141,14 @@ public class MemberHostActivityListFragment  extends Fragment {
         return networkInfo != null && networkInfo.isConnected();
     }
 
-    List<Act_pairVO> getMemPairList(){
-        mem_pairVOList = new ArrayList<Act_pairVO>();
-        List<ProdVO> prodFilterList;
+    List<String> getMemList(){
+        memAcList = new ArrayList<String>();
+
         String memPairString = "";
 
         if (networkConnected()) {
             retrieveMemTask =
-                    (CommonTask) new CommonTask().execute(Common.ACT_URL, "getMemPair", "act_no", actVO.getAct_no());
+                    (CommonTask) new CommonTask().execute(Common.MSG_URL, "getAllPairByMem", "mem_ac", myName);
             try {
                 memPairString = retrieveMemTask.get();
             } catch (InterruptedException e) {
@@ -169,7 +161,7 @@ public class MemberHostActivityListFragment  extends Fragment {
         }
 
         Gson gson = new Gson();
-        Type listType = new TypeToken<List<Act_pairVO>>(){}.getType();
+        Type listType = new TypeToken<List<String>>(){}.getType();
 
         return gson.fromJson(memPairString, listType);
     }

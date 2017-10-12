@@ -88,6 +88,10 @@ public class MemberCenterFragment extends Fragment {
         centerMemDateTv.setText(memVO.getMem_reg_date());
         String likeSet = memVO.getMem_set();
         String[] likeSetToken = likeSet.split(",");
+//        for(int i = 0; i < 3;i++){
+//            likeSetToken[i] = (likeSetToken[i] == null)?likeSetToken[i]:" ";
+//        }
+
         centerMemRegTv.setText(likeSetToken[0]);
         centerMemProcTv.setText(likeSetToken[1]);
         centerMemRoastTv.setText(likeSetToken[2]);
@@ -100,6 +104,7 @@ public class MemberCenterFragment extends Fragment {
                 Fragment fragment = new MemberCenterEditFragment();
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("memVO", memVO);
+                bundle.putSerializable("memGrade", memGrade);
 
                 fragment.setArguments(bundle);
                 FragmentManager fragmentManager = getFragmentManager();
@@ -110,29 +115,6 @@ public class MemberCenterFragment extends Fragment {
             }
         });
     }
-
-//    MemVO getMemVO(){
-//        SharedPreferences loginState = getActivity().getSharedPreferences(Common.LOGIN_STATE, MODE_PRIVATE);
-//        mem_ac = loginState.getString("userAc", "noLogIn");
-//
-//        String memVOString = "";
-//        if(networkConnected()){
-//            retrieveMemVO = (CommonTask) new CommonTask().execute(Common.MEM_URL, "getOneMem",
-//                    "mem_ac", mem_ac);
-//            try {
-//                memVOString = retrieveMemVO.get();
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            } catch (ExecutionException e) {
-//                e.printStackTrace();
-//            }
-//
-//        }
-//        Gson gson = new Gson();
-//        Type listType = new TypeToken<MemVO
-//                >(){}.getType();
-//        return gson.fromJson(memVOString, listType);
-//    }
 
 
     MemVO getMemVO(){

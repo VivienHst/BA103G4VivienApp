@@ -72,6 +72,7 @@ public class MemberPartiActivityFragment extends Fragment {
             public boolean onQueryTextChange(String newText) {
                 CharSequence keyWord = actSv.getQuery();
                 List<ActVO> list = new ArrayList<ActVO>();
+
                 for (ActVO actVO : act) {
                     if (actVO.getAct_name().contains(keyWord)) {
                         list.add(actVO);
@@ -100,6 +101,11 @@ public class MemberPartiActivityFragment extends Fragment {
                 new StaggeredGridLayoutManager(
                         1, StaggeredGridLayoutManager.VERTICAL));
         act = getActivityList();
+        for(ActVO actVO : act){
+            if(actVO.getMem_ac().equals(mem_ac)){
+                act.remove(actVO);
+            }
+        }
         recyclerView.setAdapter(new MemberPartiActivityFragment.ActivityCardAdapter(getActivity(), act));
 
     }

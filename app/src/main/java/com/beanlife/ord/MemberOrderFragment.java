@@ -36,7 +36,7 @@ public class MemberOrderFragment extends Fragment {
     private View view;
     private ViewPager viewPager;
     private TabLayout tabLayout;
-    private MemberOrderFragment.OrdPagerAdapter adapter;
+    private OrdPagerAdapter adapter;
     private List<Fragment> fragmentList ;
     private CommonTask retriveOrdTask;
 
@@ -49,8 +49,9 @@ public class MemberOrderFragment extends Fragment {
 
         viewPager = (ViewPager) view.findViewById(R.id.my_ord_viewpager);
 
-        adapter = new MemberOrderFragment.OrdPagerAdapter(getChildFragmentManager(), tabLayout.getTabCount());
+        adapter = new OrdPagerAdapter(getChildFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(4);
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

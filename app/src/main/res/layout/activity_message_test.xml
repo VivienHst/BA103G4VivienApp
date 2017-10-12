@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/msg_cont_rv"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:padding="4dp"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:visibility="gone"/>-->
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_above="@+id/linearLayout2"-->
+        <!--android:gravity="bottom"-->
+        <!--android:id="@+id/msg_test_tv"/>-->
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:gravity="bottom"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_margin="2dp"-->
+        <!--android:id="@+id/linearLayout2">-->
+
+        <!--<EditText-->
+            <!--android:id="@+id/msg_write_et"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="0.2"/>-->
+
+        <!--<Button-->
+            <!--android:id="@+id/msg_send_bt"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="0.7"-->
+            <!--android:layout_marginBottom="4dp"-->
+            <!--android:text="send"-->
+            <!--android:onClick="onSendClick"/>-->
+    <!--</LinearLayout>-->
+</RelativeLayout>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     >
 
@@ -39,8 +40,8 @@
 
                 <item
                     android:id="@+id/nvFoManage"
-                    android:title="追蹤管理"
-                    android:visible="false"/>
+                    android:title="訊息中心"
+                    android:visible="true"/>
 
                 <item
                     android:id="@+id/nvAct"
@@ -58,6 +59,7 @@
             </menu>
 
         </item>
+
 
 
     </group>

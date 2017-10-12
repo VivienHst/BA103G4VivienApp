@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.beanlife.R;
+import com.beanlife.msg.MsgFragment;
 
 /**
  * Created by vivienhuang on 2017/10/2.
@@ -66,6 +67,22 @@ public class MemberPartiActivityContFragment extends Fragment {
             }
         });
 
+
+        actClock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = new MsgFragment(mem_ac, actVO.getMem_ac());
+//                    Fragment pFragment = getParentFragment();
+//                    FragmentManager fragmentManager = pFragment.getFragmentManager();
+                FragmentManager fragmentManager = getFragmentManager();
+
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.body, fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+
+        });
     }
 
     private void switchFragment(Fragment fragment) {
@@ -78,5 +95,6 @@ public class MemberPartiActivityContFragment extends Fragment {
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
+
 
 }

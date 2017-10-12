@@ -69,7 +69,7 @@ public class MemberCenterEditFragment extends Fragment {
     private static final int REQUEST_TAKE_PICTURE = 0;
     private static final int REQUEST_PICK_IMAGE = 1;
     private byte[]image;
-    private String memProc;
+    private String memProc, memGrade;
     private String[] likeSetToken;
 
     @Override
@@ -78,6 +78,7 @@ public class MemberCenterEditFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.member_center_edit_fragment, container, false);
         memVO = (MemVO) getArguments().getSerializable("memVO");
+        memGrade = (String) getArguments().getSerializable("memGrade");
         findView();
         return view;
     }
@@ -118,6 +119,7 @@ public class MemberCenterEditFragment extends Fragment {
         centerMemEmailEt.setText(memVO.getMem_email());
         centerMemPhoneEt.setText(memVO.getMem_phone());
         centerMemAddEt.setText(memVO.getMem_add());
+        centerMemLvTv.setText(memGrade);
 
 
         String likeSet = memVO.getMem_set();
@@ -129,7 +131,7 @@ public class MemberCenterEditFragment extends Fragment {
         //選擇處理法
         String[] procAr = res.getStringArray(R.array.prod_proc);
 
-        if(!likeSetToken[1].equals("")){
+        if(!likeSetToken[1].equals(" ")){
             Integer procIndex = Arrays.asList(procAr).indexOf(likeSetToken[1]);
             centerMemProcSp.setSelection(procIndex, true);
         }else{
@@ -142,7 +144,7 @@ public class MemberCenterEditFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 likeSetToken[1] = adapterView.getItemAtPosition(i).toString();
                 if(likeSetToken[1].equals("請選擇")){
-                    likeSetToken[1] = "";
+                    likeSetToken[1] = " ";
                 }
             }
             @Override
@@ -152,7 +154,7 @@ public class MemberCenterEditFragment extends Fragment {
 
         //選擇烘焙度
         String[] roastAr = res.getStringArray(R.array.prod_roast);
-        if(!likeSetToken[2].equals("")){
+        if(!likeSetToken[2].equals(" ")){
             Integer roastIndex = Arrays.asList(roastAr).indexOf(likeSetToken[2]);
             centerMemRoastSp.setSelection(roastIndex, true);
         }else{
@@ -164,7 +166,7 @@ public class MemberCenterEditFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 likeSetToken[2] = adapterView.getItemAtPosition(i).toString();
                 if(likeSetToken[2].equals("請選擇")){
-                    likeSetToken[2] = "";
+                    likeSetToken[2] = " ";
                 }
             }
             @Override

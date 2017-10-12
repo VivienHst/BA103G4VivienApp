@@ -43,12 +43,16 @@ public class MemberHostActivityFragment extends Fragment {
 
     private MemberHostActivityFragment.ActivityCardAdapter adapter;
     private CommonTask retrieveActTask, retrievePartiActTask;
-    private final static String TAG = "Member Activity";
+    private final static String TAG = "Member Host Activity";
     private String mem_ac;
     private View view;
     private List<ActVO> act;
     private SearchView actSv;
     private RecyclerView recyclerView;
+
+    MemberHostActivityFragment(String mem_ac){
+        this.mem_ac = mem_ac;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -74,7 +78,6 @@ public class MemberHostActivityFragment extends Fragment {
                 for (ActVO actVO : act) {
                     if (actVO.getAct_name().contains(keyWord)) {
                         list.add(actVO);
-
                     }
                 }
                 recyclerView.setAdapter(new MemberHostActivityFragment.ActivityCardAdapter(getActivity(), list));
@@ -166,7 +169,7 @@ public class MemberHostActivityFragment extends Fragment {
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Fragment fragment = new MemberHostActivityContFragment();
+                    Fragment fragment = new MemberHostActivityContFragment(mem_ac);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("actVO", actVO);
                     Log.d("actVO", actVO.getAct_name());
@@ -186,9 +189,6 @@ public class MemberHostActivityFragment extends Fragment {
 
     List<ActVO> getActivityList(){
         List<ActVO> actList = new ArrayList<ActVO>();
-
-        SharedPreferences loginState = getActivity().getSharedPreferences(Common.LOGIN_STATE, MODE_PRIVATE);
-        mem_ac = loginState.getString("userAc", "noLogIn");
 
         ActVO actVO = new ActVO();
         String actListString = "";

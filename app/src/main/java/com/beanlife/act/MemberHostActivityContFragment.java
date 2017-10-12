@@ -40,6 +40,9 @@ public class MemberHostActivityContFragment  extends Fragment {
     private ActVO actVO;
     private String mem_ac;
 
+    MemberHostActivityContFragment(String mem_ac){
+        this.mem_ac = mem_ac;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,7 +60,7 @@ public class MemberHostActivityContFragment  extends Fragment {
     private void findView(){
         actVO = new ActVO();
         actVO = (ActVO) getArguments().getSerializable("actVO");
-        mem_ac = (String) getArguments().getSerializable("mem_ac");
+
 
 
         part_container = (FrameLayout)view.findViewById(R.id.mem_act_part_container);
@@ -90,7 +93,7 @@ public class MemberHostActivityContFragment  extends Fragment {
         actClock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switchFragment(new MemberHostActivityListFragment());
+                switchFragment(new MemberHostActivityListFragment(mem_ac));
             }
         });
 
@@ -101,7 +104,6 @@ public class MemberHostActivityContFragment  extends Fragment {
         super.startActivityForResult(intent, requestCode, options);
         int resultCode = options.getInt("");
         IntentResult intentResult  = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-
     }
 
     private void switchFragment(Fragment fragment) {
