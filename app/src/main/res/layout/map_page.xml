@@ -21,6 +21,7 @@
         android:layout_above="@+id/mapView"
         android:layout_margin="8dp"
         android:background="#ffffff"
+        android:visibility="gone"
         />
 
 

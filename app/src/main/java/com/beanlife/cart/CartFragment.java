@@ -218,16 +218,9 @@ public class CartFragment extends Fragment {
         }
     }
 
-    private boolean networkConnected(){
-        ConnectivityManager conManager = (ConnectivityManager) getActivity()
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = conManager.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnected();
-    }
-
     List<Cart_listVO> getCartVOList(String mem_ac) {
         String cartVOListString = "";
-        if (networkConnected()) {
+        if (Common.networkConnected(getActivity())) {
             CommonTask retrieveCartList =
                     (CommonTask) new CommonTask().execute(Common.CART_URL,
                             "getVOsByMem", "mem_ac", mem_ac);
@@ -240,8 +233,7 @@ public class CartFragment extends Fragment {
             }
         }
         Gson gson = new Gson();
-        Type listType = new TypeToken<List<Cart_listVO>>() {
-        }.getType();
+        Type listType = new TypeToken<List<Cart_listVO>>() {}.getType();
         return gson.fromJson(cartVOListString, listType);
     }
 
@@ -438,7 +430,7 @@ public class CartFragment extends Fragment {
         ProdVO prodVO;
         String prodVOString = "";
 
-        if (networkConnected()) {
+        if (Common.networkConnected(getActivity())) {
             CommonTask retrieveCartList =
                     (CommonTask) new CommonTask().execute(Common.PROD_URL,
                             "getOneProd", "prod_no", prod_no);
@@ -461,7 +453,7 @@ public class CartFragment extends Fragment {
         StoreVO storeVO;
         String storeVOString = "";
 
-        if (networkConnected()) {
+        if (Common.networkConnected(getActivity())) {
             CommonTask retrieveCartList =
                     (CommonTask) new CommonTask().execute(Common.STORE_URL,
                             "getOneStore", "store_no", store_no);

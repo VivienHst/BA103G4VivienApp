@@ -153,6 +153,7 @@ public class SearchFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 roast = adapterView.getItemAtPosition(i).toString();
+                roast =  switchRoast(roast);
                 if(roast.equals("請選擇")){
                     roast = "%%";
                 }
@@ -163,6 +164,27 @@ public class SearchFragment extends Fragment {
             }
         });
 
+    }
+
+    private String switchRoast(String roast){
+        if(roast.equals("極淺焙")){
+            roast = "0";
+        }else if (roast.equals("淺焙")){
+            roast = "1";
+        }else if (roast.equals("中焙")){
+            roast = "2";
+        }else if (roast.equals("中深焙")){
+            roast = "3";
+        }else if (roast.equals("城市烘焙")){
+            roast = "4";
+        }else if (roast.equals("深焙")){
+            roast = "5";
+        }else if (roast.equals("法式烘焙")){
+            roast = "6";
+        }else if (roast.equals("重焙")){
+            roast = "7";
+        }
+        return roast;
     }
 
     String[] getCountryString(){

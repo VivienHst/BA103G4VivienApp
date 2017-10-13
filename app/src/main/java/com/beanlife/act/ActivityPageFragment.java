@@ -89,7 +89,7 @@ public class ActivityPageFragment extends Fragment {
         actFollowNumTv.setText(getFoCount(actVO.getAct_no()));
         memAcTv.setText(actVO.getMem_ac());
         actOpDateTv.setText(actVO.getAct_op_date());
-        actMemCountTv.setText(actVO.getMem_count().toString());
+        actMemCountTv.setText(actVO.getMem_count() +" / " + actVO.getMax_mem());
         actAddTv.setText(actVO.getAct_add());
         actContTv.setText(actVO.getAct_cont());
         actFollowIconIv.setImageResource(R.drawable.like_no);

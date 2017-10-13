@@ -9,7 +9,7 @@
     <string name="text_Market">找豆</string>
     <string name="text_Map">地圖</string>
     <string name="text_Activity">活動</string>
-    <string name="text_Message">私訊</string>
+    <string name="text_Message">個人訊息</string>
     <string name="text_AboutUs">關於我們</string>
 
     <string name="demo_min_label">極淺焙</string>
@@ -35,6 +35,7 @@
 
     <string-array name="prod_roast">
         <item>請選擇</item>
+        <item>極淺焙</item>
         <item>淺焙</item>
         <item>中焙</item>
         <item>中深焙</item>

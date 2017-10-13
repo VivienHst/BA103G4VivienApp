@@ -56,7 +56,8 @@
             android:layout_margin="4dp"
             android:layout_weight="0.5"
             android:textSize="16dp"
-            android:background="#9db3a7"/>
+            android:background="#9db3a7"
+            android:visibility="gone"/>
 
 
         <Button
@@ -79,9 +80,9 @@
         android:layout_height="50dp"
         android:layout_margin="4dp"
         android:onClick="loginOnClick"
-        android:text="amy little magic button"
+        android:text="magic"
         android:textSize="12dp"
-        android:background="#9db3a7"/>
+        android:background="#C2DCCE"/>
 
     <TextView
         android:layout_width="match_parent"

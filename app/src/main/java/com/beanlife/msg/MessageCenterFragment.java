@@ -23,15 +23,12 @@ import com.beanlife.CommonTask;
 import com.beanlife.GetImageByPkTask;
 import com.beanlife.R;
 import com.beanlife.act.ActVO;
-import com.beanlife.act.Act_pairVO;
-import com.beanlife.prod.ProdVO;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import static android.content.Context.MODE_PRIVATE;

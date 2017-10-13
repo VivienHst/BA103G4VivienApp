@@ -139,7 +139,7 @@ public class ProductFragment extends Fragment {
         prodFarmerTv.setText("生產者 : " + prodVO.getBean_farmer());
         prodElTv.setText("海拔 : " + prodVO.getBean_el() + "公尺");
         prodProcTv.setText("處理法 : " + prodVO.getProc());
-        prodRoastTv.setText("烘焙度 : " + prodVO.getRoast());
+        prodRoastTv.setText("烘焙度 : " + switchRoast(prodVO.getRoast()));
         prodAromaTv.setText("香味 : " + prodVO.getBean_aroma());
         prodSupTv.setText("尚餘數量 : " + prodVO.getProd_sup());
 
@@ -231,6 +231,27 @@ public class ProductFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private String switchRoast(String roast){
+        if(roast.equals("0")){
+            roast = "極淺焙";
+        }else if (roast.equals("1")){
+            roast = "淺焙";
+        }else if (roast.equals("2")){
+            roast = "中焙";
+        }else if (roast.equals("3")){
+            roast = "中深焙";
+        }else if (roast.equals("4")){
+            roast = "城市烘焙";
+        }else if (roast.equals("5")){
+            roast = "深焙";
+        }else if (roast.equals("6")){
+            roast = "法式烘焙";
+        }else if (roast.equals("7")){
+            roast = "重焙";
+        }
+        return roast;
     }
 
     private boolean networkConnected(){

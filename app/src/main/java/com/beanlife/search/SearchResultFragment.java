@@ -126,7 +126,7 @@ public class SearchResultFragment extends Fragment {
             viewHolder.prodPriceTv.setText("NT$ " + prodVO.getProd_price() + "   "
                     + prodVO.getProd_wt() + " lb");
             viewHolder.prodDescTv.setText(prodVO.getBean_contry() + "  " + prodVO.getProc()
-                    + "  " + prodVO.getRoast());
+                    + "  " + switchRoast(prodVO.getRoast()));
 
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -145,6 +145,27 @@ public class SearchResultFragment extends Fragment {
             });
         }
 
+    }
+
+    private String switchRoast(String roast){
+        if(roast.equals("0")){
+            roast = "極淺焙";
+        }else if (roast.equals("1")){
+            roast = "淺焙";
+        }else if (roast.equals("2")){
+            roast = "中焙";
+        }else if (roast.equals("3")){
+            roast = "中深焙";
+        }else if (roast.equals("4")){
+            roast = "城市烘焙";
+        }else if (roast.equals("5")){
+            roast = "深焙";
+        }else if (roast.equals("6")){
+            roast = "法式烘焙";
+        }else if (roast.equals("7")){
+            roast = "重焙";
+        }
+        return roast;
     }
 
     @Override

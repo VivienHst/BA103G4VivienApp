@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.beanlife.Common;
 import com.beanlife.CommonTask;
+import com.beanlife.GetImageByPkTask;
 import com.beanlife.R;
 import com.beanlife.act.ActVO;
 import com.google.gson.Gson;
@@ -56,6 +58,7 @@ public class MsgFragment extends Fragment {
     private static final String TAG = "Msg Fragment";
     public MyWebSocketClient myWebSocketClient;
     private EditText msgWriteEt;
+    private TextView memPairTv;
     private Button msgSendBt;
     private View view;
     private String myName, urName;
@@ -63,6 +66,8 @@ public class MsgFragment extends Fragment {
     private List<MsgVO> msgVOList;
     private CommonTask retrieveOldMsg;
     private ScrollView msgContSv;
+    private RecyclerView.Adapter adapter;
+    ImageView msgMemPairContIv;
 
     public MsgFragment(String myName, String urName){
         this.myName = myName;
@@ -92,10 +97,17 @@ public class MsgFragment extends Fragment {
         return view;
     }
 
+
+
     private void findView(){
         msgWriteEt = (EditText) view.findViewById(R.id.msg_write_et);
         msgSendBt = (Button) view.findViewById(R.id.msg_send_bt);
-        msgContSv = (ScrollView) view.findViewById(R.id.msg_cont_sv);
+       // msgContSv = (ScrollView) view.findViewById(R.id.msg_cont_sv);
+        memPairTv = (TextView) view.findViewById(R.id.msg_mem_pair_name_tv);
+        msgMemPairContIv = (ImageView) view.findViewById(R.id.msg_mem_pair_cont_iv);
+        new GetImageByPkTask(Common.MEM_URL, "mem_ac", urName, 150, msgMemPairContIv).execute();
+
+        memPairTv.setText(urName);
         msgVOList= new ArrayList<MsgVO>();
         Set<MsgVO> oldMsgVOSet = new LinkedHashSet<MsgVO>();
 
@@ -111,14 +123,29 @@ public class MsgFragment extends Fragment {
         }
 
 
+
+
         msgSendBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onSendClick(view);
-                msgContSv.fullScroll(ScrollView.FOCUS_DOWN);
+
+
             }
         });
     }
+
+    private void  toEnd(final RecyclerView.Adapter adapter){
+        recyclerView.post(new Runnable() {
+            @Override
+            public void run() {
+                // Call smooth scroll
+                recyclerView.smoothScrollToPosition(adapter.getItemCount());
+            }
+        });
+    }
+
+
 
     public void onSendClick(View view) {
 
@@ -166,10 +193,11 @@ public class MsgFragment extends Fragment {
                         String text = message ;
 
                         MsgVO msgVO = new MsgVO();
-                        msgVO.setMem_sen(myName);
+                        msgVO.setMem_sen(userName);
                         msgVO.setMsg_cont(text);
                         msgVOList.add(msgVO);
                         addRow(R.id.msg_cont_rv);
+                        toEnd(adapter);
 
                         //scrollView.fullScroll(View.FOCUS_DOWN);
                     } catch (JSONException e) {
@@ -210,7 +238,8 @@ public class MsgFragment extends Fragment {
         recyclerView.setLayoutManager(
                 new StaggeredGridLayoutManager(
                         1, StaggeredGridLayoutManager.VERTICAL));
-        recyclerView.setAdapter(new MsgFragment.MsgCardAdapter(getActivity(), msgVOList));
+        adapter = new MsgFragment.MsgCardAdapter(getActivity(), msgVOList);
+        recyclerView.setAdapter(adapter);
     }
 
     private class MsgCardAdapter extends

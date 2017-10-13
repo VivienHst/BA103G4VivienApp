@@ -359,7 +359,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="80dp"
                     android:layout_marginTop="16dp"
-                    android:background="#9db3a7"
+                    android:background="#C2DCCE"
                     android:text="magic button"
                     android:textSize="18dp" />
             </LinearLayout>
