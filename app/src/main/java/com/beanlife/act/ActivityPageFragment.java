@@ -182,7 +182,6 @@ public class ActivityPageFragment extends Fragment {
         if (!isFollowedString.equals("null")) {
             isFollowed = true;
         }
-
         return isFollowed;
     }
 

@@ -200,6 +200,9 @@ public class MemberCenterEditFragment extends Fragment {
             public void onClick(View view) {
                 if(checkInput()){
                     setMemVO();
+                    ImageView memPicIv = (ImageView) getActivity().findViewById(R.id.memPic_nvHeader);
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+                    memPicIv.setImageBitmap(bitmap);
                     switchFragment(new MemberCenterFragment());
                 }
             }
@@ -236,16 +239,14 @@ public class MemberCenterEditFragment extends Fragment {
 
     private void setMemVO(){
 
-
-
-
         memVO.setMem_pwd(centerMemPswEt.getText().toString());
         memVO.setMem_lname(centerMemLnameEt.getText().toString());
         memVO.setMem_fname(centerMemFnameEt.getText().toString());
         memVO.setMem_email(centerMemEmailEt.getText().toString());
         memVO.setMem_phone(centerMemPhoneEt.getText().toString());
         memVO.setMem_add(centerMemAddEt.getText().toString());
-        memVO.setMem_set(centerMemRegEt.getText().toString() + "," + likeSetToken[1] + "," + likeSetToken[2]);
+        memVO.setMem_set(centerMemRegEt.getText().toString() + "," + likeSetToken[1] + ","
+                + likeSetToken[2]);
         String imgToBase64 = Base64.encodeToString(image, Base64.DEFAULT);
 
         Gson gson = new Gson();

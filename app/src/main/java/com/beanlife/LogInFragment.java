@@ -36,10 +36,8 @@ public class LogInFragment extends Fragment {
     private View view;
     private EditText memAcTv, memPswTv;
     private Button registerBt, logInBt, magicBt;
-    MenuItem memCenter;
     private RetrieveMemTask retrieveMemTask;
     private boolean isValid;
-    private Menu menu;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -115,13 +113,6 @@ public class LogInFragment extends Fragment {
 
         });
     }
-
-//    @Override
-//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        super.onCreateOptionsMenu(menu, inflater);
-//        this.menu = menu;
-//
-//    }
 
     private boolean networkConnected(){
         ConnectivityManager conManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);

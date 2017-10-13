@@ -84,7 +84,6 @@ public class ActivityFragment extends Fragment {
                 for (ActVO actVO : act) {
                     if (actVO.getAct_name().contains(keyWord)) {
                         list.add(actVO);
-
                     }
                 }
                 recyclerView.setAdapter(new ActivityFragment.ActivityCardAdapter(getActivity(), list));
@@ -184,8 +183,6 @@ public class ActivityFragment extends Fragment {
         if(networkConnected()){
             retriveActTask = (CommonTask) new CommonTask().execute(Common.ACT_URL, "getAllAct",
                     "act_stat", "可報名");
-
-
             try {
                 actListString = retriveActTask.get();
             } catch (InterruptedException e) {
@@ -199,5 +196,4 @@ public class ActivityFragment extends Fragment {
         Type listType = new TypeToken<List<ActVO>>(){}.getType();
         return gson.fromJson(actListString, listType);
     }
-
 }

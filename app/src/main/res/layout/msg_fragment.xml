@@ -44,10 +44,7 @@
             android:text="test"
             />
 
-
     </LinearLayout>
-
-
 
     <LinearLayout
         android:layout_width="match_parent"

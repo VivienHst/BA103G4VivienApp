@@ -90,6 +90,9 @@ public class MainActivity extends AppCompatActivity {
             ImageView hostScanIv =  (ImageView) findViewById(R.id.host_scan_result_iv);
             Act_pairVO act_pairVO = new Act_pairVO();
             String getScanResult = intentResult.getContents();
+            if(getScanResult ==  null){
+                getScanResult = "";
+            }
             SharedPreferences loginState = getSharedPreferences(Common.SCAN_STATE, MODE_PRIVATE);
             String act_no= loginState.getString("act_no", "no act_no");
 
@@ -126,8 +129,6 @@ public class MainActivity extends AppCompatActivity {
                 hostScanIv.setImageResource(R.drawable.qr_code);
             }
         }
-
-
     }
 
     private void setUpActionBar(){

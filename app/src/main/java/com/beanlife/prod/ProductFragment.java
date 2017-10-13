@@ -25,6 +25,7 @@ import com.beanlife.CommonTask;
 import com.beanlife.GetImageByPkTask;
 import com.beanlife.R;
 import com.beanlife.RetrieveProdTask;
+import com.beanlife.store.StoreVO;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -50,20 +51,17 @@ public class ProductFragment extends Fragment {
     private EditText prodCountEt;
     private RatingBar prodRating;
     private ProdVO prodVO;
+    private StoreVO storeVO;
     private View view;
     private String storeName;
     private Button addToCar;
     Integer prodCountToCarNum;
+    private ProdAttrView prodAttrView;
     Menu menu;
 
-    private ProdAttrView prodAttrView;
-
-    public void getProdVO(ProdVO prodVO){
+    ProductFragment(ProdVO prodVO, StoreVO storeVO){
         this.prodVO = prodVO;
-    }
-
-    public void getStoreName(String storeName){
-        this.storeName = storeName;
+        this.storeVO = storeVO;
     }
 
     @Override
@@ -79,13 +77,6 @@ public class ProductFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
-
-//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        super.onCreateOptionsMenu(menu, inflater);
-//        //顯示購物車,放大鏡
-//       // menu.findItem(R.id.action_search).setVisible(true);
-//        menu.findItem(R.id.action_shopping_car).setVisible(isLogIn());
-//    }
 
     private boolean isLogIn(){
         boolean isLogIn;
@@ -126,29 +117,35 @@ public class ProductFragment extends Fragment {
 
         new GetImageByPkTask(Common.PROD_URL, action, prodVO.getProd_no(), 800, productIv).execute();
         prodNameTv.setText(prodVO.getProd_name());
-        storeNameTv.setText(storeName);
+        storeNameTv.setText(storeVO.getStore_name());
         prodContTv.setText(prodVO.getProd_cont());
-        prodSendfeeTv.setText("運費 : " + prodVO.getSend_fee().toString() + "滿1000免運費");
+        String freeShip = "";
+        if(storeVO.getStore_free_ship() != null){
+            freeShip = " 滿" + storeVO.getStore_free_ship() + "免運費";
+        }
+
+        prodSendfeeTv.setText("運費 : " + prodVO.getSend_fee().toString() + freeShip);
         prodPriceTv.setText("NT$" + prodVO.getProd_price().toString());
         prodUnitTv.setText(prodVO.getProd_wt().toString() + "磅");
-        prodTypeTv.setText("豆種 : " + prodVO.getBean_type());
-        prodGradeTv.setText("生豆等級 : " + prodVO.getBean_grade());
+        prodTypeTv.setText("豆種 : " + ((!(prodVO.getBean_type()==null))?prodVO.getBean_type():""));
+        prodGradeTv.setText("生豆等級 : " + ((!(prodVO.getBean_grade()==null))?prodVO.getBean_grade():""));
         prodContryTv.setText("生產國 : " + prodVO.getBean_contry());
-        prodRegionTv.setText("地區 : " + prodVO.getBean_region());
-        prodFarmTv.setText("農場 : " + prodVO.getBean_farm());
-        prodFarmerTv.setText("生產者 : " + prodVO.getBean_farmer());
-        prodElTv.setText("海拔 : " + prodVO.getBean_el() + "公尺");
+
+        prodRegionTv.setText("地區 : " + ((!(prodVO.getBean_region()==null))?prodVO.getBean_region():""));
+        prodFarmTv.setText("農場 : " + ((!(prodVO.getBean_farm()==null))?prodVO.getBean_farm():""));
+        prodFarmerTv.setText("生產者 : " + ((!(prodVO.getBean_farmer()==null))?prodVO.getBean_farmer():""));
+        prodElTv.setText("海拔 : " + ((!(prodVO.getBean_el()==null))?prodVO.getBean_el():"") + "公尺");
         prodProcTv.setText("處理法 : " + prodVO.getProc());
         prodRoastTv.setText("烘焙度 : " + switchRoast(prodVO.getRoast()));
-        prodAromaTv.setText("香味 : " + prodVO.getBean_aroma());
+        prodAromaTv.setText("香味 : " + ((!(prodVO.getBean_aroma()==null))?prodVO.getBean_aroma():""));
         prodSupTv.setText("尚餘數量 : " + prodVO.getProd_sup());
 
+        //產品屬性雷達圖設定值
         prodAttrView.setAcid(prodVO.getBean_attr_acid());
         prodAttrView.setAroma(prodVO.getBean_attr_aroma());
         prodAttrView.setAfter(prodVO.getBean_attr_after());
         prodAttrView.setBal(prodVO.getBean_attr_bal());
         prodAttrView.setBody(prodVO.getBean_attr_body());
-
 
         prodRating.setRating(Float.parseFloat(getProdScore(prodVO.getProd_no())));
 
@@ -191,9 +188,7 @@ public class ProductFragment extends Fragment {
                     } else {
                         prodCountToCarNum = 1;
                     }
-
                 }
-
                 prodCountEt.setText(prodCountToCarNum.toString());
             }
         });
@@ -276,6 +271,4 @@ public class ProductFragment extends Fragment {
         }
         return getProdScore;
     }
-
-
 }

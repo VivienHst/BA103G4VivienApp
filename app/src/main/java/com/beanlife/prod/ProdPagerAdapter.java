@@ -37,9 +37,9 @@ public  class ProdPagerAdapter extends FragmentStatePagerAdapter {
         switch(position)
         {
             case 0:
-                ProductFragment productFragmentTab = new ProductFragment();
-                productFragmentTab.getProdVO(prodVO);
-                productFragmentTab.getStoreName(storeVO.getStore_name());
+                ProductFragment productFragmentTab = new ProductFragment(prodVO, storeVO);
+//                productFragmentTab.getProdVO(prodVO);
+//                productFragmentTab.getStoreName(storeVO.getStore_name());
                 return productFragmentTab;
 
             case 1:
