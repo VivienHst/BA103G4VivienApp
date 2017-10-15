@@ -42,7 +42,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class MemberHostActivityFragment extends Fragment {
 
     private MemberHostActivityFragment.ActivityCardAdapter adapter;
-    private CommonTask retrieveActTask, retrievePartiActTask;
+    private CommonTask retrieveActTask;
     private final static String TAG = "Member Host Activity";
     private String mem_ac;
     private View view;
@@ -209,5 +209,4 @@ public class MemberHostActivityFragment extends Fragment {
         actList = gson.fromJson(actListString, listType);
         return actList;
     }
-
 }

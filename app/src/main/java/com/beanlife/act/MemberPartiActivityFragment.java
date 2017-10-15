@@ -83,7 +83,6 @@ public class MemberPartiActivityFragment extends Fragment {
                 return false;
             }
         });
-
     }
 
     @Override
@@ -107,7 +106,6 @@ public class MemberPartiActivityFragment extends Fragment {
             }
         }
         recyclerView.setAdapter(new MemberPartiActivityFragment.ActivityCardAdapter(getActivity(), act));
-
     }
 
     @Override
@@ -125,12 +123,6 @@ public class MemberPartiActivityFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    private boolean networkConnected(){
-        ConnectivityManager conManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = conManager.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnected();
     }
 
     private class ActivityCardAdapter extends
@@ -192,7 +184,7 @@ public class MemberPartiActivityFragment extends Fragment {
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Fragment fragment = new MemberPartiActivityContFragment();
+                    Fragment fragment = new MemberPartiActivityContFragment(mem_ac);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("actVO", actVO);
                     Log.d("actVO", actVO.getAct_name());
@@ -216,9 +208,8 @@ public class MemberPartiActivityFragment extends Fragment {
 
         for(Act_pairVO parti_actVO : partiList) {
             ActVO actVO = new ActVO();
-            String act_no;
             String actListString = "";
-            if (networkConnected()) {
+            if (Common.networkConnected(getActivity())) {
                 retrieveActTask = (CommonTask) new CommonTask().execute(Common.ACT_URL, "getOne", "act_no", parti_actVO.getAct_no());
 
                 try {
@@ -245,7 +236,7 @@ public class MemberPartiActivityFragment extends Fragment {
         mem_ac = loginState.getString("userAc", "noLogIn");
 
         String actListPartiString = "";
-        if(networkConnected()){
+        if(Common.networkConnected(getActivity())){
             retrievePartiActTask = (CommonTask) new CommonTask().execute(Common.ACT_URL, "getPartiAct" ,
                     "mem_ac", mem_ac);
             try {
@@ -255,7 +246,6 @@ public class MemberPartiActivityFragment extends Fragment {
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
-
         }
         Gson gson = new Gson();
         Type listType = new TypeToken<List<Act_pairVO>>(){}.getType();

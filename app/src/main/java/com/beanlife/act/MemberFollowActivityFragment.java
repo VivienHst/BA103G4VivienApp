@@ -90,7 +90,6 @@ public class MemberFollowActivityFragment extends Fragment {
                         2, StaggeredGridLayoutManager.VERTICAL));
         act = getActivityList();
         recyclerView.setAdapter(new MemberFollowActivityFragment.ActivityCardAdapter(getActivity(), act));
-
     }
 
     @Override
@@ -108,12 +107,6 @@ public class MemberFollowActivityFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    private boolean networkConnected(){
-        ConnectivityManager conManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = conManager.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnected();
     }
 
     private class ActivityCardAdapter extends
@@ -190,7 +183,7 @@ public class MemberFollowActivityFragment extends Fragment {
         for(Fo_actVO fo_actVO : foList) {
             ActVO actVO = new ActVO();
             String actListString = "";
-            if (networkConnected()) {
+            if (Common.networkConnected(getActivity())) {
                 retrieveActTask = (CommonTask) new CommonTask().execute(Common.ACT_URL, "getOne", "act_no", fo_actVO.getAct_no());
 
                 try {
@@ -212,12 +205,11 @@ public class MemberFollowActivityFragment extends Fragment {
     }
 
     List <Fo_actVO> getFoActivityList(){
-        List<Fo_actVO> actFoList = new ArrayList<>();
         SharedPreferences loginState = getActivity().getSharedPreferences(Common.LOGIN_STATE, MODE_PRIVATE);
         mem_ac = loginState.getString("userAc", "noLogIn");
 
         String actListFoString = "";
-        if(networkConnected()){
+        if(Common.networkConnected(getActivity())){
             retrieveFoActTask = (CommonTask) new CommonTask().execute(Common.ACT_URL, "getFoAct" ,
                     "mem_ac", mem_ac);
             try {

@@ -170,7 +170,8 @@ public class CartFragment extends Fragment {
                     cataProdVOList.add(storeProdVO);
                 }
             }
-            cartAdapter = new CartDetailAdapter(getActivity(), cataProdVOList, storeNo, prodCountByStore, viewHolder.cartTotalPayTv);
+            cartAdapter = new CartDetailAdapter(getActivity(), cataProdVOList, storeNo,
+                    prodCountByStore, viewHolder.cartTotalPayTv);
 
             //*******取得店家名稱*********
             viewHolder.cartProdListLv.setAdapter(cartAdapter);

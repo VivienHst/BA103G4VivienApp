@@ -25,6 +25,9 @@ public class MemberPartiActivityContFragment extends Fragment {
     ActVO actVO;
     String mem_ac;
 
+    MemberPartiActivityContFragment(String mem_ac){
+        this.mem_ac = mem_ac;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,8 +45,7 @@ public class MemberPartiActivityContFragment extends Fragment {
     private void findView(){
         actVO = new ActVO();
         actVO = (ActVO) getArguments().getSerializable("actVO");
-        mem_ac = (String) getArguments().getSerializable("mem_ac");
-
+        //mem_ac = (String) getArguments().getSerializable("mem_ac");
 
         part_container = (FrameLayout)view.findViewById(R.id.mem_act_part_container);
         actCont = (ImageView) view.findViewById(R.id.mem_act_cont);
@@ -51,7 +53,6 @@ public class MemberPartiActivityContFragment extends Fragment {
         actClock =(ImageView) view.findViewById(R.id.mem_act_clock);
         //prodNameTv.setText(getArguments().getSerializable("prod_name").toString());
         switchFragment(new ActivityPageFragment());
-
 
         actCont.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,15 +68,11 @@ public class MemberPartiActivityContFragment extends Fragment {
             }
         });
 
-
         actClock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Fragment fragment = new MsgFragment(mem_ac, actVO.getMem_ac());
-//                    Fragment pFragment = getParentFragment();
-//                    FragmentManager fragmentManager = pFragment.getFragmentManager();
                 FragmentManager fragmentManager = getFragmentManager();
-
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.body, fragment);
                 fragmentTransaction.addToBackStack(null);
@@ -95,6 +92,4 @@ public class MemberPartiActivityContFragment extends Fragment {
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
-
-
 }

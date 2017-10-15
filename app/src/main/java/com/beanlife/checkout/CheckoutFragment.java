@@ -120,7 +120,15 @@ public class CheckoutFragment  extends Fragment {
 
         prodVOList = (List<ProdVO>) getArguments().getSerializable("prodVOList");
         prodAmount = (Hashtable<String, Integer>) getArguments().getSerializable("prodCount");
-        total_pay = (Integer) getArguments().getSerializable("totalPrice");
+        total_pay = 0;
+        for(ProdVO prodVO : prodVOList){
+            total_pay = total_pay + prodVO.getProd_price() * prodAmount.get(prodVO.getProd_no());
+
+        }
+
+
+        //total_pay = (Integer) getArguments().getSerializable("totalPrice");
+
         storeVO = (StoreVO) getArguments().getSerializable("storeVO");
         bankAcInfo.setText(storeVO.getStore_atm_info());
 

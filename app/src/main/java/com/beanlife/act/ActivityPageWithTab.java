@@ -27,7 +27,6 @@ public class ActivityPageWithTab extends Fragment {
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private ActPagerAdapter adapter;
-    private List<Fragment> fragmentList ;
     private String memAc;
 
     @Override
@@ -56,7 +55,6 @@ public class ActivityPageWithTab extends Fragment {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
                 viewPager.setCurrentItem(tab.getPosition());
             }
 
@@ -90,8 +88,7 @@ public class ActivityPageWithTab extends Fragment {
         }
         @Override
         public Fragment getItem(int position) {
-            //return fragmentList.get(position);
-//
+
             switch(position)
             {
                 case 0:

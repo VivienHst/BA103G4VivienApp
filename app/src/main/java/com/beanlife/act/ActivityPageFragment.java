@@ -167,20 +167,21 @@ public class ActivityPageFragment extends Fragment {
         isFollowed = false;
         SharedPreferences loginState = getActivity().getSharedPreferences(Common.LOGIN_STATE, MODE_PRIVATE);
         mem_ac = loginState.getString("userAc", "noLogIn");
+        if(Common.networkConnected(getActivity())){
+            retrieveIsFollow = (CommonTask) new CommonTask().execute(Common.ACT_URL, "isFollowed",
+                    "mem_ac", mem_ac, "act_no", act_no);
+            String isFollowedString = "";
+            try {
+                isFollowedString = retrieveIsFollow.get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
 
-        retrieveIsFollow = (CommonTask) new CommonTask().execute(Common.ACT_URL, "isFollowed",
-                "mem_ac", mem_ac, "act_no", act_no);
-        String isFollowedString = "";
-        try {
-            isFollowedString = retrieveIsFollow.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-
-        if (!isFollowedString.equals("null")) {
-            isFollowed = true;
+            if (!isFollowedString.equals("null")) {
+                isFollowed = true;
+            }
         }
         return isFollowed;
     }

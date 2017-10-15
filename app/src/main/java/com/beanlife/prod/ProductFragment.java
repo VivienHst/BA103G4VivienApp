@@ -37,8 +37,6 @@ import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by Java on 2017/8/27.
- *
- *
  */
 
 public class ProductFragment extends Fragment {

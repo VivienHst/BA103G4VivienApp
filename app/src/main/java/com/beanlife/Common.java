@@ -14,9 +14,9 @@ import android.support.v4.app.FragmentActivity;
 
 public class Common {
 //    public final static String URL = "10.0.2.2:8081";
-    public final static String URL = "10.120.38.27:8081";
+//    public final static String URL = "10.120.38.27:8081";
 //    public final static String URL = "192.168.171.44:8081";
-//    public final static String URL = "10.120.38.16:8081";
+    public final static String URL = "10.120.38.16:8081";
 
 
 

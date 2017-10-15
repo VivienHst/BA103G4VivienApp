@@ -53,7 +53,7 @@ public class ActivityFragment extends Fragment {
 
     private View view;
     private ActivityFragment.ActivityCardAdapter adapter;
-    private CommonTask retriveActTask;
+    private CommonTask retrieveActTask;
     private final static String TAG = "SearchActivity";
     private SearchView actSv;
     private RecyclerView recyclerView;
@@ -90,7 +90,6 @@ public class ActivityFragment extends Fragment {
                 return false;
             }
         });
-
     }
 
     private void addRow(int viewId){
@@ -105,12 +104,6 @@ public class ActivityFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    private boolean networkConnected(){
-        ConnectivityManager conManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = conManager.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnected();
     }
 
     private class ActivityCardAdapter extends
@@ -180,17 +173,16 @@ public class ActivityFragment extends Fragment {
 
     List<ActVO> getActivityList(){
         String actListString = "";
-        if(networkConnected()){
-            retriveActTask = (CommonTask) new CommonTask().execute(Common.ACT_URL, "getAllAct",
-                    "act_stat", "可報名");
+        if(Common.networkConnected(getActivity())){
+            retrieveActTask = (CommonTask) new CommonTask().execute(Common.ACT_URL, "getAllAct",
+                    "act_stat", "可報名'or act_stat='已成團");
             try {
-                actListString = retriveActTask.get();
+                actListString = retrieveActTask.get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
-
         }
         Gson gson = new Gson();
         Type listType = new TypeToken<List<ActVO>>(){}.getType();

@@ -77,7 +77,6 @@ public class MemberHostActivityListFragment  extends Fragment {
             }
         }
         recyclerView.setAdapter(new MemberHostActivityListFragment.MemPairCardAdapter(getActivity(), act_pairVOList));
-
     }
 
     private class MemPairCardAdapter extends
@@ -120,7 +119,9 @@ public class MemberHostActivityListFragment  extends Fragment {
         public void onBindViewHolder(MemberHostActivityListFragment.MemPairCardAdapter.MyViewHolder viewHolder, int position) {
             final Act_pairVO act_pairVO = act_pairVOs.get(position);
 
-            new GetImageByPkTask(Common.MEM_URL, "mem_ac", act_pairVO.getMem_ac(), 150, viewHolder.actMemPairIv).execute();
+            if(Common.networkConnected(getActivity())){
+                new GetImageByPkTask(Common.MEM_URL, "mem_ac", act_pairVO.getMem_ac(), 150, viewHolder.actMemPairIv).execute();
+            }
             viewHolder.actMemAcTv.setText(act_pairVO.getMem_ac());
             viewHolder.actMemPayStateTV.setText(act_pairVO.getPay_state() + " / " + act_pairVO.getChk_state());
 
@@ -130,8 +131,6 @@ public class MemberHostActivityListFragment  extends Fragment {
                     Fragment fragment = new MsgFragment(actVO.getMem_ac(), act_pairVO.getMem_ac());
                     Fragment pFragment = getParentFragment();
                     FragmentManager fragmentManager = pFragment.getFragmentManager();
-//                    FragmentManager fragmentManager = getFragmentManager();
-
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.body, fragment);
                     fragmentTransaction.addToBackStack(null);
@@ -141,20 +140,11 @@ public class MemberHostActivityListFragment  extends Fragment {
         }
     }
 
-    //確認網路是否連接
-    private boolean networkConnected() {
-        ConnectivityManager conManager =
-                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = conManager.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnected();
-    }
-
     List<Act_pairVO> getMemPairList(){
         mem_pairVOList = new ArrayList<Act_pairVO>();
-        List<ProdVO> prodFilterList;
         String memPairString = "";
 
-        if (networkConnected()) {
+        if (Common.networkConnected(getActivity())) {
             retrieveMemTask =
                     (CommonTask) new CommonTask().execute(Common.ACT_URL, "getMemPair", "act_no", actVO.getAct_no());
             try {

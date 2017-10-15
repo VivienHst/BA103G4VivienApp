@@ -61,8 +61,6 @@ public class MemberHostActivityContFragment  extends Fragment {
         actVO = new ActVO();
         actVO = (ActVO) getArguments().getSerializable("actVO");
 
-
-
         part_container = (FrameLayout)view.findViewById(R.id.mem_act_part_container);
         actCont = (ImageView) view.findViewById(R.id.mem_act_cont);
         actQRCode = (ImageView)view.findViewById(R.id.mem_act_qrcode);
@@ -116,6 +114,4 @@ public class MemberHostActivityContFragment  extends Fragment {
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
-
-
 }

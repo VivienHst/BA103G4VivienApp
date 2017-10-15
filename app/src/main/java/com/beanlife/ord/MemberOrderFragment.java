@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -95,19 +96,19 @@ public class MemberOrderFragment extends Fragment {
             switch(position)
             {
                 case 0:
-                    OrderFragment tab1 = new OrderFragment(getStatList(ordVOList,"未付款"),"未付款");
+                    OrderFragment tab1 = new OrderFragment(getStatList(ordVOList,"未付款" , null),"未付款");
                     return tab1;
 
                 case 1:
-                    OrderFragment tab2 = new OrderFragment(getStatList(ordVOList,"已付款"),"已付款");
+                    OrderFragment tab2 = new OrderFragment(getStatList(ordVOList,"已付款", "已確認付款"),"已付款");
                     return tab2;
 
                 case 2:
-                    OrderFragment tab3 = new OrderFragment(getStatList(ordVOList,"已出貨"),"已出貨");
+                    OrderFragment tab3 = new OrderFragment(getStatList(ordVOList,"已出貨", null),"已出貨");
                     return tab3;
 
                 case 3:
-                    OrderFragment tab4 = new OrderFragment(getStatList(ordVOList,"已取消"),"已取消");
+                    OrderFragment tab4 = new OrderFragment(getStatList(ordVOList,"已取消", null),"已取消");
                     return tab4;
 
                 default:
@@ -144,10 +145,10 @@ public class MemberOrderFragment extends Fragment {
         return gson.fromJson(retrieveOrdString, listType);
     }
 
-    List<OrdVO> getStatList(List<OrdVO> ordList, String ordState){
+    List<OrdVO> getStatList(List<OrdVO> ordList, String ordState, @Nullable String ordState2){
         List<OrdVO> ordStatList = new ArrayList<OrdVO>();
         for(OrdVO ordVO : ordList){
-            if(ordVO.getOrd_stat().equals(ordState)){
+            if(ordVO.getOrd_stat().equals(ordState) || ordVO.getOrd_stat().equals(ordState2)){
                 ordStatList.add(ordVO);
             }
         }
