@@ -94,10 +94,8 @@ public class ActivityPageFragment extends Fragment {
         actContTv.setText(actVO.getAct_cont());
         actFollowIconIv.setImageResource(R.drawable.like_no);
         onClickFollow();
-
-
-
     }
+
     private void onClickFollow(){
         if (isLogIn()) {
             actFollowIconIv.setClickable(true);
@@ -197,6 +195,5 @@ public class ActivityPageFragment extends Fragment {
         }
         return isLogIn;
     }
-
 }
 

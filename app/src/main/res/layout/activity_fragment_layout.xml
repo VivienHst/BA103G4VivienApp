@@ -17,6 +17,16 @@
 
 
 
+    <TextView
+        android:id="@+id/no_my_act_tv"
+        android:layout_margin="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="沒有活動！"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:visibility="gone"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_act_card"
         android:layout_width="match_parent"

@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 
 import com.beanlife.Common;
 import com.beanlife.R;
-import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -80,7 +79,6 @@ public class ActivityPageWithTab extends Fragment {
     private class  ActPagerAdapter extends FragmentStatePagerAdapter {
 
         int nNumOfTabs;
-        FragmentManager fm;
         public ActPagerAdapter(FragmentManager fm, int nNumOfTabs)
         {
             super(fm);

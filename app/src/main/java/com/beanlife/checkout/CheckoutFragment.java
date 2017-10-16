@@ -212,8 +212,10 @@ public class CheckoutFragment  extends Fragment {
                 } else if(pay_info.equals("")){
                     Toast.makeText(view.getContext(), "請選擇付款方式", Toast.LENGTH_SHORT).show();
                 } else if (pay_info.equals("信用卡")){
-                    String creditMString = creditDateM.getText() + "";
-                    String creditYString = creditDateY.getText() + "";
+                    String creditMString = "";
+                    String creditYString = "";
+                    creditMString = creditDateM.getText() + "";
+                    creditYString = creditDateY.getText() + "";
 
                     int creditYearIn = Integer.parseInt(creditYString);
                     int creditMonthIn = Integer.parseInt(creditMString);

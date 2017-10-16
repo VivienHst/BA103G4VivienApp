@@ -61,7 +61,6 @@ public class StorePageFragment extends Fragment{
     private LatLng myLocation;
     private Marker marker_myLocation;
     private CommonTask retrieveProdTask;
-//    StoreVO storeVO;
 
     public void getStoreVO(StoreVO storeVO){
         this.storeVO = storeVO;
@@ -133,6 +132,12 @@ public class StorePageFragment extends Fragment{
                         1, StaggeredGridLayoutManager.HORIZONTAL));
         //final List<ProdVO> prod = getProductList();
         final List<ProdVO> prod = getProductList();
+//        List<ProdVO> prodOnList = new ArrayList<ProdVO>();
+//        for(ProdVO prodVO : prod){
+//            if(prodVO.getProd_stat().equals("上架")){
+//                prodOnList.add(prodVO);
+//            }
+//        }
         recyclerView.setAdapter(new StorePageFragment.ProductCardAdapter(getActivity(), prod));
 
     }
@@ -218,7 +223,6 @@ public class StorePageFragment extends Fragment{
 
     }
 
-
     List<ProdVO> getProductList() {
         List<ProdVO> prodList = new ArrayList<>();
         String prodListString = "";
@@ -239,14 +243,6 @@ public class StorePageFragment extends Fragment{
         prodList = gson.fromJson(prodListString, listType);
         return prodList;
 
-    }
-
-    //確認網路是否連接
-    private boolean networkConnected() {
-        ConnectivityManager conManager =
-                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = conManager.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnected();
     }
 
 }

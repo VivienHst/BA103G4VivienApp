@@ -109,8 +109,8 @@ public class CartFragment extends Fragment {
     private class CartCardAdapter extends
             RecyclerView.Adapter<CartFragment.CartCardAdapter.MyViewHolder> {
         private Context context;
-        private List<Cart_listVO> cartCardList;
-        private Set storeNoSet;
+//        private List<Cart_listVO> cartCardList;
+//        private Set storeNoSet;
         private List<String> storeList;
         List<ProdVO> prodVOList;
         Hashtable<String,Integer> prodCount;
@@ -184,17 +184,6 @@ public class CartFragment extends Fragment {
             viewHolder.cartTotalPayTv.setText("共計 ： $" + totalPrice);
 
             listViewParams.height = cartAdapter.getCount() * 250;
-//            viewHolder.cartProdListBt.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    if(viewHolder.prodListDetailLv.getVisibility() == GONE){
-//                        viewHolder.prodListDetailLv.setVisibility(View.VISIBLE);
-//
-//                    }else {
-//                        viewHolder.prodListDetailLv.setVisibility(View.GONE);
-//                    }
-//                }
-//            });
 
             //轉到結帳頁面
             viewHolder.cartProdCheckoutBt.setOnClickListener(new View.OnClickListener() {

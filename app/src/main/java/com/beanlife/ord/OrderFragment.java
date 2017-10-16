@@ -28,6 +28,7 @@ import com.beanlife.GetImageByPkTask;
 import com.beanlife.R;
 import com.beanlife.RetrieveProdTask;
 import com.beanlife.msg.MsgFragment;
+import com.beanlife.prod.ProductWithTab;
 import com.beanlife.review.ReviewWriteFragment;
 import com.beanlife.prod.ProdVO;
 import com.beanlife.store.StoreVO;
@@ -70,6 +71,7 @@ public class OrderFragment extends Fragment {
 
     private void addRow(View view,int viewId){
         RecyclerView recyclerView  = (RecyclerView) view.findViewById(viewId);
+        TextView noOrderTv = (TextView) view.findViewById(R.id.no_order_tv);
         recyclerView.setLayoutManager(
                 new StaggeredGridLayoutManager(
                         1, StaggeredGridLayoutManager.VERTICAL));
@@ -81,6 +83,13 @@ public class OrderFragment extends Fragment {
         Log.d("user ac",user_ac);
         final List<OrdVO> ord = getOrdVOList(user_ac);
         //加入各筆訂單
+        if(ordVOList.size() == 0){
+            noOrderTv.setText("您沒有" + ordStat + "訂單");
+            noOrderTv.setVisibility(View.VISIBLE);
+        } else {
+            noOrderTv.setVisibility(View.GONE);
+        }
+
         recyclerView.setAdapter(new OrderFragment.OrderCardAdapter(getActivity(), ordVOList));
 
     }
@@ -119,8 +128,6 @@ public class OrderFragment extends Fragment {
                 ordChatBt = (Button) itemView.findViewById(R.id.ord_chat_bt);
                 ordListLv = (ListView) itemView.findViewById(android.R.id.list);
                 ordListDetailLv = (LinearLayout) itemView.findViewById(R.id.ord_list_detail);
-
-
 
             }
         }
@@ -174,7 +181,6 @@ public class OrderFragment extends Fragment {
 
             listViewParams.height = orderAdapter.getCount()*240;
 
-
             //訂單細項開關
             viewHolder.ordListBt.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -187,8 +193,6 @@ public class OrderFragment extends Fragment {
                     }
                 }
             });
-
-
         }
     }
 
@@ -253,10 +257,6 @@ public class OrderFragment extends Fragment {
                 this.ord_listVOList = ord_listVOList;
         }
 
-
-
-
-
         @Override
         public int getCount() {
             return ord_listVOList.size();
@@ -277,8 +277,6 @@ public class OrderFragment extends Fragment {
             final Ord_listVO ordListItem = ord_listVOList.get(position);
             LayoutInflater layoutInflater = LayoutInflater.from(context);
             final String prod_no = ordListItem.getProd_no();
-
-
 
             if(prodItem == null){
                 prodItem = layoutInflater.inflate(R.layout.order_detail_fragment,parent,false);
@@ -327,12 +325,14 @@ public class OrderFragment extends Fragment {
                 if (!isPostedString){
                     writeReviewBt.setVisibility(View.VISIBLE);
                 }
+                else {
+                    writeReviewBt.setVisibility(View.GONE);
+                }
             }
 
             prodNameTv.setText(prodVO.getProd_name());
             prodPriceCountTv.setText("數量 : " + ordListItem.getAmont().toString());
             new GetImageByPkTask(Common.PROD_URL, "prod_no", prod_no, 200, prodItemIv).execute();
-
 
             //********轉到寫商品評論*********
             writeReviewBt.setOnClickListener(new View.OnClickListener() {
@@ -355,10 +355,24 @@ public class OrderFragment extends Fragment {
                 }
             });
 
+            prodItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Fragment fragment = new ProductWithTab();
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("prod", prodVO);
+                    fragment.setArguments(bundle);
+                    Fragment pFragment = getParentFragment();
+                    FragmentManager fragmentManager = pFragment.getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.body, fragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                }
+            });
+
             return prodItem;
         }
-
-
 
         //取得訂單列表
         List<Ord_listVO> getOrderList(String ord_no) {

@@ -49,6 +49,8 @@ public class MemberHostActivityFragment extends Fragment {
     private List<ActVO> act;
     private SearchView actSv;
     private RecyclerView recyclerView;
+    private TextView noActTv;
+
 
     MemberHostActivityFragment(String mem_ac){
         this.mem_ac = mem_ac;
@@ -78,6 +80,10 @@ public class MemberHostActivityFragment extends Fragment {
                 for (ActVO actVO : act) {
                     if (actVO.getAct_name().contains(keyWord)) {
                         list.add(actVO);
+                        noActTv.setVisibility(View.GONE);
+                    }else {
+                        noActTv.setText("找不到您搜尋的活動");
+                        noActTv.setVisibility(View.VISIBLE);
                     }
                 }
                 recyclerView.setAdapter(new MemberHostActivityFragment.ActivityCardAdapter(getActivity(), list));
@@ -89,10 +95,19 @@ public class MemberHostActivityFragment extends Fragment {
 
     private void addRow(View view, int viewId){
         recyclerView  = (RecyclerView) view.findViewById(viewId);
+        noActTv = (TextView) view.findViewById(R.id.no_my_act_tv);
         recyclerView.setLayoutManager(
                 new StaggeredGridLayoutManager(
                         1, StaggeredGridLayoutManager.VERTICAL));
         act = getActivityList();
+
+        if(act.size() == 0){
+            noActTv.setText("您沒有舉辦的活動");
+            noActTv.setVisibility(View.VISIBLE);
+        } else {
+            noActTv.setVisibility(View.GONE);
+        }
+
         recyclerView.setAdapter(new MemberHostActivityFragment.ActivityCardAdapter(getActivity(), act));
 
     }
@@ -112,12 +127,6 @@ public class MemberHostActivityFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    private boolean networkConnected(){
-        ConnectivityManager conManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = conManager.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnected();
     }
 
     private class ActivityCardAdapter extends
@@ -190,9 +199,8 @@ public class MemberHostActivityFragment extends Fragment {
     List<ActVO> getActivityList(){
         List<ActVO> actList = new ArrayList<ActVO>();
 
-        ActVO actVO = new ActVO();
         String actListString = "";
-        if (networkConnected()) {
+        if (Common.networkConnected(getActivity())) {
                 retrieveActTask = (CommonTask) new CommonTask().execute(Common.ACT_URL, "getHostAct", "mem_ac", mem_ac);
 
                 try {

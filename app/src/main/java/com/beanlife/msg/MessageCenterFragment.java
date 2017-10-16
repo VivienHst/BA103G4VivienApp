@@ -44,6 +44,7 @@ public class MessageCenterFragment extends Fragment {
     private ActVO actVO;
     private List<String> memAcList;
     private String myName;
+    private TextView noMsgTv;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -65,9 +66,15 @@ public class MessageCenterFragment extends Fragment {
     private void addRow(View view, int viewId){
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(viewId);
+        noMsgTv = (TextView) view.findViewById(R.id.no_msg_tv);
         recyclerView.setLayoutManager(
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         memAcList = getMemList();
+        if(memAcList.size() == 0){
+            noMsgTv.setVisibility(View.VISIBLE);
+        } else {
+            noMsgTv.setVisibility(View.GONE);
+        }
         recyclerView.setAdapter(new MessageCenterFragment.MemPairCardAdapter(getActivity(), memAcList));
 
     }
@@ -130,20 +137,12 @@ public class MessageCenterFragment extends Fragment {
         }
     }
 
-    //確認網路是否連接
-    private boolean networkConnected() {
-        ConnectivityManager conManager =
-                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = conManager.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnected();
-    }
-
     List<String> getMemList(){
         memAcList = new ArrayList<String>();
 
         String memPairString = "";
 
-        if (networkConnected()) {
+        if (Common.networkConnected(getActivity())) {
             retrieveMemTask =
                     (CommonTask) new CommonTask().execute(Common.MSG_URL, "getAllPairByMem", "mem_ac", myName);
             try {

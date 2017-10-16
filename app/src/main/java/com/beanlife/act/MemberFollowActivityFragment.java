@@ -48,6 +48,7 @@ public class MemberFollowActivityFragment extends Fragment {
     private SearchView actFoSv;
     private View view;
     private RecyclerView recyclerView;
+    private TextView noActTv;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -75,6 +76,10 @@ public class MemberFollowActivityFragment extends Fragment {
                 for (ActVO actVO : act) {
                     if (actVO.getAct_name().contains(keyWord)) {
                         list.add(actVO);
+                        noActTv.setVisibility(View.GONE);
+                    }else {
+                        noActTv.setText("找不到您搜尋的活動");
+                        noActTv.setVisibility(View.VISIBLE);
                     }
                 }
                 recyclerView.setAdapter(new MemberFollowActivityFragment.ActivityCardAdapter(getActivity(), list));
@@ -85,10 +90,18 @@ public class MemberFollowActivityFragment extends Fragment {
 
     private void addRow(View view, int viewId){
         recyclerView  = (RecyclerView) view.findViewById(viewId);
+        noActTv = (TextView) view.findViewById(R.id.no_my_act_tv);
         recyclerView.setLayoutManager(
                 new StaggeredGridLayoutManager(
                         2, StaggeredGridLayoutManager.VERTICAL));
         act = getActivityList();
+
+        if(act.size() == 0){
+            noActTv.setText("您沒有收藏的活動");
+            noActTv.setVisibility(View.VISIBLE);
+        } else {
+            noActTv.setVisibility(View.GONE);
+        }
         recyclerView.setAdapter(new MemberFollowActivityFragment.ActivityCardAdapter(getActivity(), act));
     }
 

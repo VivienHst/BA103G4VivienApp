@@ -60,10 +60,18 @@ public class ReviewFragment extends Fragment {
 
     private void addRow(View view,int viewId){
         RecyclerView recyclerView  = (RecyclerView) view.findViewById(viewId);
+        TextView noReviewTv = (TextView) view.findViewById(R.id.no_review_tv);
         recyclerView.setLayoutManager(
                 new StaggeredGridLayoutManager(
                         1, StaggeredGridLayoutManager.VERTICAL));
         final List<ReviewVO> comm = reviewVOList;
+
+        //沒有評論時會顯示的文字
+        if (reviewVOList.size() == 0){
+            noReviewTv.setVisibility(View.VISIBLE);
+        } else {
+            noReviewTv.setVisibility(View.GONE);
+        }
         recyclerView.setAdapter(new ReviewFragment.CommentCardAdapter(getActivity(), comm));
     }
 

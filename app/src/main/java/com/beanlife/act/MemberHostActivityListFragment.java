@@ -1,6 +1,7 @@
 package com.beanlife.act;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -35,6 +37,7 @@ import java.util.concurrent.ExecutionException;
 
 /**
  * Created by vivienhuang on 2017/10/2.
+ * 舉辦活動參加活動人員列表
  */
 
 public class MemberHostActivityListFragment  extends Fragment {
@@ -42,8 +45,8 @@ public class MemberHostActivityListFragment  extends Fragment {
     private MemberHostActivityListFragment.MemPairCardAdapter adapter;
     private CommonTask retrieveMemTask;
     private ActVO actVO;
-    private List<Act_pairVO> mem_pairVOList;
     private String mem_ac;
+    private RecyclerView recyclerView;
 
     MemberHostActivityListFragment(String mem_ac){
         this.mem_ac = mem_ac;
@@ -66,16 +69,11 @@ public class MemberHostActivityListFragment  extends Fragment {
 
     private void addRow(View view, int viewId){
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(viewId);
+        recyclerView = (RecyclerView) view.findViewById(viewId);
         recyclerView.setLayoutManager(
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         final List<Act_pairVO> act_pairVOList = getMemPairList();
 
-        for(Act_pairVO act_pairVO : act_pairVOList){
-            if(act_pairVO.getMem_ac().equals(mem_ac)){
-                act_pairVOList.remove(act_pairVO);
-            }
-        }
         recyclerView.setAdapter(new MemberHostActivityListFragment.MemPairCardAdapter(getActivity(), act_pairVOList));
     }
 
@@ -106,12 +104,14 @@ public class MemberHostActivityListFragment  extends Fragment {
         public class MyViewHolder extends RecyclerView.ViewHolder {
             ImageView actMemPairIv;
             TextView actMemAcTv, actMemPayStateTV;
+            CardView pairCv;
 
             MyViewHolder(View itemView) {
                 super(itemView);
                 actMemPairIv = (ImageView) itemView.findViewById(R.id.act_mem_pair_iv);
                 actMemAcTv = (TextView) itemView.findViewById(R.id.act_mem_ac_tv);
                 actMemPayStateTV = (TextView) itemView.findViewById(R.id.act_mem_pay_state_tv);
+                pairCv = (CardView) itemView.findViewById(R.id.act_mem_pair_card);
             }
         }
 
@@ -124,6 +124,11 @@ public class MemberHostActivityListFragment  extends Fragment {
             }
             viewHolder.actMemAcTv.setText(act_pairVO.getMem_ac());
             viewHolder.actMemPayStateTV.setText(act_pairVO.getPay_state() + " / " + act_pairVO.getChk_state());
+            if(act_pairVO.getChk_state().equals("已報到")){
+                viewHolder.pairCv.setBackgroundColor(Color.parseColor("#fff5c4"));
+            } else {
+                viewHolder.pairCv.setBackgroundColor(Color.parseColor("#efdeca"));
+            }
 
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -141,12 +146,12 @@ public class MemberHostActivityListFragment  extends Fragment {
     }
 
     List<Act_pairVO> getMemPairList(){
-        mem_pairVOList = new ArrayList<Act_pairVO>();
         String memPairString = "";
 
         if (Common.networkConnected(getActivity())) {
             retrieveMemTask =
-                    (CommonTask) new CommonTask().execute(Common.ACT_URL, "getMemPair", "act_no", actVO.getAct_no());
+                    (CommonTask) new CommonTask().execute(Common.ACT_URL, "getMemPair", "act_no",
+                            actVO.getAct_no(), "mem_ac", mem_ac);
             try {
                 memPairString = retrieveMemTask.get();
             } catch (InterruptedException e) {

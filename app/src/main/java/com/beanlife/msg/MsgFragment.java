@@ -102,7 +102,7 @@ public class MsgFragment extends Fragment {
     private void findView(){
         msgWriteEt = (EditText) view.findViewById(R.id.msg_write_et);
         msgSendBt = (Button) view.findViewById(R.id.msg_send_bt);
-       // msgContSv = (ScrollView) view.findViewById(R.id.msg_cont_sv);
+        //msgContSv = (ScrollView) view.findViewById(R.id.msg_cont_sv);
         memPairTv = (TextView) view.findViewById(R.id.msg_mem_pair_name_tv);
         msgMemPairContIv = (ImageView) view.findViewById(R.id.msg_mem_pair_cont_iv);
         new GetImageByPkTask(Common.MEM_URL, "mem_ac", urName, 150, msgMemPairContIv).execute();
@@ -122,15 +122,10 @@ public class MsgFragment extends Fragment {
             }
         }
 
-
-
-
         msgSendBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onSendClick(view);
-
-
             }
         });
     }
@@ -140,12 +135,11 @@ public class MsgFragment extends Fragment {
             @Override
             public void run() {
                 // Call smooth scroll
-                recyclerView.smoothScrollToPosition(adapter.getItemCount());
+                //recyclerView.smoothScrollToPosition(adapter.getItemCount());
+                recyclerView.scrollToPosition(adapter.getItemCount()-1);
             }
         });
     }
-
-
 
     public void onSendClick(View view) {
 
@@ -230,8 +224,6 @@ public class MsgFragment extends Fragment {
     private void showToast(String  message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
-
-
 
     private void addRow(int viewId){
         recyclerView  = (RecyclerView) view.findViewById(viewId);

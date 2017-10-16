@@ -40,6 +40,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -54,7 +55,7 @@ public class StoreContFragment extends Fragment{
     private StoreVO storeVO;
     private ImageView storeImg;
     private TextView storeNameTv, storePhoneTv, storeAddTv, storeDescConTv;
-    MapView storeMv;
+    private MapView storeMv;
     private GoogleMap googleMap;
     private LatLng myLocation;
     private Marker marker_myLocation;
@@ -74,12 +75,13 @@ public class StoreContFragment extends Fragment{
         storeVO = (StoreVO) getArguments().getSerializable("storeVO");
         Log.d(TAG, "storeVO.getStore_no() : "+ storeVO.getStore_no());
         findView(storeVO);
-        storeMv = (MapView) view.findViewById(R.id.store_mapView);
         storeMv.onCreate(savedInstanceState);
         storeMv.onResume();
         MapsInitializer.initialize(getActivity());
         googleMap = storeMv.getMap();
         setUpMap();
+
+        //加入店家商品
         addRow(R.id.store_prods_rv);
         //android:id="@+id/store_mapView"
         return view;
@@ -96,6 +98,8 @@ public class StoreContFragment extends Fragment{
         storePhoneTv = (TextView) view.findViewById(R.id.store_phone);
         storeAddTv = (TextView) view.findViewById(R.id.store_add);
         storeDescConTv = (TextView) view.findViewById(R.id.store_dsc_con);
+        storeMv = (MapView) view.findViewById(R.id.store_mapView);
+
 
         storeImg = (ImageView) view.findViewById(R.id.store_img);
         new GetImageByPkTask(Common.STORE_URL, "store_no", storeVO.getStore_no(), 500, storeImg).execute();
@@ -133,7 +137,14 @@ public class StoreContFragment extends Fragment{
                 new StaggeredGridLayoutManager(
                         1, StaggeredGridLayoutManager.HORIZONTAL));
         //final List<ProdVO> prod = getProductList();
-        final List<ProdVO> prod = getProductList();
+        List<ProdVO> prod = getProductList();
+
+//        List<ProdVO> prodOnList = new ArrayList<ProdVO>();
+//        for(ProdVO prodVO : prod){
+//            if(prodVO.getProd_stat().equals("上架")){
+//                prodOnList.add(prodVO);
+//            }
+//        }
         recyclerView.setAdapter(new StoreContFragment.ProductCardAdapter(getActivity(), prod));
 
     }
@@ -207,11 +218,13 @@ public class StoreContFragment extends Fragment{
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("prod", prodVO);
                     fragment.setArguments(bundle);
-                    FragmentManager fragmentManager = fragment.getFragmentManager();
+
+                    FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.body, fragment);
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
+
                 }
             });
         }

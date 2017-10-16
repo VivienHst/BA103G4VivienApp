@@ -36,11 +36,10 @@ import java.util.concurrent.ExecutionException;
  */
 
 public class AdvertFragment extends Fragment {
-    View view;
-    String ad_no;
-    AdVO adVO;
-    ImageView adIv;
-    TextView adInfo;
+    private View view;
+    private AdVO adVO;
+    private ImageView adIv;
+    private TextView adInfo;
     private CommonTask retrieveProdTask;
 
     public AdvertFragment(AdVO adVO){
@@ -88,32 +87,24 @@ public class AdvertFragment extends Fragment {
     }
 
     ProdVO getOneProd(){
-
-        ProdVO prodVO = new ProdVO();
         String prodVOString = "";
+        if(Common.networkConnected(getActivity())){
 
-        retrieveProdTask = (CommonTask) new CommonTask().execute(Common.PROD_URL, "getOneProd",
-                "prod_no", adVO.getProd_no());
+            retrieveProdTask = (CommonTask) new CommonTask().execute(Common.PROD_URL, "getOneProd",
+                    "prod_no", adVO.getProd_no());
 
-
-        try {
-            prodVOString = retrieveProdTask.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+            try {
+                prodVOString = retrieveProdTask.get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+            Gson gson = new Gson();
+            Type listType = new TypeToken<ProdVO>(){}.getType();
+            return  gson.fromJson(prodVOString, listType);
+        } else {
+            return null;
         }
-        Gson gson = new Gson();
-        Type listType = new TypeToken<ProdVO>(){}.getType();
-        return  gson.fromJson(prodVOString, listType);
-
-    }
-
-    //確認網路是否連接
-    private boolean networkConnected() {
-        ConnectivityManager conManager =
-                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = conManager.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnected();
     }
 }

@@ -1,9 +1,11 @@
 package com.beanlife.review;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -33,6 +35,8 @@ import com.google.gson.JsonObject;
 import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
 
+import static android.content.Context.MODE_PRIVATE;
+
 /**
  * Created by vivienhuang on 2017/9/23.
  */
@@ -44,7 +48,7 @@ public class ReviewWriteFragment extends Fragment {
     RatingBar prodScoreRb;
     ReviewVO reviewVO;
     Button submitReviewBt, magicBt;
-    String useWay, revCont, reviewWeight, reviewWater, reviewTemp, reviewTime, reviewCont;
+    String mem_ac, useWay, revCont, reviewWeight, reviewWater, reviewTemp, reviewTime, reviewCont;
     Integer score;
     ImageView prodImageView;
 
@@ -52,6 +56,9 @@ public class ReviewWriteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.review_add_fragment, container, false);
+
+        SharedPreferences loginState = getActivity().getSharedPreferences(Common.LOGIN_STATE, MODE_PRIVATE);
+        mem_ac = loginState.getString("userAc", "noLogIn");
 
         findView();
 
@@ -71,7 +78,7 @@ public class ReviewWriteFragment extends Fragment {
                             String result =
                                     new CommonTask()
                                             .execute(Common.REVIEW_URL,"insertReview","reviewVO",
-                                                    new Gson().toJson(reviewVO)).get();
+                                                    new Gson().toJson(reviewVO), "mem_ac", mem_ac).get();
 
                             Log.d("ReviewVo", result);
                         } catch (InterruptedException e) {

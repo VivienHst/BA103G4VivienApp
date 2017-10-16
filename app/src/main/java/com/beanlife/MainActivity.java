@@ -59,6 +59,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        logOut();
+        SharedPreferences loginState = getSharedPreferences(Common.LOGIN_STATE, MODE_PRIVATE);
+        loginState.edit().putBoolean("login", false).putString("userAc", null)
+                .putString("userPsw", null).apply();
         askPermissions();
         setUpActionBar();
         initDrawer();
@@ -324,6 +328,4 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
-
-
 }

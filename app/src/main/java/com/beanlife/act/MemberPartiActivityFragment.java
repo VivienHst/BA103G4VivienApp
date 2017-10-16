@@ -1,8 +1,6 @@
 package com.beanlife.act;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -39,8 +37,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by Java on 2017/8/27.
- * 會員活動頁面，產生活動頁面
- * 已連結資料庫，狀態未設定
+ * 會員參加的活動頁面
  */
 
 public class MemberPartiActivityFragment extends Fragment {
@@ -53,6 +50,7 @@ public class MemberPartiActivityFragment extends Fragment {
     private SearchView actSv;
     private RecyclerView recyclerView;
     private List<ActVO> act;
+    private TextView noActTv;
 
     public static MemberPartiActivityFragment newInstance() {
         MemberPartiActivityFragment f = new MemberPartiActivityFragment();
@@ -76,7 +74,10 @@ public class MemberPartiActivityFragment extends Fragment {
                 for (ActVO actVO : act) {
                     if (actVO.getAct_name().contains(keyWord)) {
                         list.add(actVO);
-
+                        noActTv.setVisibility(View.GONE);
+                    }else {
+                        noActTv.setText("找不到您搜尋的活動");
+                        noActTv.setVisibility(View.VISIBLE);
                     }
                 }
                 recyclerView.setAdapter(new MemberPartiActivityFragment.ActivityCardAdapter(getActivity(), list));
@@ -96,15 +97,20 @@ public class MemberPartiActivityFragment extends Fragment {
 
     private void addRow(View view, int viewId){
         recyclerView  = (RecyclerView) view.findViewById(viewId);
+        noActTv = (TextView) view.findViewById(R.id.no_my_act_tv);
         recyclerView.setLayoutManager(
                 new StaggeredGridLayoutManager(
                         1, StaggeredGridLayoutManager.VERTICAL));
         act = getActivityList();
-        for(ActVO actVO : act){
-            if(actVO.getMem_ac().equals(mem_ac)){
-                act.remove(actVO);
-            }
+        List<ActVO> actPartList = new ArrayList<ActVO>();
+
+        if(act.size() == 0){
+            noActTv.setText("您沒有參加的活動");
+            noActTv.setVisibility(View.VISIBLE);
+        } else {
+            noActTv.setVisibility(View.GONE);
         }
+
         recyclerView.setAdapter(new MemberPartiActivityFragment.ActivityCardAdapter(getActivity(), act));
     }
 
@@ -201,36 +207,7 @@ public class MemberPartiActivityFragment extends Fragment {
         }
     }
 
-    List<ActVO> getActivityList(){
-        List<ActVO> actList = new ArrayList<>();
-        List<Act_pairVO> partiList = new ArrayList<Act_pairVO>();
-        partiList = getPartiActivityList();
-
-        for(Act_pairVO parti_actVO : partiList) {
-            ActVO actVO = new ActVO();
-            String actListString = "";
-            if (Common.networkConnected(getActivity())) {
-                retrieveActTask = (CommonTask) new CommonTask().execute(Common.ACT_URL, "getOne", "act_no", parti_actVO.getAct_no());
-
-                try {
-                    actListString = retrieveActTask.get();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
-
-            }
-            Gson gson = new Gson();
-            Type listType = new TypeToken<ActVO>() {
-            }.getType();
-            actVO = gson.fromJson(actListString, listType);
-            actList.add(actVO);
-        }
-        return actList;
-    }
-
-    List <Act_pairVO> getPartiActivityList(){
+    List <ActVO> getActivityList(){
         //List<Fo_actVO> actFoList = new ArrayList<>();
         SharedPreferences loginState = getActivity().getSharedPreferences(Common.LOGIN_STATE, MODE_PRIVATE);
         mem_ac = loginState.getString("userAc", "noLogIn");
@@ -248,10 +225,9 @@ public class MemberPartiActivityFragment extends Fragment {
             }
         }
         Gson gson = new Gson();
-        Type listType = new TypeToken<List<Act_pairVO>>(){}.getType();
+        Type listType = new TypeToken<List<ActVO>>(){}.getType();
         return gson.fromJson(actListPartiString, listType);
     }
-
 
 }
 

@@ -51,11 +51,10 @@ public class ProductFragment extends Fragment {
     private ProdVO prodVO;
     private StoreVO storeVO;
     private View view;
-    private String storeName;
+    private String storeName, mem_ac;
     private Button addToCar;
     Integer prodCountToCarNum;
     private ProdAttrView prodAttrView;
-    Menu menu;
 
     ProductFragment(ProdVO prodVO, StoreVO storeVO){
         this.prodVO = prodVO;
@@ -80,6 +79,7 @@ public class ProductFragment extends Fragment {
         boolean isLogIn;
         SharedPreferences loginState = getActivity().getSharedPreferences(Common.LOGIN_STATE, MODE_PRIVATE);
         isLogIn = loginState.getBoolean("login", false);
+        mem_ac = loginState.getString("userAc", "noLogin");
         return isLogIn;
     }
 
@@ -149,11 +149,16 @@ public class ProductFragment extends Fragment {
 
         if(isLogIn()){
             addToCarLl.setVisibility(View.VISIBLE);
-        } else{
+        } else {
             addToCarLl.setVisibility(View.GONE);
         }
 
-        String prodCountToCar = prodCountEt.getText().toString();
+        if(prodVO.getProd_stat().equals("下架")){
+            addToCarLl.setVisibility(View.GONE);
+            prodSupTv.setText("商品尚未開賣");
+        }
+
+
         prodPlusIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -195,33 +200,38 @@ public class ProductFragment extends Fragment {
         addToCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String addToCarCount = prodCountEt.getText().toString();
-                SharedPreferences loginState = getActivity().getSharedPreferences(Common.LOGIN_STATE, MODE_PRIVATE);
-                String mem_ac = loginState.getString("userAc", "noLogIn");
-                Log.d("mem_ac", mem_ac);
+                if(!storeVO.getMem_ac().equals(mem_ac)){
+                    String addToCarCount = prodCountEt.getText().toString();
+                    SharedPreferences loginState = getActivity().getSharedPreferences(Common.LOGIN_STATE, MODE_PRIVATE);
+                    String mem_ac = loginState.getString("userAc", "noLogIn");
+                    Log.d("mem_ac", mem_ac);
 
-                CommonTask retrieveTask = (CommonTask) new CommonTask().execute(Common.CART_URL,
-                        "addCart_list", "mem_ac", mem_ac, "prod_no", prodVO.getProd_no().toString(),
-                        "prod_amount", addToCarCount);
+                    CommonTask retrieveTask = (CommonTask) new CommonTask().execute(Common.CART_URL,
+                            "addCart_list", "mem_ac", mem_ac, "prod_no", prodVO.getProd_no().toString(),
+                            "prod_amount", addToCarCount);
 
-                String getIsAddToCar = "";
-                try {
-                    getIsAddToCar = retrieveTask.get();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
+                    String getIsAddToCar = "";
+                    try {
+                        getIsAddToCar = retrieveTask.get();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+
+                    Gson gson = new Gson();
+                    Type listType = new TypeToken<Boolean>(){}.getType();
+                    boolean isAddToCar =  gson.fromJson(getIsAddToCar, listType);
+
+                    if(isAddToCar){
+                        Toast.makeText(view.getContext(), "已新增至購物車", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(view.getContext(), "超過商品剩餘數量", Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    Toast.makeText(view.getContext(), "您不能購買自己的商品", Toast.LENGTH_SHORT).show();
                 }
 
-                Gson gson = new Gson();
-                Type listType = new TypeToken<Boolean>(){}.getType();
-                boolean isAddToCar =  gson.fromJson(getIsAddToCar, listType);
-
-                if(isAddToCar){
-                    Toast.makeText(view.getContext(), "已新增至購物車", Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(view.getContext(), "超過商品剩餘數量", Toast.LENGTH_SHORT).show();
-                }
             }
         });
     }
@@ -247,15 +257,9 @@ public class ProductFragment extends Fragment {
         return roast;
     }
 
-    private boolean networkConnected(){
-        ConnectivityManager conManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = conManager.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnected();
-    }
-
     private String getProdScore(String prod_no){
         String getProdScore = null;
-        if(networkConnected()){
+        if(Common.networkConnected(getActivity())){
 
             try {
                 getProdScore = new RetrieveProdTask("getScore", prod_no).execute(Common.PROD_URL).get();

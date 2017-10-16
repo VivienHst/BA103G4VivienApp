@@ -129,7 +129,7 @@ public class MemberOrderFragment extends Fragment {
         //沒有登入回傳noLogIn
         String mem_ac = loginState.getString("userAc", "noLogIn");
 
-        if(networkConnected()){
+        if(Common.networkConnected(getActivity())){
             retriveOrdTask = (CommonTask)new CommonTask().execute(Common.ORD_URL, "getOrdByMem_ac", "mem_ac", mem_ac);
 
             try {
@@ -155,10 +155,4 @@ public class MemberOrderFragment extends Fragment {
         return ordStatList;
     }
 
-    private boolean networkConnected(){
-        ConnectivityManager conManager = (ConnectivityManager) getActivity()
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = conManager.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnected();
-    }
 }

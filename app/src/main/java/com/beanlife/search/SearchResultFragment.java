@@ -39,7 +39,9 @@ public class SearchResultFragment extends Fragment {
     private AsyncTask retrieveProdTask;
     private List<ProdVO> prodResultList;
     private String prodProc;
-    String[] queryString;
+    private String[] queryString;
+    private TextView noSearchTv;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -65,9 +67,15 @@ public class SearchResultFragment extends Fragment {
     private void addRow(View view, int viewId){
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(viewId);
+        noSearchTv = (TextView) view.findViewById(R.id.no_search_tv);
         recyclerView.setLayoutManager(
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         final List<ProdVO> prod = getProductList();
+        if(prod.size() == 0){
+            noSearchTv.setVisibility(View.VISIBLE);
+        } else {
+            noSearchTv.setVisibility(View.GONE);
+        }
         recyclerView.setAdapter(new SearchResultFragment.ProductCardAdapter(getActivity(), prod));
 
     }
