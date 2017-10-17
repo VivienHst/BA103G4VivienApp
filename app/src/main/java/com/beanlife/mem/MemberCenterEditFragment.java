@@ -59,7 +59,7 @@ public class MemberCenterEditFragment extends Fragment {
     private TextView centerMemAcTv, centerMemLvTv;
     private EditText centerMemPswEt, centerMemPswChkEt, centerMemLnameEt, centerMemFnameEt, centerMemEmailEt,
             centerMemPhoneEt, centerMemAddEt, centerMemRegEt;
-    private Spinner centerMemProcSp, centerMemRoastSp;
+    //private Spinner centerMemProcSp, centerMemRoastSp;
     private LinearLayout chkPswLl;
     private Button chkBtn, cancelBtn;
     private MemVO memVO;
@@ -99,12 +99,12 @@ public class MemberCenterEditFragment extends Fragment {
         centerMemEmailEt = (EditText) view.findViewById(R.id.center_mem_email_et);
         centerMemPhoneEt = (EditText) view.findViewById(R.id.center_mem_phone_et);
         centerMemAddEt = (EditText) view.findViewById(R.id.center_mem_add_et);
-        centerMemRegEt = (EditText) view.findViewById(R.id.center_mem_reg_et);
+       // centerMemRegEt = (EditText) view.findViewById(R.id.center_mem_reg_et);
         chkPswLl = (LinearLayout) view.findViewById(R.id.center_mem_psw_chk_ll);
         chkBtn = (Button) view.findViewById(R.id.mem_ed_chk_btn);
         cancelBtn = (Button) view.findViewById(R.id.mem_ed_cancel_btn);
-        centerMemProcSp = (Spinner) view.findViewById(R.id.center_mem_proc_sp);
-        centerMemRoastSp = (Spinner) view.findViewById(R.id.center_mem_roast_sp);
+//        centerMemProcSp = (Spinner) view.findViewById(R.id.center_mem_proc_sp);
+//        centerMemRoastSp = (Spinner) view.findViewById(R.id.center_mem_roast_sp);
 
         byte[] memOrgImg = getImg(memVO.getMem_ac());
         Bitmap picture = BitmapFactory.decodeByteArray(memOrgImg, 0, memOrgImg.length);
@@ -122,57 +122,57 @@ public class MemberCenterEditFragment extends Fragment {
         centerMemLvTv.setText(memGrade);
 
 
-        String likeSet = memVO.getMem_set();
-        likeSetToken = likeSet.split(",");
-        centerMemRegEt.setText(likeSetToken[0]);
+//        String likeSet = memVO.getMem_set();
+//        likeSetToken = likeSet.split(",");
+//        centerMemRegEt.setText(likeSetToken[0]);
 
         Resources res = getResources();
 
         //選擇處理法
-        String[] procAr = res.getStringArray(R.array.prod_proc);
+//        String[] procAr = res.getStringArray(R.array.prod_proc);
+//
+//        if(!likeSetToken[1].equals(" ")){
+//            Integer procIndex = Arrays.asList(procAr).indexOf(likeSetToken[1]);
+//            centerMemProcSp.setSelection(procIndex, true);
+//        }else{
+//            centerMemProcSp.setSelection(0, true);
+//        }
 
-        if(!likeSetToken[1].equals(" ")){
-            Integer procIndex = Arrays.asList(procAr).indexOf(likeSetToken[1]);
-            centerMemProcSp.setSelection(procIndex, true);
-        }else{
-            centerMemProcSp.setSelection(0, true);
-        }
 
-
-        centerMemProcSp.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                likeSetToken[1] = adapterView.getItemAtPosition(i).toString();
-                if(likeSetToken[1].equals("請選擇")){
-                    likeSetToken[1] = " ";
-                }
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
-
-        //選擇烘焙度
-        String[] roastAr = res.getStringArray(R.array.prod_roast);
-        if(!likeSetToken[2].equals(" ")){
-            Integer roastIndex = Arrays.asList(roastAr).indexOf(likeSetToken[2]);
-            centerMemRoastSp.setSelection(roastIndex, true);
-        }else{
-            centerMemRoastSp.setSelection(0, true);
-        }
-
-        centerMemRoastSp.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                likeSetToken[2] = adapterView.getItemAtPosition(i).toString();
-                if(likeSetToken[2].equals("請選擇")){
-                    likeSetToken[2] = " ";
-                }
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
+//        centerMemProcSp.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                likeSetToken[1] = adapterView.getItemAtPosition(i).toString();
+//                if(likeSetToken[1].equals("請選擇")){
+//                    likeSetToken[1] = " ";
+//                }
+//            }
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//            }
+//        });
+//
+//        //選擇烘焙度
+//        String[] roastAr = res.getStringArray(R.array.prod_roast);
+//        if(!likeSetToken[2].equals(" ")){
+//            Integer roastIndex = Arrays.asList(roastAr).indexOf(likeSetToken[2]);
+//            centerMemRoastSp.setSelection(roastIndex, true);
+//        }else{
+//            centerMemRoastSp.setSelection(0, true);
+//        }
+//
+//        centerMemRoastSp.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                likeSetToken[2] = adapterView.getItemAtPosition(i).toString();
+//                if(likeSetToken[2].equals("請選擇")){
+//                    likeSetToken[2] = " ";
+//                }
+//            }
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//            }
+//        });
 
         centerMemPswEt.addTextChangedListener(new TextWatcher() {
             @Override
@@ -245,8 +245,8 @@ public class MemberCenterEditFragment extends Fragment {
         memVO.setMem_email(centerMemEmailEt.getText().toString());
         memVO.setMem_phone(centerMemPhoneEt.getText().toString());
         memVO.setMem_add(centerMemAddEt.getText().toString());
-        memVO.setMem_set(centerMemRegEt.getText().toString() + "," + likeSetToken[1] + ","
-                + likeSetToken[2]);
+//        memVO.setMem_set(centerMemRegEt.getText().toString() + "," + likeSetToken[1] + ","
+//                + likeSetToken[2]);
         String imgToBase64 = Base64.encodeToString(image, Base64.DEFAULT);
 
         Gson gson = new Gson();
@@ -265,9 +265,10 @@ public class MemberCenterEditFragment extends Fragment {
             Toast.makeText(view.getContext(), "電話格式錯誤", Toast.LENGTH_SHORT).show();
         } else if(!centerMemEmailEt.getText().toString().trim().isEmpty() &&
                 !centerMemEmailEt.getText().toString().contains("@")){
-            Toast.makeText(view.getContext(), "信箱格式錯誤", Toast.LENGTH_SHORT).show();} else {
+            Toast.makeText(view.getContext(), "信箱格式錯誤", Toast.LENGTH_SHORT).show();
+        } else {
             checkInput = true;
-        }  checkInput = true;
+        }
 
         return checkInput;
     }

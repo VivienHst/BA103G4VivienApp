@@ -224,10 +224,17 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            >
 
             <TextView
                 android:layout_width="match_parent"
@@ -252,7 +259,7 @@
                 android:textSize="16dp" />
 
             <TextView
-                android:id="@+id/center_mem_reg_tv"
+                android:id="@+id/center_mem_reg_tv_no"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
@@ -275,7 +282,7 @@
                 android:textSize="16dp" />
 
             <TextView
-                android:id="@+id/center_mem_proc_tv"
+                android:id="@+id/center_mem_proc_tv_no"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
@@ -298,13 +305,14 @@
                 android:textSize="16dp" />
 
             <TextView
-                android:id="@+id/center_mem_roast_tv"
+                android:id="@+id/center_mem_roast_tv_no"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
                 android:text="淺焙"
                 android:textSize="16dp" />
 
+        </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>

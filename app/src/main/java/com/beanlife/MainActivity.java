@@ -188,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.nvMemOrd:
-                        switchFragment(new MemberOrderFragment());
+                        switchFragment(new MemberOrderFragment(0));
                         setTitle("訂單查詢");
                         break;
 

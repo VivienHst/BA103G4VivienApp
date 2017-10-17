@@ -66,6 +66,7 @@ public class ActivityFragment extends Fragment {
             public boolean onQueryTextChange(String newText) {
                 CharSequence keyWord = actSv.getQuery();
                 List<ActVO> list = new ArrayList<ActVO>();
+
                 for (ActVO actVO : act) {
                     if (actVO.getAct_name().contains(keyWord)) {
                         list.add(actVO);

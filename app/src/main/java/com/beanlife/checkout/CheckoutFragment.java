@@ -243,7 +243,6 @@ public class CheckoutFragment  extends Fragment {
                     }else {
                         pay_info = "B" + bankNoEt.getText();
                         payInfoCheck = true;
-
                     }
                 }
 
@@ -264,7 +263,7 @@ public class CheckoutFragment  extends Fragment {
                     }
 
                     Toast.makeText(view.getContext(), "已送出訂單", Toast.LENGTH_SHORT).show();
-                    Fragment fragment = new MemberOrderFragment();
+                    Fragment fragment = new MemberOrderFragment(0);
                     FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.body, fragment);

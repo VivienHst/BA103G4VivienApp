@@ -15,13 +15,21 @@
         android:textSize="20dp"
         android:gravity="center"
         android:visibility="gone"/>
+    <!--<android.support.v4.widget.SwipeRefreshLayout-->
+        <!--android:id="@+id/order_rv"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_order_card"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
-        tools:layout_weight="10px" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_order_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            tools:layout_weight="10px" />
+
+    <!--</android.support.v4.widget.SwipeRefreshLayout>-->
+
+
 
 
 </LinearLayout>

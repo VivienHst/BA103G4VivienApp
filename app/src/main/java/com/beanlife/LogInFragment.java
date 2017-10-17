@@ -65,7 +65,7 @@ public class LogInFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 memAcTv.setText("mrbrown");
-                memPswTv.setText("mr333");
+                memPswTv.setText("zxc123");
             }
         });
 

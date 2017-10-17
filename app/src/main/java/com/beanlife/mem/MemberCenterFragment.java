@@ -71,9 +71,9 @@ public class MemberCenterFragment extends Fragment {
         centerMemAddTv = (TextView) view.findViewById(R.id.center_mem_add_tv);
         centerMemPtTv = (TextView) view.findViewById(R.id.center_mem_pt_tv);
         centerMemDateTv = (TextView) view.findViewById(R.id.center_mem_date_tv);
-        centerMemRegTv = (TextView) view.findViewById(R.id.center_mem_reg_tv);
-        centerMemProcTv = (TextView) view.findViewById(R.id.center_mem_proc_tv);
-        centerMemRoastTv = (TextView) view.findViewById(R.id.center_mem_roast_tv);
+//        centerMemRegTv = (TextView) view.findViewById(R.id.center_mem_reg_tv);
+//        centerMemProcTv = (TextView) view.findViewById(R.id.center_mem_proc_tv);
+//        centerMemRoastTv = (TextView) view.findViewById(R.id.center_mem_roast_tv);
 
         memVO = new MemVO();
         memVO = getMemVO();
@@ -86,15 +86,15 @@ public class MemberCenterFragment extends Fragment {
         centerMemAddTv.setText(memVO.getMem_add());
         centerMemPtTv.setText(memVO.getMem_pt() + " / " + memVO.getMem_total_pt());
         centerMemDateTv.setText(memVO.getMem_reg_date());
-        String likeSet = memVO.getMem_set();
-        String[] likeSetToken = likeSet.split(",");
+//        String likeSet = memVO.getMem_set();
+//        String[] likeSetToken = likeSet.split(",");
 //        for(int i = 0; i < 3;i++){
 //            likeSetToken[i] = (likeSetToken[i] == null)?likeSetToken[i]:" ";
 //        }
 
-        centerMemRegTv.setText(likeSetToken[0]);
-        centerMemProcTv.setText(likeSetToken[1]);
-        centerMemRoastTv.setText(likeSetToken[2]);
+//        centerMemRegTv.setText(likeSetToken[0]);
+//        centerMemProcTv.setText(likeSetToken[1]);
+//        centerMemRoastTv.setText(likeSetToken[2]);
 
         new GetImageByPkTask(Common.MEM_URL, "mem_ac", memVO.getMem_ac(), 120, centerMemIv).execute();
 

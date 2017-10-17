@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -51,10 +52,10 @@ public class OrderFragment extends Fragment {
 
     private CommonTask retriveOrdTask, retrieveStoreTask;
     private final static String TAG = "Order Fragment";
-    OrderDetailAdapter orderAdapter;
-    List<OrdVO> ordVOList;
-    String ordStat;
-    String user_ac;
+    private OrderDetailAdapter orderAdapter;
+    private List<OrdVO> ordVOList;
+    private String ordStat;
+    private String user_ac;
 
     OrderFragment(List<OrdVO> ordVOList, String ordStat){
         this.ordVOList = ordVOList;
@@ -66,6 +67,7 @@ public class OrderFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.order_fragment, container, false);
         addRow(view, R.id.rv_order_card);
+
         return view;
     }
 
@@ -82,6 +84,8 @@ public class OrderFragment extends Fragment {
         user_ac = loginState.getString("userAc", "noLogIn");
         Log.d("user ac",user_ac);
         final List<OrdVO> ord = getOrdVOList(user_ac);
+
+
         //加入各筆訂單
         if(ordVOList.size() == 0){
             noOrderTv.setText("您沒有" + ordStat + "訂單");

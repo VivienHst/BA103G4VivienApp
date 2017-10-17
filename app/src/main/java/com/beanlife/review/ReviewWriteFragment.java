@@ -89,7 +89,7 @@ public class ReviewWriteFragment extends Fragment {
                     }
 
                     Toast.makeText(view.getContext(), "已新增成功", Toast.LENGTH_SHORT).show();
-                    Fragment fragment = new MemberOrderFragment();
+                    Fragment fragment = new MemberOrderFragment(0);
                     FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.body, fragment);

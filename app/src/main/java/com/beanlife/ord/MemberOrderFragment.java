@@ -10,7 +10,10 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +21,7 @@ import android.view.ViewGroup;
 import com.beanlife.Common;
 import com.beanlife.CommonTask;
 import com.beanlife.R;
+import com.beanlife.cart.CartFragment;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -40,6 +44,15 @@ public class MemberOrderFragment extends Fragment {
     private OrdPagerAdapter adapter;
     private List<Fragment> fragmentList ;
     private CommonTask retriveOrdTask;
+    private SwipeRefreshLayout swipeRefreshLayout;
+
+    private List<OrdVO> ordVOList;
+    private int itemPosition;
+
+    public MemberOrderFragment(int itemPosition){
+        this.itemPosition = itemPosition;
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -49,9 +62,28 @@ public class MemberOrderFragment extends Fragment {
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         viewPager = (ViewPager) view.findViewById(R.id.my_ord_viewpager);
+        ordVOList = getOrdVOList();
 
-        adapter = new OrdPagerAdapter(getChildFragmentManager(), tabLayout.getTabCount());
+        adapter = new OrdPagerAdapter(getChildFragmentManager(), tabLayout.getTabCount(),ordVOList);
+
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.ord_reflash_srv);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // show refresh icon
+                swipeRefreshLayout.setRefreshing(true);
+//                ordVOList = getOrdVOList();
+//                adapter.notifyDataSetChanged();
+                reflashFragment(viewPager.getCurrentItem());
+                // stop refresh icon
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
         viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(itemPosition);
+
         viewPager.setOffscreenPageLimit(4);
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -76,6 +108,14 @@ public class MemberOrderFragment extends Fragment {
         return view;
     }
 
+    private void reflashFragment(int itemPosition) {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.body, new MemberOrderFragment(itemPosition));
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,16 +123,19 @@ public class MemberOrderFragment extends Fragment {
 
     private class  OrdPagerAdapter extends FragmentStatePagerAdapter {
 
+        List<OrdVO> ordVOList;
         int nNumOfTabs;
         FragmentManager fm;
-        public OrdPagerAdapter(FragmentManager fm, int nNumOfTabs)
+
+        public OrdPagerAdapter(FragmentManager fm, int nNumOfTabs, List<OrdVO> ordVOList)
         {
             super(fm);
             this.nNumOfTabs=nNumOfTabs;
+            this.ordVOList = ordVOList;
+
         }
         @Override
         public Fragment getItem(int position) {
-            List<OrdVO> ordVOList = getOrdVOList();
             switch(position)
             {
                 case 0:
@@ -128,6 +171,7 @@ public class MemberOrderFragment extends Fragment {
         SharedPreferences loginState = getActivity().getSharedPreferences(Common.LOGIN_STATE, MODE_PRIVATE);
         //沒有登入回傳noLogIn
         String mem_ac = loginState.getString("userAc", "noLogIn");
+        Log.d("MemberOrderFragment" ,"getOrdVOList");
 
         if(Common.networkConnected(getActivity())){
             retriveOrdTask = (CommonTask)new CommonTask().execute(Common.ORD_URL, "getOrdByMem_ac", "mem_ac", mem_ac);
